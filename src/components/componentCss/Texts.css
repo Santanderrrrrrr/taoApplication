@@ -1,7 +1,7 @@
 *{
-    font-family: 'Roboto';
+    font-family: helvetica;
     /* font-family: 'Source Sans Pro'; */
-    font-weight: 500;
+    font-weight: 600;
 }
 .encasing{
     width: '100%';
@@ -28,7 +28,7 @@
 }
 
 .textyText{
-    margin-bottom: 9px;
+    margin-bottom: 15px;
     padding: 15px;
 }
 

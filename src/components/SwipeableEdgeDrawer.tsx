@@ -12,7 +12,19 @@ import { Stack } from '@mui/material';
 
 const drawerBleeding = 56;
 
+interface Props {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window?: () => Window;
+}
 
+const Root = styled('div')(({ theme }) => ({
+  height: '100%',
+  backgroundColor:
+    theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default,
+}));
 
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
@@ -28,7 +40,8 @@ const Puller = styled(Box)(({ theme }) => ({
   left: 'calc(50% - 15px)',
 }));
 
-export default function SwipeableEdgeDrawer() {
+export default function SwipeableEdgeDrawer(props: Props) {
+  const { window } = props;
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -36,71 +49,73 @@ export default function SwipeableEdgeDrawer() {
   };
 
   // This is used only for the example
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <>
-   
-      {/* <CssBaseline /> */}
-       {/* <Global
-          styles={{
-            '.MuiDrawer-root > .MuiPaper-root': {
-              width: '390px',
-              ml: '50%',
-              height: `calc(50% - ${drawerBleeding}px)`,
-              overflow: 'visible',
+    <Root>
+      <CssBaseline />
+      <Global
+        styles={{
+          '.MuiDrawer-root > .MuiPaper-root': {
+            height: `calc(50% - ${drawerBleeding}px)`,
+            overflow: 'visible',
           },
         }}
-        />  */}
-      
-        
-      
-      <Button sx={{mt:40, ml: 40}} onClick={toggleDrawer(true)}>Register</Button>
-      <Stack sx={{backgroundColor: 'green', display: 'flex', justifyItems: 'center'}}>
-        <SwipeableDrawer
-          anchor="bottom"
-          disableBackdropTransition={true}
-          disableDiscovery={true}
-          open={open}
-          onClose={toggleDrawer(false)}
-          onOpen={toggleDrawer(true)}
-          swipeAreaWidth={drawerBleeding}
-          disableSwipeToOpen={false}
-          ModalProps={{
-            keepMounted: true,
-          }}
-        >
-          <StyledBox
-            onClick={toggleDrawer(true)}
-            sx={{
-              position: 'absolute',
-              top: -drawerBleeding,
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              visibility: 'visible',
-              width: '390px',
-              right: 0,
-              left: 0,
-            }}
-          >                                                         {/**Skeleton background */}
-            <Puller />
-            <Stack direction="row" sx={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <Typography sx={{ p: 2, color: 'text.secondary' }}>{open===false? "Swipe up here to register!":"Fill the form below:"}</Typography>
-            </Stack>
-          </StyledBox>
-          <StyledBox
-            sx={{
-              // px: 2,
-              pb: 2,
-              height: '100%',
-              width:'100%',
-              overflow: 'auto',
+      />
+      <Box sx={{ textAlign: 'center', pt: 1 }}>
+        <Button onClick={toggleDrawer(true)}>Open</Button>
+      </Box>
+      <SwipeableDrawer
+        PaperProps={{
+            sx:{
+                display:'block',
+                width:'390px',
+                position:'absolute',
+                ml: '0 auto',
+                mr:'0 auto'
+                
+            }
+        }}
 
+       
+        container={container}
+        anchor="bottom"
+        open={open}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+        swipeAreaWidth={drawerBleeding}
+        disableSwipeToOpen={false}
+        ModalProps={{
+          keepMounted: true,
+        }}
+      >
+        <Stack>
+            <StyledBox
+            sx={{
+                position: 'absolute',
+                top: -drawerBleeding,
+                borderTopLeftRadius: 8,
+                borderTopRightRadius: 8,
+                visibility: 'visible',
+                right: 0,
+                left: 0,
             }}
-          >
-            <Skeleton variant="rectangular" height="100%" />
-          </StyledBox>
-        </SwipeableDrawer>
-      </Stack>
-      </>
+            >
+            <Puller />
+            <Typography sx={{ p: 2, color: 'text.secondary' }}>51 results</Typography>
+            </StyledBox>
+            <StyledBox
+            sx={{
+                px: 2,
+                pb: 2,
+                height: '100%',
+                overflow: 'hidden',
+            }}
+            >
+                <Skeleton variant="rectangular" height="100%" />
+            </StyledBox>
+        </Stack>
+      </SwipeableDrawer>
+    </Root>
   );
 }
