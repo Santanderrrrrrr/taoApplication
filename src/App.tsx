@@ -4,9 +4,6 @@ import './css/App.css'
 import { Button, Stack } from '@mui/material'
 import Texts from './components/Texts';
 import SwipeableEdgeDrawer from './components/SwipeableEdgeDrawer'
-import { IconButton } from 'rsuite';
-import AngleUpIcon from '@rsuite/icons/legacy/AngleUp';
-import { Drawer, Placeholder } from 'rsuite';
 
 
 
@@ -14,12 +11,7 @@ import { Drawer, Placeholder } from 'rsuite';
 
 function App() {
 
-  const [open, setOpen ] = useState<boolean>(false)
 
-  const handleOpen = () => {
-    setOpen(true);
-    
-  };
 
   
 
