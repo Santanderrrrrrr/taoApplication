@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 import logo from './assets/logo.png'
 import './css/App.css'
-import { Stack } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import Texts from './components/Texts';
 import SwipeableEdgeDrawer from './components/SwipeableEdgeDrawer'
+import { IconButton } from 'rsuite';
+import AngleUpIcon from '@rsuite/icons/legacy/AngleUp';
+import { Drawer, Placeholder } from 'rsuite';
 
 
-// const recycleBin = ()=>{
-//   return 
-//     {
-//       const handleChange: () => {
-//         setChecked((prev) => !prev);
-//       };
-//      const checkedButton = `<FormControlLabel
-//                 control={<Switch checked={checked} onChange={handleChange} />}
-//                 label="Show"
-//                 sx={{color: 'white'}}
-//               />`
-//   }
+
+
 
 function App() {
 
-  const [checked, setChecked ] = useState<boolean>(false)
+  const [open, setOpen ] = useState<boolean>(false)
+
+  const handleOpen = () => {
+    setOpen(true);
+    
+  };
 
   
 
@@ -40,7 +38,10 @@ function App() {
       <Stack direction='row' className='textField'>
         <Stack direction='column'className='outgoingTexts'> <Texts/></Stack>
       </Stack>
-      <SwipeableEdgeDrawer/>
+      
+      <Stack sx={{display:'flex', direction:'column', alignItems:'center', justifyContent: 'center', ml:50}}>
+        <SwipeableEdgeDrawer/>
+      </Stack>
       
     </div>
   );
