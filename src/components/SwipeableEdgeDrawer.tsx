@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import { Stack } from '@mui/material';
 
 const drawerBleeding = 56;
 
@@ -54,7 +55,7 @@ export default function SwipeableEdgeDrawer() {
       <Global
         styles={{
           '.MuiDrawer-root > .MuiPaper-root': {
-            height: `calc(50% - ${drawerBleeding}px)`,
+            height: `calc(80% - ${drawerBleeding}px)`,
             overflow: 'visible',
           },
         }}
@@ -85,8 +86,10 @@ export default function SwipeableEdgeDrawer() {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>51 results</Typography>
-          <Button onClick={toggleDrawer(true)}>Open</Button>
+          <Stack direction="row" sx={{ width: '100%', display: 'flex', justifyContent: 'spaceBetween'}}>
+            <Typography sx={{ p: 2, color: 'text.secondary' }}>Register, here!</Typography>
+            <Button onClick={toggleDrawer(true)}>Open</Button>
+          </Stack>
         </StyledBox>
         <StyledBox
           sx={{

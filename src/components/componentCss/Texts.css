@@ -1,7 +1,7 @@
 *{
-    font-family: 'Roboto', sans-serif;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 600;
+    font-family: 'Roboto';
+    /* font-family: 'Source Sans Pro'; */
+    font-weight: 500;
 }
 .encasing{
     width: '100%';

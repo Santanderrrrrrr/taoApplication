@@ -9,7 +9,7 @@ const OutgoingTexts = () => {
     [
       'Yo...', 
       "Yeah man, how's you?",
-      "Chillin, You mentioned a spot I could sell and buy clothes at..?", 
+      "Chillin, You mentioned a spot I could buy and sell clothes at..?", 
       "Yeah, Just swipe up from the bottom and register!",
       'wazi!' ])
 
