@@ -1,0 +1,39 @@
+.backdrop{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 0;
+    /* background-color: #222; */
+    
+}
+
+.logoImg{
+    margin-top: 0vh;
+    padding: 0px;
+    filter: invert(100%);
+    max-width: 195px;
+    max-height: 130px;
+}
+
+.textField{
+    /* margin-top: 5vh; */
+    width: 390px;;
+    height: 253.19px;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: #222; */
+}
+
+
+
+.outgoingTexts{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* background-color: red; */
+    width: 100%;
+    height: 30vh;
+}
