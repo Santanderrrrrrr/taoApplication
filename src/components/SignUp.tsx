@@ -15,9 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 import './componentCss/SignUp.css'
 
-interface HTMLInputEvent extends Event {
-    target: HTMLInputElement & EventTarget;
-}
+
 
 function Copyright(props: any) {
   return (
@@ -35,11 +33,18 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
+    const [email, setEmail] = React.useState<string>("");
+    const [password, setPassword] = React.useState<string>("");
+    const [firstname, setFirstname] = React.useState<string>("");
+    const [lastname, setLastname] = React.useState<string>("");
+    const [username, setUsername] = React.useState<string>("");
+    const [telephone, setTelephone] = React.useState<string>("");
+
     //image upload states
     const [image, setImage] = React.useState<string | Blob>();
     const [uploadingImg, setUploadingImg] = React.useState(false);
     const [imagePreview, setImagePreview] = React.useState('');
-    const placeholderPic = `https://via.placeholder.com/150/FFFFFF/000000/?text=picture`
+    const placeholderPic = `https://via.placeholder.com/150/FFFFFF/000000/?text=add+picture`
 
 
     
@@ -62,7 +67,7 @@ export default function SignUp() {
         const data = new FormData();
         data.append("file", image!);
         data.append("upload_preset", "chatSignin");
-        console.log(data)
+        // console.log(data)
         try {
             setUploadingImg(true);
             let res = await fetch(`${process.env.REACT_APP_CLOUDINARY_URL}`, {
@@ -80,31 +85,66 @@ export default function SignUp() {
 
     
 
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async(event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
+    event.preventDefault();
     if (!image) return alert("Please upload your profile picture");
     let url: string = await uploadImage()
-    console.log(e.currentTarget)
+    // console.log(e.currentTarget)
     
     
-    if(uploadingImg==false)
+    if(uploadingImg===false)
     {    
-        const data = new FormData(e.currentTarget);
-        console.log(data)
-        data.append("picture", url)
-        console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-        firstname: data.get('firstname'),
-        lastname: data.get('lastname'),
-        username: data.get('username'),
-        telephone: data.get('telephone'),
-        picture: data.get('picture')
-        });}
+        // const formData = new FormData();
+        // formData.append("json", JSON.stringify(
+        //     {
+        //         email:email,
+        //         password:password,
+        //         firstname:firstname,
+        //         lastname:lastname,
+        //         username:username,
+        //         telephone:telephone,
+        //         picture:url
+        //     })
+        // )
+            let requestData = JSON.stringify({
+                email: email,
+                password: password,
+                firstname: firstname,
+                lastname: lastname,
+                username: username,
+                telephone: telephone,
+                picture: url
+                })
+        // console.log(formData.get('email'))
+        // data.append("picture", url)s
+        // console.log({
+        // "email": email,
+        // "password": password,
+        // "firstname": firstname,
+        // "lastname": lastname,
+        // "username": username,
+        // "telephone": telephone,
+        // "picture": url
+        // });
+        fetch(`http://localhost:3005/signup`,{
+            method: 'POST',
+            body: requestData
+        } )
+    }
+    
   };
 
   return (
     <ThemeProvider theme={theme}>
+        <Stack sx={{mb:2, mt:2}}>
+            <div className="signup-profile-pic__container">
+                <img src={imagePreview || placeholderPic} alt="avatar placeholder" className="signup-profile-pic" />
+                <label htmlFor="image-upload" className="image-upload-label">
+                    <i className="fas fa-plus-circle add-picture-icon"></i>
+                </label>
+                <input type="file" id="image-upload" hidden accept="image/png, image/jpeg" onChange={validateImg} />
+            </div>
+        </Stack>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -118,20 +158,13 @@ export default function SignUp() {
           {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar> */}
-          <Stack>
-            <div className="signup-profile-pic__container">
-                <img src={imagePreview || placeholderPic} alt="avatar placeholder" className="signup-profile-pic" />
-                <label htmlFor="image-upload" className="image-upload-label">
-                    <i className="fas fa-plus-circle add-picture-icon"></i>
-                </label>
-                <input type="file" id="image-upload" hidden accept="image/png, image/jpeg" onChange={validateImg} />
-            </div>
-          </Stack>
-          <Typography component="h1" variant="h5">
+          
+          {/* <Typography component="h1" variant="h5">
             Sign up
-          </Typography>
+          </Typography> */}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
+            
+          <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
@@ -141,6 +174,8 @@ export default function SignUp() {
                   id="firstname"
                   label="First Name"
                   autoFocus
+                  onChange={(e) => setFirstname(e.target.value)} value={firstname}
+
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -151,6 +186,7 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastname"
                   autoComplete="family-name"
+                  onChange={(e) => setLastname(e.target.value)} value={lastname}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -161,6 +197,8 @@ export default function SignUp() {
                   label="What should we call you?"
                   name="username"
                   autoComplete="Username"
+                  onChange={(e) => setUsername(e.target.value)} value={username}
+
                 />
               </Grid>
               <Grid item xs={12}>
@@ -171,6 +209,7 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={(e) => setEmail(e.target.value)} value={email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -181,6 +220,8 @@ export default function SignUp() {
                   label="Tel. number"
                   name="telephone"
                   autoComplete="Phone"
+                  onChange={(e) => setTelephone(e.target.value)} value={telephone}
+
                 />
               </Grid>
               <Grid item xs={12}>
@@ -192,6 +233,7 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(e) => setPassword(e.target.value)} value={password}
                 />
               </Grid>
               <Grid item xs={12}>
