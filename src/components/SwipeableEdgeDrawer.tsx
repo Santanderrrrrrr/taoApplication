@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import { Stack } from '@mui/material';
 
 const drawerBleeding = 56;
 
@@ -51,7 +52,27 @@ export default function SwipeableEdgeDrawer(props: Props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
+    <>
+    <Box sx={{   
+        width:'90px', 
+        display:'flex', 
+        direction:'row', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        backgroundColor:'#fff',
+        border:'solid 1px #1a75ff',
+        borderRadius:'15px',
+        mr:35,
+        mt:4.5
+        }}>
+        <Button sx={{
+            color: '#1a75ff',
+            border:'#1a75ff',
+            borderRadius: '15px'}} 
+            onClick={toggleDrawer(true)}>Register</Button>
+    </Box>
     <Root>
+      
       <CssBaseline />
       <Global
         styles={{
@@ -61,9 +82,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
           },
         }}
       />
-      <Box sx={{ textAlign: 'center', pt: 1 }}>
-        <Button onClick={toggleDrawer(true)}>Open</Button>
-      </Box>
+      
       <SwipeableDrawer
         PaperProps={{
             sx:{
@@ -100,7 +119,9 @@ export default function SwipeableEdgeDrawer(props: Props) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>51 results</Typography>
+        <Stack sx={{width: '100%', display:'flex', direction: 'row', alignItems: 'center'}}>
+            <Typography sx={{ p: 2, color: 'text.secondary' }}>{open? 'Fill the form below:':'swipe up to register'}</Typography>
+        </Stack>
         </StyledBox>
         <StyledBox
           sx={{
@@ -114,5 +135,6 @@ export default function SwipeableEdgeDrawer(props: Props) {
         </StyledBox>
       </SwipeableDrawer>
     </Root>
+    </>
   );
 }

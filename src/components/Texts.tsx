@@ -8,7 +8,7 @@ const OutgoingTexts = () => {
   const [ outGoingTexts, setOutGoingTexts ] = useState<string[]>(
     [
       'Yo...', 
-      "Yeah man, how's you?",
+      "Hey man, how's you?",
       "Chillin, You mentioned a spot I could buy and sell clothes at..?", 
       "Yeah, Just click register!",
       'wazi!' ])

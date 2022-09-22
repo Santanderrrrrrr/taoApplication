@@ -4,6 +4,8 @@ import './css/App.css'
 import { Button, Stack } from '@mui/material'
 import Texts from './components/Texts';
 import SwipeableEdgeDrawer from './components/SwipeableEdgeDrawer'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 
 
 
@@ -17,15 +19,21 @@ function App() {
 
   return (
     <div className="backdrop">
-      {/* <Box sx={{ height: 180 }}>
-        <Box sx={{ width: `calc(100px + 16px)` }}>
-          
-          <Slide direction="up" in={checked} mountOnEnter unmountOnExit>
-            <Typography variant="h6" sx={{color: 'white'}}>Jioni yaja...</Typography>
-          </Slide>
-        </Box>
-      </Box> */}
-      <img className="logoImg" src={logo} alt='logo'/>
+      <Stack sx={{
+        backgroundColor: '#f4f4f5',
+        width:'390px',
+        height:'131px',
+        display: 'flex',
+        flexDirection:'row', alignItems: 'center', justifyContent: 'space-between',
+        pr:'10px',
+        pl:'10px',
+        borderBottom:'1.5px solid #e4e4e7',
+        mb:2
+      }}>
+        <ArrowBackIosNewOutlinedIcon color="primary" sx={{height:'24px', mt:3}} ></ArrowBackIosNewOutlinedIcon>
+        <img className="logoImg" src={logo} alt='logo'/>
+        <InfoOutlinedIcon color='primary' sx={{height:'24px', mt:3}}/>
+      </Stack>
 
       <Stack direction='row' className='textField'>
         <Stack direction='column'className='outgoingTexts'> <Texts/></Stack>
