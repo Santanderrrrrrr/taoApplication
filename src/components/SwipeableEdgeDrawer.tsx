@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { Stack } from '@mui/material';
 
+import SignUp from './SignUp'
+
 const drawerBleeding = 56;
 
 interface Props {
@@ -63,7 +65,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
         border:'solid 1px #1a75ff',
         borderRadius:'15px',
         mr:35,
-        mt:4.5
+        mt:7
         }}>
         <Button sx={{
             color: '#1a75ff',
@@ -120,7 +122,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
         >
           <Puller />
         <Stack sx={{width: '100%', display:'flex', direction: 'row', alignItems: 'center'}}>
-            <Typography sx={{ p: 2, color: 'text.secondary' }}>{open? 'Fill the form below:':'swipe up to register'}</Typography>
+            <Typography sx={{ p: 2, color: 'text.secondary' }}>{open? 'Fill the form below:':'Swipe up to register'}</Typography>
         </Stack>
         </StyledBox>
         <StyledBox
@@ -131,7 +133,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
             overflow: 'auto',
           }}
         >
-          <Skeleton variant="rectangular" height="100%" />
+          <SignUp />
         </StyledBox>
       </SwipeableDrawer>
     </Root>

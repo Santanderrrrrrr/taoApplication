@@ -10,7 +10,7 @@ const OutgoingTexts = () => {
       'Yo...', 
       "Hey man, how's you?",
       "Chillin, You mentioned a spot I could buy and sell clothes at..?", 
-      "Yeah, Just click register!",
+      "Yeah, Just swipe up from the bottom or click register!",
       'wazi!' ])
 
   return (
