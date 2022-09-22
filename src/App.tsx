@@ -31,7 +31,7 @@ function App() {
         <Stack direction='column'className='outgoingTexts'> <Texts/></Stack>
       </Stack>
       
-      <Stack sx={{display:'flex', direction:'column', alignItems:'center', justifyContent: 'center', ml:50}}>
+      <Stack sx={{display:'flex', direction:'column', alignItems:'center', justifyContent: 'center'}}>
         <SwipeableEdgeDrawer/>
       </Stack>
       
