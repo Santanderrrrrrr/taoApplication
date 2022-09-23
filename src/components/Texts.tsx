@@ -1,4 +1,3 @@
-import { Box, Button, FormControlLabel, Slide } from '@mui/material'
 import React, { useState } from 'react'
 import './componentCss/Texts.css'
 import TextBubble from './forOutgoing/TextBubble'
@@ -18,9 +17,9 @@ const OutgoingTexts = () => {
       
       {outGoingTexts.map((ogt, index)=>{
         return(
-          <>
-            <TextBubble key={index} index={index} ogt={ogt}/>
-          </>
+          <React.Fragment key={index}>
+            <TextBubble  index={index} ogt={ogt}/>
+          </React.Fragment>
         )})} 
     </div>
     

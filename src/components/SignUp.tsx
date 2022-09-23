@@ -44,7 +44,7 @@ export default function SignUp() {
     const [image, setImage] = React.useState<string | Blob>();
     const [uploadingImg, setUploadingImg] = React.useState(false);
     const [imagePreview, setImagePreview] = React.useState('');
-    const placeholderPic = `https://via.placeholder.com/150/FFFFFF/000000/?text=add+picture`
+    const placeholderPic = `${process.env.REACT_APP_PLACEHOLDER_IMAGE}`
 
 
     
@@ -82,7 +82,6 @@ export default function SignUp() {
             console.log(error);
         }
     }
-
     
 
   const handleSubmit = async(event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
@@ -94,39 +93,21 @@ export default function SignUp() {
     
     if(uploadingImg===false)
     {    
-        // const formData = new FormData();
-        // formData.append("json", JSON.stringify(
-        //     {
-        //         email:email,
-        //         password:password,
-        //         firstname:firstname,
-        //         lastname:lastname,
-        //         username:username,
-        //         telephone:telephone,
-        //         picture:url
-        //     })
-        // )
-            let requestData = JSON.stringify({
-                email: email,
-                password: password,
-                firstname: firstname,
-                lastname: lastname,
-                username: username,
-                telephone: telephone,
-                picture: url
-                })
-        // console.log(formData.get('email'))
-        // data.append("picture", url)s
-        // console.log({
-        // "email": email,
-        // "password": password,
-        // "firstname": firstname,
-        // "lastname": lastname,
-        // "username": username,
-        // "telephone": telephone,
-        // "picture": url
-        // });
-        fetch(`http://localhost:3005/signup`,{
+        let requestData = JSON.stringify({
+            email: email,
+            password: password,
+            firstname: firstname,
+            lastname: lastname,
+            username: username,
+            telephone: telephone,
+            picture: url
+            })
+                
+        fetch(`${process.env.REACT_APP_BYJ_API_URL}`,{
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
             method: 'POST',
             body: requestData
         } )
