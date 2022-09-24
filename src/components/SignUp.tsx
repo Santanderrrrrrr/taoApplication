@@ -15,7 +15,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 import './componentCss/SignUp.css'
 
+interface Props {
+  
+  setOpenIt: React.Dispatch<React.SetStateAction<boolean>>
 
+}
 
 function Copyright(props: any) {
   return (
@@ -32,7 +36,8 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp(props: Props) {
+    const { setOpenIt } = props;
     const [email, setEmail] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
     const [firstname, setFirstname] = React.useState<string>("");
@@ -111,6 +116,13 @@ export default function SignUp() {
             method: 'POST',
             body: requestData
         } )
+        setOpenIt(true)
+        setEmail('')
+        setPassword('')
+        setFirstname('')
+        setLastname('')
+        setUsername('')
+        setTelephone('')
     }
     
   };

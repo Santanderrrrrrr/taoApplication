@@ -1,0 +1,27 @@
+.backDrop{
+    border-radius: 10px;
+    background-color: #fff;
+}
+.writing{
+    color: rgb(112, 111, 111);
+    margin-bottom: auto;
+    margin-top: auto;
+    /* margin-left: 10px; */
+}
+.message-icon{
+    background-image: url(../../assets/pngkey.com-messages-png-3728292.png);
+    height: 32px;
+    width: 32px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-left: 10px;
+}
+
+.textBody{
+    color: black;
+    font-family: helvetica;
+    font-weight: 600;
+    /* margin-left: */
+}

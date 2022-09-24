@@ -28,13 +28,7 @@ const TextBubble: React.FC<forTextBubble> = ({ogt, index}) => {
             pb: '5px'
          }}
         >
-            {/* <FormControlLabel
-            control={<Switch checked={checked} onChange={handleChange} />}
-            label="Show from target"
-            />
-             */}
-
-            {ogt}
+          {ogt}
         </Box>
   </div>
   )

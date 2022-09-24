@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import logo from './assets/logo.png'
 import './css/App.css'
-import { Button, Stack } from '@mui/material'
+import { Button, Fade, Stack } from '@mui/material'
 import Texts from './components/Texts';
 import SwipeableEdgeDrawer from './components/SwipeableEdgeDrawer'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
+import BasicModal from './components/BasicModal'
 
 
 
@@ -13,7 +14,7 @@ import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutl
 
 function App() {
 
-
+  const [openIt, setOpenIt] = useState<boolean>(false)
 
   
 
@@ -28,6 +29,8 @@ function App() {
         pr:'10px',
         pl:'10px',
         borderBottom:'1.5px solid #e4e4e7',
+        borderTopLeftRadius: '15px',
+        borderTopRightRadius: '15px',
         mb:2
       }}>
         <ArrowBackIosNewOutlinedIcon color="primary" sx={{height:'24px', mt:3}} ></ArrowBackIosNewOutlinedIcon>
@@ -40,8 +43,9 @@ function App() {
       </Stack>
       
       <Stack sx={{display:'flex', direction:'column', alignItems:'center', justifyContent: 'center'}}>
-        <SwipeableEdgeDrawer/>
+        <SwipeableEdgeDrawer setOpenIt={setOpenIt}/>
       </Stack>
+      <BasicModal openIt={openIt} setOpenIt={setOpenIt} />
       
     </div>
   );

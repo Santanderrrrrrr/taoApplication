@@ -20,6 +20,8 @@ interface Props {
    * You won't need it on your project.
    */
   window?: () => Window;
+  setOpenIt: React.Dispatch<React.SetStateAction<boolean>>
+
 }
 
 const Root = styled('div')(({ theme }) => ({
@@ -43,7 +45,7 @@ const Puller = styled(Box)(({ theme }) => ({
 }));
 
 export default function SwipeableEdgeDrawer(props: Props) {
-  const { window } = props;
+  const { window, setOpenIt } = props;
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -133,7 +135,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
             overflow: 'auto',
           }}
         >
-          <SignUp />
+          <SignUp setOpenIt={setOpenIt}/>
         </StyledBox>
       </SwipeableDrawer>
     </Root>
