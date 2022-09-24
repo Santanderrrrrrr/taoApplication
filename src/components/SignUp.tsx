@@ -92,6 +92,7 @@ export default function SignUp(props: Props) {
   const handleSubmit = async(event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
     event.preventDefault();
     if (!image) return alert("Please upload your profile picture");
+    if(!email || !password || !firstname || !lastname || !telephone || !username) return alert('all fields of form need to be filled!')
     let url: string = await uploadImage()
     // console.log(e.currentTarget)
     
