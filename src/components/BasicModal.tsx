@@ -2,7 +2,6 @@ import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import { Stack, Typography } from '@mui/material';
 import './componentCss/BasicModal.css'
-import MessageIcon from '../assets/pngkey.com-messages-png-3728292.png'
 
 
 interface modalProperties{
@@ -10,22 +9,9 @@ interface modalProperties{
   openIt: boolean
 }
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: {lg:700, sm:400, xs: '100%'},
-  bgcolor: 'background.paper',
-  border: '1px solid #333',
-  borderRadius:'5px',
-  boxShadow: 24,
-  p: 4,
-};
 
 const BasicModal: React.FC<modalProperties> = ({openIt, setOpenIt}) => {
   const handleClose = () => {
-    // console.log(openIt)
     setOpenIt(false);
   }
   
@@ -50,8 +36,8 @@ const BasicModal: React.FC<modalProperties> = ({openIt, setOpenIt}) => {
 
             }}>
               <div className='message-icon'></div>
-              <Typography variant="body1" className='writing' sx={{ml:1.5}}>MESSAGES</Typography>
-              <Typography variant="body2" className='writing' sx={{ml:21.5}}>now</Typography>
+              <Typography variant="body1" className='writing' sx={{ml:1.5, mt:'auto', mb:'auto', color:'rgb(112, 111, 111)'}}>MESSAGES</Typography>
+              <Typography variant="body2" className='writing' sx={{ml:21.5, mt:'auto', mb:'auto', color:'rgb(112, 111, 111)'}}>now</Typography>
           </Stack>
           <Stack className='textBody' sx={{
             display: 'flex',
