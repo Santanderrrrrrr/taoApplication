@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './componentCss/Texts.css'
+import './comingSoonCss/Texts.css'
 import TextBubble from './forOutgoing/TextBubble'
 
 const OutgoingTexts = () => {

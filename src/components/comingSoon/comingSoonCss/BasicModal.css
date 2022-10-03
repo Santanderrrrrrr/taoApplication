@@ -4,7 +4,7 @@
 }
 
 .message-icon{
-    background-image: url(../../assets/mail.png);
+    background-image: url(../../../assets/mail.png);
     height: 32px;
     width: 32px;
     background-size: contain;
@@ -18,5 +18,4 @@
     color: black;
     font-family: helvetica;
     font-weight: 600;
-    /* margin-left: */
 }

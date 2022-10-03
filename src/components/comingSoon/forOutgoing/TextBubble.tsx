@@ -1,6 +1,6 @@
-import { Box, FormControlLabel, Slide, Switch } from '@mui/material'
+import { Box } from '@mui/material'
 import React from 'react'
-import '../componentCss/Texts.css'
+import '../comingSoonCss/Texts.css'
 
 interface forTextBubble{
   ogt: string;

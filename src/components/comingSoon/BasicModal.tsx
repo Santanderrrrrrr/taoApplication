@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import { Stack, Typography } from '@mui/material';
-import './componentCss/BasicModal.css'
+import './comingSoonCss/BasicModal.css'
 
 
 interface modalProperties{
