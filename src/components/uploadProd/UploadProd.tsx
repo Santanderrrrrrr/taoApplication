@@ -1,4 +1,5 @@
-import { Box, Button, Grid, Stack, TextField, Typography } from '@mui/material'
+import { PhotoCamera } from '@mui/icons-material'
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import logo from '../../assets/logo.png'
 import './css/UploadProd.css'
 
@@ -22,22 +23,34 @@ const UploadProd = () => {
           mt:'5px', 
           // backgroundColor: 'red'
           }}> 
-          <Stack className='heading' sx={{
+          <Button className='heading' variant="contained" component="label" sx={{
             width:'350px', 
-            height: '200px', 
-            // backgroundColor: '#222',
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'flex-start',
+            height: '200px',
+            // border: '2px solid white',
             borderRadius:'15px',
-            mt:2
+            mt:2,
+            backgroundColor: 'white'
             }}> 
-              <div className='logoDiv'>
-                <img className="logoItself" src={logo} alt='logo'/>            
-              </div>
-              <Typography variant='subtitle2' sx={{ml:2, color:'white'}}>NEW PRODUCT</Typography>
-          </Stack>
-          <Stack>
+            <Stack className='stackInButton' >
+              <input hidden accept="image/*" multiple type="file" />
+              <Stack className="logoNewProduct" sx={{
+                height: '50px',
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'flex-start',
+              }}>
+                <div className='logoDiv'>
+                  <img className="logoItself" src={logo} alt='logo'/>            
+                </div>
+              </Stack>
+              <Stack className='photoCameraStack'>
+                <PhotoCamera/>
+                <Typography variant='subtitle2' sx={{ color:'white'}}>Click here to add pictures</Typography>
+              </Stack>
+            </Stack>
+
+          </Button>
+          
           <Box component="form" noValidate  sx={{ mt: 3 }}> 
           {/* onSubmit={handleSubmit} */}
             
@@ -50,6 +63,7 @@ const UploadProd = () => {
               display: 'flex', 
               flexDirection: 'column', 
               alignItems: 'flex-start',}}>
+
               <Grid className='prodName' sx={{
                 mt:3,
                 ml: 2,
@@ -60,7 +74,7 @@ const UploadProd = () => {
                   required
                   fullWidth
                   id="outlined"
-                  label="Product Name"
+                  label="The product's name is..."
                   autoFocus
                   sx={{ backgroundColor: 'white'}}
                   // onChange={(e) => setFirstname(e.target.value)} value={firstname}
@@ -77,6 +91,7 @@ const UploadProd = () => {
                   fullWidth
                   id="prodDesc"
                   label="Description"
+                  placeholder="Give a short description of the product you're about to sell"
                   name="prodDesc"
                   sx={{ backgroundColor: 'white'}}
                   rows={4}
@@ -111,34 +126,66 @@ const UploadProd = () => {
                     required
                     fullWidth
                     id="inventory"
-                    label="inventory"
+                    label="Inventory"
                     name="inventory"
                     autoComplete="email"
                     
-                    sx={{ backgroundColor: 'white', ml: 1}}
+                    sx={{ backgroundColor: 'white'}}
                     // onChange={(e) => setEmail(e.target.value)} value={email}
                   />
                 </Grid>
               </Stack>
 
-              <Grid className='category' sx={{
-                mt:2,
-                ml: 2,
-                width: '320px'                
+              <Stack className='categoryAndSize' sx={{
+                display:'flex',
+                flexDirection:'row',
+                mb: 2
               }}>
-                <TextField
-                  required
-                  fullWidth
-                  id="category"
-                  label="Product Category"
-                  name="category"
-                  autoComplete="Phone"
-                  sx={{ backgroundColor: 'white'}}
-                  // onChange={(e) => setTelephone(e.target.value)} value={telephone}
+                <Grid className='category' sx={{
+                  mt:2,
+                  ml: 2,
+                  width: '320px'                
+                }}>
+                    <FormControl>
+                      <InputLabel id="demo-controlled-open-select-label">Category</InputLabel>
+                      <Select
+                        required
+                        // open={false}
+                        labelId="demo-controlled-open-select-label"
+                        id="demo-controlled-open-select"
+                        label="Category"
+                        // name='category'
+                        sx={{ width:'152px', backgroundColor: 'white'}}
+                      >
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
 
-                />
-              </Grid>
-              <Grid className='images' sx={{
+                    <FormControl sx={{ml: 2, width: '152px'}}>
+                      <InputLabel id="demo-controlled-open-select-label">Size</InputLabel>
+                      <Select
+                        required
+                        // open={false}
+                        labelId="demo-controlled-open-select-label"
+                        id="demo-controlled-open-select"
+                        label="Size"
+                        // name='Size'
+                        sx={{ width:'152px', backgroundColor: 'white'}}
+                      >
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                </Grid>
+                
+                
+
+              </Stack>
+              
+              {/* <Grid className='images' sx={{
                 mt:2,
                 ml: 2,
                 mb: 2,
@@ -155,7 +202,7 @@ const UploadProd = () => {
 
                   // onChange={(e) => setPassword(e.target.value)} value={password}
                 />
-              </Grid>
+              </Grid> */}
             </Stack>  
             <Button
               type="submit"
@@ -167,7 +214,7 @@ const UploadProd = () => {
             </Button>
             
           </Box>
-          </Stack>
+          
         </Stack>
       </Box>
     </div>

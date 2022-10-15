@@ -22,9 +22,30 @@
     background: linear-gradient(7deg, rgba(9,29,150,1) 0%, rgba(26,117,255,1) 100%);
 }
 
+.stackInButton{
+    position: relative;
+}
+
+.logoNewProduct{
+    margin-top: -90px;
+    margin-right: 200px;
+}
+
+.photoCameraStack{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    font-size: 12px;
+}
+
 .logoDiv{
-    width: 200px;
-    height: 100px;
+    width: 100px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    /* background-color: #fff; */
     overflow: hidden;
 }
 
@@ -32,6 +53,6 @@
     margin-top: 0vh;
     padding: 0px;
     max-width: 195px;
-    max-height: 130px;
+    max-height: 50px;
 }
 
