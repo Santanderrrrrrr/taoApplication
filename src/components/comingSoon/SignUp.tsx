@@ -57,8 +57,8 @@ export default function SignUp(props: Props) {
         if(!event!.target.files) {return}
         else{
             const file = event!.target.files[0];
-            if (file.size >= 1048576) {
-                return alert("Max file size is 1mb");
+            if (file.size >= 3048576) {
+                return alert("Max file size is 2.5mb");
             } else {
                 setImage(file);
                 setImagePreview(URL.createObjectURL(file));

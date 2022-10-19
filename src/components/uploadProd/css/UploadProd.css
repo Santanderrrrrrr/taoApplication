@@ -56,3 +56,18 @@
     max-height: 50px;
 }
 
+.imagesToUpload{
+    overflow: auto;
+} 
+
+.prodImg{
+    object-fit: cover;
+    max-height: 110px;
+    max-width: 100px;
+    margin-right: 5px;
+    border-radius: 10px;
+}
+
+.prodImg:last-child{
+    margin-right: none;
+}

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { PhotoCamera } from '@mui/icons-material'
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import logo from '../../assets/logo.png'
@@ -5,6 +6,62 @@ import './css/UploadProd.css'
 
 
 const UploadProd = () => {
+
+  const [theImages, setImages] = useState<Blob[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([])
+
+  const gimmeItems = (parameter: string) => {
+    let categories = ['outerwear', 'suits and blazers', 'tousers', 'leggings', 'socks', 'underwear','activewear', 'jeans', 'tops and tshirts', 'jumpers and sweatshirts', 'shorts', 'cropped pants','swimwear', 'costumes and special outfits', 'dresses', 'jumpsuits and rompers', 'lingerie', 'nightwear', 'skirts', 'pajamas', 'maternity clothes', 'baby clothes'];
+    let sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL' ]
+    let gender =['Male', 'Female', 'Unisex']
+    switch (parameter) {
+      case 'category':
+        return categories.map((cat, index)=>{
+          return <MenuItem key={index} value={cat}>{cat}</MenuItem>
+        })
+      case 'size':
+        return sizes.map((size, index)=>{
+          return <MenuItem key={index} value={size}>{size}</MenuItem>
+        })
+      case 'gender':
+        return gender.map((sex, index)=>{
+          return <MenuItem key={index} value={sex}>{sex}</MenuItem>
+        })
+    
+      default:
+        break;
+    }
+    
+  }
+
+  function validateImg(event: React.ChangeEvent<HTMLInputElement>) {
+        
+    if(!event!.target.files) {return}
+    else{
+      for (let i=0; i<event.target.files.length; i++) {
+        let file= event.target.files[i]
+        if (file.size >= 3048576) {
+            return alert("one of the images is larger than 2.5mbs. It's too big.");
+        }else{
+          setImages(state=>[...state.concat(file)]);
+          setImagePreviews(state=>[...state.concat(URL.createObjectURL(file))]);
+        }
+      }
+      
+    }
+  }
+
+  
+
+  useEffect(() => {
+    console.log(theImages.length)
+    console.log(imagePreviews.length)
+
+  }, [theImages])
+  
+
+  
+
   return (
     <div className="backdrop">
       <Box sx={{ 
@@ -29,10 +86,9 @@ const UploadProd = () => {
             // border: '2px solid white',
             borderRadius:'15px',
             mt:2,
-            backgroundColor: 'white'
             }}> 
             <Stack className='stackInButton' >
-              <input hidden accept="image/*" multiple type="file" />
+              <input hidden accept="image/*" multiple type="file" onChange={validateImg}/>
               <Stack className="logoNewProduct" sx={{
                 height: '50px',
                 display: 'flex', 
@@ -50,6 +106,14 @@ const UploadProd = () => {
             </Stack>
 
           </Button>
+
+          {imagePreviews.length>0 && <Stack className='imagesToUpload'
+            sx={{width: '350px', height:'110px', mt: 2, borderRadius: '15px', display:'flex', flexDirection: 'row'}}>
+              {imagePreviews!.map((prev, index)=>{
+                return <img key={index} src={prev} alt={`product pic number ${index} to upload`} className="prodImg" />
+              })}
+              
+          </Stack>}
           
           <Box component="form" noValidate  sx={{ mt: 3 }}> 
           {/* onSubmit={handleSubmit} */}
@@ -157,9 +221,7 @@ const UploadProd = () => {
                         // name='category'
                         sx={{ width:'152px', backgroundColor: 'white'}}
                       >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {gimmeItems('category')}
                       </Select>
                     </FormControl>
 
@@ -174,9 +236,22 @@ const UploadProd = () => {
                         // name='Size'
                         sx={{ width:'152px', backgroundColor: 'white'}}
                       >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {gimmeItems('size')}
+                      </Select>
+                    </FormControl>
+
+                    <FormControl sx={{ml: 2, width: '152px', mt: 2}}>
+                      <InputLabel id="demo-controlled-open-select-label">Sex</InputLabel>
+                      <Select
+                        required
+                        // open={false}
+                        labelId="demo-controlled-open-select-label"
+                        id="demo-controlled-open-select"
+                        label="Sex"
+                        // name='Sex'
+                        sx={{ width:'152px', backgroundColor: 'white'}}
+                      >
+                        {gimmeItems('gender')}
                       </Select>
                     </FormControl>
                 </Grid>
