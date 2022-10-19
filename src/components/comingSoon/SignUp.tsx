@@ -107,7 +107,7 @@ export default function SignUp(props: Props) {
             picture: url
             })
                 
-        fetch(`${process.env.REACT_APP_BYJ_API_URL}`,{
+        fetch(`${process.env.REACT_APP_BYJ_API_URL}/signup`,{
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

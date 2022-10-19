@@ -7,9 +7,24 @@ import './css/UploadProd.css'
 
 const UploadProd = () => {
 
+  //state for the form uploads
+  const [name, setName] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
+  const [category, setCategory] = useState<string>('')
+  const [size, setSize] = useState<string>('')
+  const [gender, setGender] = useState<string>('')
+  const [price, setPrice] = useState<number | undefined>(undefined)
+  const [inventory, setInventory] = useState<number | undefined>(undefined)
+  const [uploadingImg, setUploadingImg] = useState<boolean>(false);
+
+
+  
+  //state for the images
   const [theImages, setImages] = useState<Blob[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
 
+
+  //this fills in the menu items for the selects
   const gimmeItems = (parameter: string) => {
     let categories = ['outerwear', 'suits and blazers', 'tousers', 'leggings', 'socks', 'underwear','activewear', 'jeans', 'tops and tshirts', 'jumpers and sweatshirts', 'shorts', 'cropped pants','swimwear', 'costumes and special outfits', 'dresses', 'jumpsuits and rompers', 'lingerie', 'nightwear', 'skirts', 'pajamas', 'maternity clothes', 'baby clothes'];
     let sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL' ]
@@ -34,6 +49,7 @@ const UploadProd = () => {
     
   }
 
+  //this ensures image sizes are limited to 3mbs
   function validateImg(event: React.ChangeEvent<HTMLInputElement>) {
         
     if(!event!.target.files) {return}
@@ -51,6 +67,82 @@ const UploadProd = () => {
     }
   }
 
+  //this uploads images to cloud 
+  async function uploadImgs(){
+    let theForm = new FormData()
+    setUploadingImg(true);
+    try{
+      let imageArray = []
+      for(let i = 0; i< theImages.length; i++){
+        let file = theImages[i]
+        theForm.append("file", file);
+        theForm.append("upload_preset", "productImgs");
+        let res = await fetch(`${process.env.REACT_APP_CLOUDINARY_URL}`, {
+          method: "POST",
+          body: theForm
+        });
+        const imageData = await res.json();
+        imageArray.push(imageData.url)
+      }
+      setUploadingImg(false);
+      return imageArray
+    }catch(error){
+      setUploadingImg(false);
+      console.log(error);
+      return undefined
+    }
+  }
+
+  const handleSubmit = async(event: { preventDefault: () => void }) => {
+    event.preventDefault();
+     
+    if (!name ||
+        !description ||
+        !category ||
+        !size ||
+        !gender ||
+        !price ||
+        !inventory) return alert(' All fields of the form need to be filled! ')
+        if(!theImages) return alert(' You must provide product images! ')
+        let urls: string[] | undefined = await uploadImgs()
+        
+        if (uploadingImg=== false) {
+          try{
+            let requestData = JSON.stringify({
+              name: name,
+              description: description,
+              category: category,
+              size: size,
+              gender: gender,
+              price: price,
+              inventory: inventory,
+              images: urls
+              })
+                  
+            fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+              method: 'POST',
+              body: requestData
+            })
+          }catch(error){
+          
+
+          }
+        }
+      
+
+      console.log(name,
+        description,
+        category,
+        size,
+        gender,
+        price,
+        inventory)
+    
+  }
   
 
   useEffect(() => {
@@ -107,16 +199,17 @@ const UploadProd = () => {
 
           </Button>
 
-          {imagePreviews.length>0 && <Stack className='imagesToUpload'
-            sx={{width: '350px', height:'110px', mt: 2, borderRadius: '15px', display:'flex', flexDirection: 'row'}}>
+          {imagePreviews.length>0 && (
+          <Stack className='imagesToUpload'
+            sx={{width: '350px', height:'120px', mt: 2, borderRadius: '15px', display:'flex', flexDirection: 'row', alignItems: 'center', backgroundColor: '#f7f7f7'}}>
               {imagePreviews!.map((prev, index)=>{
                 return <img key={index} src={prev} alt={`product pic number ${index} to upload`} className="prodImg" />
               })}
               
-          </Stack>}
+          </Stack>)}
           
-          <Box component="form" noValidate  sx={{ mt: 3 }}> 
-          {/* onSubmit={handleSubmit} */}
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}> 
+          
             
             
             <Stack sx={{
@@ -141,7 +234,7 @@ const UploadProd = () => {
                   label="The product's name is..."
                   autoFocus
                   sx={{ backgroundColor: 'white'}}
-                  // onChange={(e) => setFirstname(e.target.value)} value={firstname}
+                  onChange={(e) => setName(e.target.value)} value={name}
                 />
               </Grid>
               <Grid className='prodDesc' sx={{
@@ -159,7 +252,7 @@ const UploadProd = () => {
                   name="prodDesc"
                   sx={{ backgroundColor: 'white'}}
                   rows={4}
-                  // onChange={(e) => setLastname(e.target.value)} value={lastname}
+                  onChange={(e) => setDescription(e.target.value)} value={description}
                 />
               </Grid>
               <Stack className='priceAndInventory' sx={{ display:'flex', flexDirection: 'row', justifyContent: 'center'}}>
@@ -177,7 +270,10 @@ const UploadProd = () => {
                       label="price" 
                       // variant="standard"
                       fullWidth
-                      sx={{ backgroundColor: 'white', ml: 1}} />
+                      sx={{ backgroundColor: 'white', ml: 1}} 
+                      onChange={(e) => setPrice(Number(e.target.value))} value={price}
+                      />
+                      
                   </Box>
                 </Stack>
                 <Grid className="inventory" sx={{
@@ -195,12 +291,12 @@ const UploadProd = () => {
                     autoComplete="email"
                     
                     sx={{ backgroundColor: 'white'}}
-                    // onChange={(e) => setEmail(e.target.value)} value={email}
+                    onChange={(e) => setInventory(Number(e.target.value))} value={inventory}
                   />
                 </Grid>
               </Stack>
 
-              <Stack className='categoryAndSize' sx={{
+              <Stack className='categorySizeSex' sx={{
                 display:'flex',
                 flexDirection:'row',
                 mb: 2
@@ -214,12 +310,11 @@ const UploadProd = () => {
                       <InputLabel id="demo-controlled-open-select-label">Category</InputLabel>
                       <Select
                         required
-                        // open={false}
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
                         label="Category"
-                        // name='category'
                         sx={{ width:'152px', backgroundColor: 'white'}}
+                        onChange={(e)=> setCategory(e.target.value as string)}
                       >
                         {gimmeItems('category')}
                       </Select>
@@ -235,6 +330,8 @@ const UploadProd = () => {
                         label="Size"
                         // name='Size'
                         sx={{ width:'152px', backgroundColor: 'white'}}
+                        onChange={(e)=> setSize(e.target.value as string)}
+
                       >
                         {gimmeItems('size')}
                       </Select>
@@ -250,34 +347,14 @@ const UploadProd = () => {
                         label="Sex"
                         // name='Sex'
                         sx={{ width:'152px', backgroundColor: 'white'}}
+                        onChange={(e)=> setGender(e.target.value as string)}
+
                       >
                         {gimmeItems('gender')}
                       </Select>
                     </FormControl>
                 </Grid>
-                
-                
-
               </Stack>
-              
-              {/* <Grid className='images' sx={{
-                mt:2,
-                ml: 2,
-                mb: 2,
-                width: '320px'
-              }}>
-                <TextField
-                  required
-                  fullWidth
-                  name="images"
-                  label="images"
-                  type="password"
-                  id="images"
-                  sx={{ backgroundColor: 'white'}}
-
-                  // onChange={(e) => setPassword(e.target.value)} value={password}
-                />
-              </Grid> */}
             </Stack>  
             <Button
               type="submit"

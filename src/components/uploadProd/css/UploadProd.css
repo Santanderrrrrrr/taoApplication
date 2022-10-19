@@ -60,14 +60,23 @@
     overflow: auto;
 } 
 
+.imagesToUpload::-webkit-scrollbar {
+    display: none;
+  }
+
 .prodImg{
     object-fit: cover;
     max-height: 110px;
+    height: 100px;
     max-width: 100px;
     margin-right: 5px;
+    margin-left: 5px;
     border-radius: 10px;
 }
 
+.prodImg:first-child{
+    margin-left: 10px;
+}
 .prodImg:last-child{
     margin-right: none;
 }
