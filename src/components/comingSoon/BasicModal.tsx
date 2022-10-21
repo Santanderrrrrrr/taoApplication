@@ -27,6 +27,7 @@ const BasicModal: React.FC<modalProperties> = ({openIt, setOpenIt}) => {
         <Stack className='backDrop' sx={{ backgroundColor:'#222', width:'350px', height: `290px`, ml: 'auto', mr:'auto', mt:'15%' }}>
           <Stack sx={{ 
             backgroundColor:'rgb(233,233,233)',
+            width: '100%',
             display:'flex', 
             flexDirection:'row', 
             alignItems:'baseline',

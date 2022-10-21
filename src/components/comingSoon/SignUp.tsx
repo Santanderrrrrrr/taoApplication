@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 import './comingSoonCss/SignUp.css'
+import logo from '../../assets/logo.png'
 
 interface Props {
   
@@ -106,37 +107,43 @@ export default function SignUp(props: Props) {
             telephone: telephone,
             picture: url
             })
-                
-        fetch(`${process.env.REACT_APP_BYJ_API_URL}/signup`,{
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-            method: 'POST',
-            body: requestData
-        } )
-        setOpenIt(true)
-        setEmail('')
-        setPassword('')
-        setFirstname('')
-        setLastname('')
-        setUsername('')
-        setTelephone('')
+          try{
+            fetch(`${process.env.REACT_APP_BYJ_API_URL}/signup`,{
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+              method: 'POST',
+              body: requestData
+          } )
+            setOpenIt(true)
+            setEmail('')
+            setPassword('')
+            setFirstname('')
+            setLastname('')
+            setUsername('')
+            setTelephone('')
+          }catch(error){
+            console.log(error)
+          }      
     }
     
   };
 
   return (
     <ThemeProvider theme={theme}>
-        <Stack sx={{mb:2, mt:2}}>
-            <div className="signup-profile-pic__container">
-                <img src={imagePreview || placeholderPic} alt="avatar placeholder" className="signup-profile-pic" />
-                <label htmlFor="image-upload" className="image-upload-label">
-                    <i className="fas fa-plus-circle add-picture-icon"></i>
-                </label>
-                <input type="file" id="image-upload" hidden accept="image/png, image/jpeg" onChange={validateImg} />
-            </div>
-        </Stack>
+      <div className='byjLogo'>
+          <img className='logoItselfThree' src={logo} alt='Bei Ya Jioni logo'/>
+      </div>
+      <Stack sx={{mb:2, mt:2}}>
+          <div className="signup-profile-pic__container">
+              <img src={imagePreview || placeholderPic} alt="avatar placeholder" className="signup-profile-pic" />
+              <label htmlFor="image-upload" className="image-upload-label">
+                  <i className="fas fa-plus-circle add-picture-icon"></i>
+              </label>
+              <input type="file" id="image-upload" hidden accept="image/png, image/jpeg" onChange={validateImg} />
+          </div>
+      </Stack>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -239,7 +246,7 @@ export default function SignUp(props: Props) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ backgroundColor: '#1a75ff', mt: 3, mb: 2 }}
+              sx={{ backgroundColor: 'rgba(9,29,150,1)', mt: 3, mb: 2 }}
             >
               Complete Registration
             </Button>

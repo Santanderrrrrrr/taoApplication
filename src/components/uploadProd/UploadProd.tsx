@@ -82,6 +82,7 @@ const UploadProd = () => {
           body: theForm
         });
         const imageData = await res.json();
+        console.log(imageData);
         imageArray.push(imageData.url)
       }
       setUploadingImg(false);
@@ -119,29 +120,19 @@ const UploadProd = () => {
               images: urls
               })
                   
-            fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
-              headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-              method: 'POST',
-              body: requestData
-            })
+            // fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
+            //   headers: {
+            //       'Accept': 'application/json',
+            //       'Content-Type': 'application/json'
+            //     },
+            //   method: 'POST',
+            //   body: requestData
+            // })
+            console.log(requestData)
           }catch(error){
-          
-
+            console.log(error)
           }
         }
-      
-
-      console.log(name,
-        description,
-        category,
-        size,
-        gender,
-        price,
-        inventory)
-    
   }
   
 
@@ -169,13 +160,11 @@ const UploadProd = () => {
           height: '100%', 
           display: 'flex', 
           alignItems: 'center', 
-          mt:'5px', 
-          // backgroundColor: 'red'
+          
           }}> 
           <Button className='heading' variant="contained" component="label" sx={{
             width:'350px', 
             height: '200px',
-            // border: '2px solid white',
             borderRadius:'15px',
             mt:2,
             }}> 
