@@ -89,7 +89,6 @@ const UploadProd: React.FC<ForUploadProd> = ({accessToken, setAccessToken}) => {
           body: theForm
         });
         const imageData = await res.json();
-        console.log(imageData);
         imageArray.push(imageData.url)
       }
       setUploadingImg(false);
@@ -116,6 +115,8 @@ const UploadProd: React.FC<ForUploadProd> = ({accessToken, setAccessToken}) => {
         
         if (uploadingImg=== false) {
           try{
+            let accessToken = localStorage.getItem('accessToken')
+            accessToken = JSON.parse(accessToken as string)
             let requestData = JSON.stringify({
               name: name,
               description: description,
@@ -127,28 +128,23 @@ const UploadProd: React.FC<ForUploadProd> = ({accessToken, setAccessToken}) => {
               images: urls
               })
                   
-            // fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
-            //   headers: {
-            //       'Accept': 'application/json',
-            //       'Content-Type': 'application/json'
-            //     },
-            //   method: 'POST',
-            //   body: requestData
-            // })
-            console.log(requestData)
+            fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  // eslint-disable-next-line no-useless-concat
+                  'Authorization': 'Bearer ' + `${accessToken}`,
+                },
+              method: 'POST',
+              body: requestData,
+              credentials: 'include'
+            })
+            
           }catch(error){
             console.log(error)
           }
         }
   }
-  
-
-  useEffect(() => {
-    console.log(theImages.length)
-    console.log(imagePreviews.length)
-
-  }, [theImages])
-  
 
   
 

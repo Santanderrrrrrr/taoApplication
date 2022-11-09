@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Grid, Stack, TextField, Typography, SwipeableDrawer, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material'
 import { useNavigate } from "react-router-dom";
 
@@ -72,18 +72,14 @@ const Login: React.FC<ForLogin> = ({setAccessToken, setPersId, accessToken}) => 
                 credentials: 'include',
                 body: requestData
                 })
+            .then((response)=> response.json())
             .then((data: Response) =>{                    
-                console.log('done')
-                if(data.status === 200){
-                    setAccessToken((data as Data).accessToken) 
-                }
-                
-            })
-            if(accessToken){
-                console.log(accessToken)
-                navigate('/profile')
+                setAccessToken((data as Data).accessToken) 
+                localStorage.setItem('accessToken', JSON.stringify((data as Data).accessToken))
+            
+                return navigate('/profile')
         
-            }   
+            } )  
         }catch(error){
             console.log(error)
         }
