@@ -5,7 +5,14 @@ import logo from '../../assets/logo.png'
 import './css/UploadProd.css'
 
 
-const UploadProd = () => {
+interface ForUploadProd{
+  accessToken: string,
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>,
+  persId: string
+
+}
+
+const UploadProd: React.FC<ForUploadProd> = ({accessToken, setAccessToken}) => {
 
   //state for the form uploads
   const [name, setName] = useState<string>('')
@@ -52,7 +59,7 @@ const UploadProd = () => {
   //this ensures image sizes are limited to 3mbs
   function validateImg(event: React.ChangeEvent<HTMLInputElement>) {
         
-    if(!event!.target.files) {return}
+    if(!event.target.files) {return}
     else{
       for (let i=0; i<event.target.files.length; i++) {
         let file= event.target.files[i]
@@ -162,6 +169,7 @@ const UploadProd = () => {
           alignItems: 'center', 
           
           }}> 
+          {/* //click to add images */}
           <Button className='heading' variant="contained" component="label" sx={{
             width:'350px', 
             height: '200px',

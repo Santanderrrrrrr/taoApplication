@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button, Grid, Stack, TextField, Typography, SwipeableDrawer, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material'
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,19 @@ import BasicModal from '../comingSoon/BasicModal'
 import Forgot from './Forgot'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-const Login = () => {
+interface Data extends Response{
+    accessToken: string,
+    id: string
+}
+
+interface ForLogin{
+    setAccessToken: React.Dispatch<React.SetStateAction<string>>,
+    accessToken: string,
+    setPersId: React.Dispatch<React.SetStateAction<string>>
+    
+}
+
+const Login: React.FC<ForLogin> = ({setAccessToken, setPersId, accessToken}) => {
 
 
     //state for the form submission
@@ -44,9 +56,6 @@ const Login = () => {
         e.preventDefault()
 
         if(!email || !password) return alert(`Please enter your email AND password`)
-        const theForm = new FormData();
-        theForm.append("email", email)
-        theForm.append("password", password)
 
         try{
             
@@ -63,16 +72,24 @@ const Login = () => {
                 credentials: 'include',
                 body: requestData
                 })
-                .then((data)=>setTheStatus(data.status)) 
+            .then((data: Response) =>{                    
                 console.log('done')
-                if(theStatus === 200) navigate('/home')
-                              
+                if(data.status === 200){
+                    setAccessToken((data as Data).accessToken) 
+                }
                 
+            })
+            if(accessToken){
+                console.log(accessToken)
+                navigate('/profile')
+        
+            }   
         }catch(error){
             console.log(error)
         }
    }
 
+  
 
   return (
     <>

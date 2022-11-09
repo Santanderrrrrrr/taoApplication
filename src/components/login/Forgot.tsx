@@ -1,10 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Grid, Stack, TextField, Typography } from '@mui/material'
+import AnotherBasicModal from './AnotherBasicModal'
 
 import './css/forgot.css'
 import logo from'../../assets/logo.png'
 
 const Forgot = () => {
+
+    const [forgottenEmail, setForgottenEmail ] = useState<string>('')
+    const [openItTwo, setOpenItTwo ] = useState<boolean>(false)
+
+    const submitHandler = async(e: { preventDefault: () => void })=>{
+        e.preventDefault();
+        
+        try{
+            
+            let requestData = JSON.stringify({
+                email: forgottenEmail
+            })
+            await fetch(`${process.env.REACT_APP_BYJ_API_URL}/forgot`,{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                credentials: 'include',
+                body: requestData
+                })
+                .then((data)=>{
+                    if(data.status === 201){
+                        setOpenItTwo(true)
+                    }
+                }) 
+                console.log('done')
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+
   return (
     <Stack className='mainBody'>
         <Stack sx={{width:'350px', mt:4}}>
@@ -30,7 +64,7 @@ const Forgot = () => {
                         label="Enter your E-Mail here..."
                         autoFocus
                         sx={{ backgroundColor: 'white'}}
-                        // onChange={(e) => setName(e.target.value)} value={email}
+                        onChange={(e) => setForgottenEmail(e.target.value)} value={forgottenEmail}
                         />
                 </Grid>
                 <Button
@@ -38,11 +72,13 @@ const Forgot = () => {
                     fullWidth
                     variant="contained"
                     sx={{ backgroundColor: 'rgb(9,29,150)', width:'320px', mt: 3, mb: 2 }}
+                    onClick = {submitHandler}
                     >
                     Send me the link!
                 </Button>
             </Stack>
         </Stack>
+        <AnotherBasicModal openItTwo={openItTwo} setOpenItTwo={setOpenItTwo}/>
     </Stack>
   )
 }
