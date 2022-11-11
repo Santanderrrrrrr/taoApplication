@@ -22,9 +22,9 @@ function App() {
         
       <Routes>
         <Route path="/" element={<ComingSoon />} />
-        <Route path='/new' element={<UploadProd accessToken={accessToken} setAccessToken={setAccessToken} persId={persId} />} />
-        <Route path='/login' element={<Login setAccessToken={setAccessToken} setPersId={setPersId} accessToken={accessToken}/>} />
-        <Route path='/profile' element={<PersProfilePage accessToken={accessToken} setAccessToken={setAccessToken} persId={persId} setPersId={setPersId}/>} />
+        <Route path='/new' element={<UploadProd  />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/profile' element={<PersProfilePage/>} />
       </Routes>
     </BrowserRouter>
   );

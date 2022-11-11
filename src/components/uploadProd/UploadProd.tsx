@@ -12,7 +12,7 @@ interface ForUploadProd{
 
 }
 
-const UploadProd: React.FC<ForUploadProd> = ({accessToken, setAccessToken}) => {
+const UploadProd: React.FC = () => {
 
   //state for the form uploads
   const [name, setName] = useState<string>('')

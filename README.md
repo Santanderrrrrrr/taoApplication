@@ -1,6 +1,6 @@
 # This app is hosted on Netlify
 
-So far, all I'll let you see on first-sight is the custom 'coming soon' page. You can view that project here: [Create React App](https://www.beiyajioni.shop).
+So far, all I'll let you see on first-sight is the custom 'coming soon' page. You can view that project here: [Bei Ya Jioni](https://www.beiyajioni.shop).
 
 The app is going to be an online marketplace and networking solution for vendors and buyers alike.
 

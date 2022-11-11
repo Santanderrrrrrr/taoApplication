@@ -22,7 +22,7 @@ interface ForLogin{
     
 }
 
-const Login: React.FC<ForLogin> = ({setAccessToken, setPersId, accessToken}) => {
+const Login: React.FC = () => {
 
 
     //state for the form submission
@@ -74,7 +74,6 @@ const Login: React.FC<ForLogin> = ({setAccessToken, setPersId, accessToken}) => 
                 })
             .then((response)=> response.json())
             .then((data: Response) =>{                    
-                setAccessToken((data as Data).accessToken) 
                 localStorage.setItem('accessToken', JSON.stringify((data as Data).accessToken))
             
                 return navigate('/profile')
