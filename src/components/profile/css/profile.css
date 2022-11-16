@@ -23,32 +23,31 @@
 }
 .content{
     width: 390px;
-    height: 100%;
 }
 
 .profileHeading{
-    position: relative;
+    position: sticky;
+    height: 100%;
+    top: 0;
     background: rgb(9,29,150);
     background: linear-gradient(187deg, rgba(9,29,150,1) 0%, rgba(26,117,255,1) 100%);
     color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 15%;
-    border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-    z-index: 1;
+    height: 126.594px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    z-index: 14;
     margin-bottom: 0;
 }
 
 .userDetails{
     background-color: rgb(255, 255, 255);
-    position: relative;
-    width: 90%;
-    /* height: 150px; */
+    width: 360px;
     margin-left: auto;
     margin-right: auto;
-    z-index: 2;
+    z-index: 15;
     margin-top: -75px;
 }
 
@@ -62,7 +61,7 @@
 }
 
 .logoItselfFour{
-    object-fit: contain;
+    object-fit: cover;
     max-width: 100%;
 }
 

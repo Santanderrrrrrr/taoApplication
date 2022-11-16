@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import ProdLayout from './prodLayout/ProdLayout'
 import './css/profile.css'
-import { Stack, Typography, Divider } from '@mui/material';
+import { Stack, Typography, Divider, Box } from '@mui/material';
 import logo from '../../assets/logo.png'
 
 
@@ -84,8 +84,8 @@ const PersProfilePage: React.FC = () => {
                         <img className='logoItselfFour' src={logo} alt='Bei Ya Jioni logo'/>
                     </div>
                 </div>
-                <Stack className="userDetails"
-                    sx={{ display: 'flex', flexDirection: 'row', p:2, boxSizing: 'border-box', borderRadius:'15px'}}
+                <Box className="userDetails"
+                    sx={{ position: 'sticky', top: 65, display: 'flex', flexDirection: 'row', p:2, boxSizing: 'border-box', borderRadius:'10px'}}
                     >
                     <Stack className="profilePicture__container">
                         <img src={theUser!.picture} alt="avatar placeholder" className="profilePicture" /> 
@@ -96,7 +96,7 @@ const PersProfilePage: React.FC = () => {
                                 <Typography 
                                     variant="subtitle2"
                                     sx={{mt:1, color: 'rgba(26,117,255,1)'}}
-                                    >{ theUser!.username}
+                                    >{ theUser!.username.substring(0, 12)}
                                 </Typography>
                                 <Typography 
                                     variant="caption"
@@ -133,7 +133,7 @@ const PersProfilePage: React.FC = () => {
 
                         </Stack>
                     </Stack>
-                </Stack>
+                </Box>
                 <Divider variant="middle" sx={{mt: 2, mb:1}} />
                 {persId && <ProdLayout persId={persId}/>}
 
