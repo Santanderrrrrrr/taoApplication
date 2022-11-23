@@ -1,48 +1,38 @@
 import React, { useState } from 'react'
 import { Box, Button, Grid, Stack, TextField, Typography, SwipeableDrawer, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material'
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from '../../context/appContext'
 
 import logo from '../../assets/logo.png'
 import './css/login.css'
 
 import SignUp from '../comingSoon/SignUp'
 import BasicModal from '../comingSoon/BasicModal'
-import Forgot from './Forgot'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import Forgot from './Forgot'
 
-interface Data extends Response{
-    accessToken: string,
-    id: string
-}
 
-interface ForLogin{
-    setAccessToken: React.Dispatch<React.SetStateAction<string>>,
-    accessToken: string,
-    setPersId: React.Dispatch<React.SetStateAction<string>>
-    
-}
 
 const Login: React.FC = () => {
+
+    const { login, isOpenModal, openModal, user } = useAppContext()
 
 
     //state for the form submission
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+
     const navigate = useNavigate();
 
 
     //state for the functioning of the drawers
    const [open, setOpen] = useState<boolean>(false)
    const [forgot, setForgot] = useState<boolean>(false)
-   const [openIt, setOpenIt] = useState<boolean>(false)
 
    //state for password field
    const [showPassword, setShowPassword ] = useState<boolean>(false)
 
-   //state for navigate condition
-   const [ theStatus, setTheStatus] = useState<number | undefined>(undefined)
-
-    //password show functions
+   //password show function
    const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -56,32 +46,10 @@ const Login: React.FC = () => {
         e.preventDefault()
 
         if(!email || !password) return alert(`Please enter your email AND password`)
-
-        try{
-            
-            let requestData = JSON.stringify({
-                email: email,
-                password: password,
-            })
-            await fetch(`${process.env.REACT_APP_BYJ_API_URL}/login`,{
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                  },
-                credentials: 'include',
-                body: requestData
-                })
-            .then((response)=> response.json())
-            .then((data: Response) =>{                    
-                localStorage.setItem('accessToken', JSON.stringify((data as Data).accessToken))
-            
-                return navigate('/profile')
+        const loggedIn = await login( email, password )
+        console.log(loggedIn)
+        if (loggedIn) navigate('/profile')
         
-            } )  
-        }catch(error){
-            console.log(error)
-        }
    }
 
   
@@ -182,7 +150,7 @@ const Login: React.FC = () => {
                     borderRadius: '15px',
                 }
             }}>
-            <SignUp setOpenIt={setOpenIt}/>
+            <SignUp />
         </SwipeableDrawer>
         <SwipeableDrawer anchor='left' onClose={()=> setForgot(false)} onOpen={()=> {}} open={forgot} 
             PaperProps={{
@@ -197,7 +165,7 @@ const Login: React.FC = () => {
             }}>
             <Forgot/>
         </SwipeableDrawer>
-        <BasicModal openIt={openIt} setOpenIt={setOpenIt} />
+        <BasicModal />
     </>
   )
 }

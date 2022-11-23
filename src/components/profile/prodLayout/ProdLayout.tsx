@@ -1,90 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Stack, Typography } from '@mui/material'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './prodlayout.css'
+import React, { useEffect } from 'react'
+import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material'
 import Carousel from 'react-material-ui-carousel'
-import { MoreVert } from '@mui/icons-material'
+import { useNavigate } from "react-router-dom";
+import { MoreVert, FavoriteBorder, Favorite } from '@mui/icons-material'
+import PositionedMenu from './positionedMenu/PositionedMenu'
+import ProdModal from './prodModal/ProdModal'
+import { useAppContext } from '../../../context/appContext'
+import * as typing from '../../../types/appTypes'
+import './prodlayout.css'
 
-const fontSizeTheme = createTheme({
-    typography: {
-        caption: {
-          fontSize: 10,
-        },
-    }
-})
 
-interface ForProdLayout{
-    persId: string | undefined
-}
 
-type prodInterface = {
-    prod: {
-        _id: string,
-        categoryId: {
-            _id: string
-            name: string
-        },
-        sizeId: {
-            _id: string
-            name: string
-        },
-        genderId: {
-            _id: string
-            name: string
-        },
-        sellerId: {
-            _id: string
-            username: string
-        },
-        createdAt: string,
-        description: string,
-        inventory: number,
-        name: string,
-        price: number,
-        updatedAt: string,
-        images: string[]    
-    }
-}
+const ProdLayout: React.FC<typing.ForProdLayout> = () => {
 
-const ProdLayout: React.FC<ForProdLayout> = ({persId}) => {
+    const navigate = useNavigate()
 
-    const [accessToken, setAccessToken] = useState<string>((JSON.parse(localStorage.getItem('accessToken') as string)))
-    const [ products, setProducts ] = useState<prodInterface['prod'][]>([])
+    const { 
+        token, 
+        currentUser, 
+        products, 
+        getMyProducts,
+        openModal } = useAppContext()
 
 
     useEffect(()=>{
         //fetching the user products
-        if(persId)(
-            
-            async()=>{
-                try{    
-                    // console.log(persId)
-                    await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products/u/${persId}`,{
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${accessToken}`
-                            },
-                        credentials: 'include',
-                        })
-                    .then((deets) => deets.json())
-                    .then((data)=>{
-                        setProducts([...data])
-                        // console.log(data)                        
-                    })
-                }catch(e){
-                    console.log(e)
-                }
-            }
-        )()
-    },[persId])
+        if(currentUser){
+            getMyProducts( token, currentUser._id )
+        }
+        if(!products){
+            navigate('/login')
+        }
+        
+    },[])
 
-    
+    const handleOpen = (displayProd: typing.prodInterface['prod']) => openModal('prodModal', displayProd);    
+
+    //state for positionedMenu item
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const ouvrir = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
 
 
-    const mappedprods = products!.map((product, index)=>{
+    const mappedprods = (products as typing.prodInterface['prod'][])!.map((product, index)=>{
         const prodDate = new Date(product.createdAt).toString().substring(0, 15)
         return(
             <React.Fragment key={index}>
@@ -114,7 +75,6 @@ const ProdLayout: React.FC<ForProdLayout> = ({persId}) => {
                                 style: {
                                     backgroundColor: 'rgba(255, 255, 255, 0)',
                                     borderRadius: 0
-                                    // display: 'none'
                                 }
                             }} 
                             sx={{width: '175px', height: '150px'}}
@@ -129,18 +89,50 @@ const ProdLayout: React.FC<ForProdLayout> = ({persId}) => {
                                         style={{ maxHeight: "150px"}}
                                         src={img}
                                         alt={product.name}
+                                        onClick={()=> handleOpen(product)}
                                     />
                                 </Stack>)
                                 })}
                         </Carousel>
-                        <Stack sx={{ display: 'flex', justifyContent: 'flex-start', mt:1, mr: 'auto', ml: 1, mb: 1, color: '#048'}}>
-                            <Typography variant='body2' sx={{mb: 1}}>{product.name}</Typography>
-                            <Typography variant='subtitle2' sx={{mb: 1}}><b>kes</b> {product.price}</Typography>    
-                            <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent:'space-between', alignItems: 'center'}}>
-                                <ThemeProvider theme={fontSizeTheme}>
-                                    <Typography variant='caption' sx={{mb: 1}}>{prodDate}</Typography>    
-                                </ThemeProvider>
-                                <MoreVert sx={{mb: 1, mr:1}}/>
+                        <Stack sx={{width: '177px', display: 'flex', justifyContent: 'flex-start', mt:1, mr: 'auto', ml: 1, mb: 1, color: '#048'}}>
+                            <Typography variant='body2' sx={{ maxWidth: '170px'}}>{product.name}</Typography>
+                            <Typography variant='caption' sx={{mb: 1, fontSize: 10}}>{prodDate}</Typography>    
+                            <Typography variant='subtitle2' sx={{}}><b>kes</b> {product.price}</Typography>    
+                            <Stack sx={{ 
+                                width: '100%', 
+                                display: 'flex', 
+                                flexDirection: 'row', 
+                                justifyContent:'space-between', 
+                                alignItems: 'center', 
+                                mt:2 , mb: 1
+                            }}>
+                                <IconButton disableRipple={true} sx={{
+                                    width: '50%', 
+                                    display: 'flex', 
+                                    flexDirection: 'row', 
+                                    justifyContent:'flex-start',
+                                    
+                                }}>
+                                    {/* {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />} */}
+                                    <FavoriteBorder color='error' />
+                                </IconButton>
+                                <IconButton disableRipple={true}
+                                        sx={{
+                                            width: '50%', 
+                                            display: 'flex', 
+                                            flexDirection: 'row', 
+                                            justifyContent:'flex-end',
+                                            pr: 2
+                                        }}
+                                        id="demo-positioned-button"
+                                        aria-controls={ouvrir ? 'demo-positioned-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={ouvrir ? 'true' : undefined}
+                                        onClick={handleClick}
+                                    >
+                                    <MoreVert/>
+                                </IconButton>
+                                <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir}/>
                             </Stack>
                         </Stack>
                     </Box>
@@ -155,6 +147,7 @@ const ProdLayout: React.FC<ForProdLayout> = ({persId}) => {
         <Typography variant="subtitle2" sx={{color: '#048', m: 1}}>Products</Typography>
         <div className="prodContainer">
             {mappedprods}
+            <ProdModal/>
         </div>
     </>
   )

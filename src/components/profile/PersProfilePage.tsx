@@ -1,80 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from '../../context/appContext'
 import ProdLayout from './prodLayout/ProdLayout'
-import './css/profile.css'
 import { Stack, Typography, Divider, Box } from '@mui/material';
+import './css/profile.css'
 import logo from '../../assets/logo.png'
-
-
-
-
-type theUser = {
-    user:{
-        firstname: string;
-        lastname: string;
-        username: string;
-        email: string;
-        telephone: string;
-        followers: {
-            type?: string | undefined;
-        }[];
-        following: {
-            type?: string | undefined;
-        }[];
-        location?: string
-        picture: string
-        verified: boolean
-        bio: string
-    } | null
-    
-} 
-
-
+import * as typing from '../../types/appTypes'
 
 
 
 const PersProfilePage: React.FC = () => {
+    const navigate = useNavigate()
+
+    const { currentUser } = useAppContext()
     
 
-    const [accessToken, setAccessToken] = useState<string>((JSON.parse(localStorage.getItem('accessToken') as string)))
-    const [persId, setPersId] = useState<string | undefined>('')
-    const [ theUser, setTheUser ] = useState <theUser["user"]>()
-    
-    
-    
+    const [ theUser, setTheUser ] = useState <typing.theUser["user"]>(currentUser)
 
-    
-    
-    
     useEffect(()=>{
-        //fetching this user
-        if(accessToken){
-            (async()=>{
-                await fetch(`${process.env.REACT_APP_BYJ_API_URL}/users/me`,{
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': "Bearer " + `${accessToken}`
-                        },
-                    credentials: 'include',
-                    })
-                .then((data) => data.json())
-                .then(deets => {
-                    setPersId(()=> deets._id)
-                    setTheUser(()=> deets)
-                })
-            })()
-        }else{
-            console.log('No access token or personal id registered')
+        if(!theUser){
+            navigate('/login')
         }
-        
-        
-    }, [accessToken, persId])
 
-
-
-
+    }, [theUser])
+    
   return (
     <>
         {theUser && <div className="backdrop">
@@ -125,7 +74,6 @@ const PersProfilePage: React.FC = () => {
                             </Typography>
                             <Typography 
                                 variant="caption"
-                                // sx={{mt:1}}
                                 >{ theUser!.bio }
                             </Typography>
                         </Stack>
@@ -135,7 +83,7 @@ const PersProfilePage: React.FC = () => {
                     </Stack>
                 </Box>
                 <Divider variant="middle" sx={{mt: 2, mb:1}} />
-                {persId && <ProdLayout persId={persId}/>}
+                {theUser && <ProdLayout/>}
 
             </div>
         </div>}

@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import logo from '../../assets/logo.png'
-import './comingSoonCss/ComingSoon.css'
 import { Stack } from '@mui/material'
 import Texts from './Texts';
 import SwipeableEdgeDrawer from './SwipeableEdgeDrawer'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import BasicModal from './BasicModal'
+import { useAppContext } from '../../context/appContext'
+import './comingSoonCss/ComingSoon.css'
+import logo from '../../assets/logo.png'
 
 const ComingSoon = () => {
+    const { openModal, closeModal, isOpenModal } = useAppContext()
     const [openIt, setOpenIt] = useState<boolean>(false)
 
   return (
@@ -36,9 +38,9 @@ const ComingSoon = () => {
           </Stack>
           
           <Stack sx={{display:'flex', direction:'column', alignItems:'center', justifyContent: 'center'}}>
-            <SwipeableEdgeDrawer setOpenIt={setOpenIt}/>
+            <SwipeableEdgeDrawer />
           </Stack>
-          <BasicModal openIt={openIt} setOpenIt={setOpenIt} />
+          <BasicModal/>
           
         </div>
   )

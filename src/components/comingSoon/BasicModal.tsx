@@ -1,24 +1,27 @@
 import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import { Stack, Typography } from '@mui/material';
+import { useAppContext } from '../../context/appContext'
 import './comingSoonCss/BasicModal.css'
 
 
 interface modalProperties{
-  setOpenIt: React.Dispatch<React.SetStateAction<boolean>>
-  openIt: boolean
+  
 }
 
 
-const BasicModal: React.FC<modalProperties> = ({openIt, setOpenIt}) => {
+const BasicModal: React.FC<modalProperties> = () => {
+
+  const { isOpenModal, closeModal } = useAppContext()
+
   const handleClose = () => {
-    setOpenIt(false);
+    closeModal();
   }
   
 
   return (
     <Modal
-      open={openIt}
+      open={isOpenModal}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"

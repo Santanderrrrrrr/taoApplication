@@ -11,12 +11,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Stack } from '@mui/material';
+import { useAppContext } from '../../context/appContext'
 import './comingSoonCss/SignUp.css'
 import logo from '../../assets/logo.png'
 
 interface Props {
   
-  setOpenIt: React.Dispatch<React.SetStateAction<boolean>>
 
 }
 
@@ -36,7 +36,9 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp(props: Props) {
-    const { setOpenIt } = props;
+
+    const { openModal } = useAppContext()
+  
     const [email, setEmail] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
     const [firstname, setFirstname] = React.useState<string>("");
@@ -116,7 +118,7 @@ export default function SignUp(props: Props) {
               method: 'POST',
               body: requestData
           } )
-            setOpenIt(true)
+            openModal()
             setEmail('')
             setPassword('')
             setFirstname('')
