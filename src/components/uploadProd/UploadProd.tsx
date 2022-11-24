@@ -12,7 +12,15 @@ interface ForUploadProd{
 
 }
 
+
 const UploadProd: React.FC = () => {
+
+  //delete these>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  let token= localStorage.getItem('token')
+  
+
+  //access token get
+  const [aToken, setAToken ] = useState<string>(token!)
 
   //state for the form uploads
   const [name, setName] = useState<string>('')
@@ -132,8 +140,7 @@ const UploadProd: React.FC = () => {
               headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
-                  // eslint-disable-next-line no-useless-concat
-                  'Authorization': 'Bearer ' + `${accessToken}`,
+                  'Authorization': `Bearer ${aToken}`,
                 },
               method: 'POST',
               body: requestData,

@@ -24,7 +24,7 @@ const style = {
   
 export default function BasicModal() {
 
-  const { prodModalOpen, closeModal, displayProd } = useAppContext()
+  const { prodModalOpen, closeModal, displayProd, currentUser, toggleLike, token } = useAppContext()
   const prodDate = new Date(displayProd.createdAt).toString().substring(0, 15)
 
 
@@ -35,6 +35,11 @@ export default function BasicModal() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
   };
+
+  //function to like item
+  const handleLike = (prodId: string): void=>{
+    toggleLike(prodId, token)
+  }
 
   return (
     <div>
@@ -121,15 +126,25 @@ export default function BasicModal() {
               alignItems: 'center', 
               mt:2 , mb: 1
           }}>
-              <IconButton disableRipple={true} sx={{
-                  width: '50%', 
-                  display: 'flex', 
-                  flexDirection: 'row', 
-                  justifyContent:'flex-start',
-                  
-              }}>
-                  {/* {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />} */}
-                  <FavoriteBorder color='error' />
+              <IconButton 
+                  disableRipple={true} 
+                  onClick={()=>handleLike(displayProd._id)}
+                  sx={{
+                      width: '50%', 
+                      display: 'flex', 
+                      flexDirection: 'row', 
+                      justifyContent:'flex-start',
+                      
+                  }}>
+                  {displayProd?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />}
+                  <Typography 
+                      variant="caption"
+                      sx={{
+                          fontSize: 12,
+                          ml: 1
+                      }}>
+                          {`${displayProd?.likes?.length} ${displayProd?.likes?.length===1? "like": "likes"}`}
+                  </Typography>
               </IconButton>
               <IconButton disableRipple={true}
                       sx={{
@@ -148,7 +163,7 @@ export default function BasicModal() {
                   >
                   <MoreVert/>
               </IconButton>
-              <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir}/>
+              <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir} prodId={displayProd._id}/>
           </Stack>
         </Box>
       </Modal>}

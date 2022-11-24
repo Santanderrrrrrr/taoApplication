@@ -55,7 +55,8 @@ export const AppProvider = ({ children }) =>{
                 dispatch({
                     type: Actiones.LOGIN_SUCCESS,
                     payload: {
-                        user: response.user
+                        user: response.user,
+                        token: response.accessToken
                     }
                 })
                 getMyProducts(response.accessToken, response.user?._id)
@@ -125,6 +126,75 @@ export const AppProvider = ({ children }) =>{
         }
     }
 
+    const likeToggleFunction = async(lOrU, prodId, token)=>{
+        try{
+        // console.log(prodId)
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products/${lOrU}`,{
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({prodId: prodId}),
+                credentials: 'include',
+            })
+            response = await response.json()
+
+            if(response.message === `${lOrU}`){
+                const likedProd = response.product
+
+                dispatch({ 
+                    type: Actiones.TOGGLE_LIKE_PROD,
+                    payload: {
+                        product: likedProd
+                    }
+                })
+            }
+            getMyProducts(token, response.product?.sellerId._id)
+
+        }catch(err){
+            console.log(err)
+        }
+    }
+    
+    const toggleLike = async (prodId, token)=>{
+        const thisProd = state.products.find(prod => prod._id === prodId)
+        const bewl = thisProd.likes.includes(state.currentUser._id)
+        if(bewl){
+            await likeToggleFunction('unlike', prodId, token)
+        }else{
+            await likeToggleFunction('like', prodId, token)
+        }
+
+    }
+
+    const deleteProd = async(prodId, token, sellerId)=>{
+        console.log('simple hit')
+        try{
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    updates:{
+                        prodID: prodId
+                    }
+                }),
+                credentials: 'include',
+            })
+            response = await response.json()
+            if(response.result.acknowledged){
+                getMyProducts(token, sellerId)
+            }            
+        }catch(err){
+            console.log(err)
+        }
+    }
+
     
 
 
@@ -136,7 +206,9 @@ export const AppProvider = ({ children }) =>{
                 login,
                 getMyProducts,
                 openModal,
-                closeModal
+                closeModal,
+                toggleLike,
+                deleteProd
         
             }}
         >

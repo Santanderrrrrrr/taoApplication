@@ -15,6 +15,7 @@ const reducer = (state, action) => {
                 ...state,
                 isLoading: false,
                 currentUser: action.payload.user,
+                token: action.payload.token,
                 showAlert: true,
                 isLoggedIn: true,
                 alertText: "Successfully logged in!",
@@ -73,6 +74,17 @@ const reducer = (state, action) => {
                 return{
                     ...state,
                     prodModalOpen: false,
+                }
+            //FOR Liking personal profile product
+            case Actiones.TOGGLE_LIKE_PROD:
+                const foundProd = state.products.find(product => product._id === action.payload.product._id)
+                const indexOfProd = state.products.indexOf(foundProd)
+                let cloneProducts = [...state.products]
+                cloneProducts[indexOfProd] = action.payload.product
+                return{
+                    ...state,
+                    products: cloneProducts,
+                    displayProd: action.payload.product
                 }
             
             

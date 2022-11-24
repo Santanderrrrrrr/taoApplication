@@ -1,14 +1,23 @@
 import React from 'react'
+import { useAppContext } from '../../../../context/appContext'
 import {Menu, MenuItem} from '@mui/material';
 import * as typing from '../../../../types/appTypes'
 
 export default function PositionedMenu(props: typing.ForPositionedMenu) {
+  
+  const { setAnchorEl, anchorEl, ouvrir, prodId } = props
 
-  const { setAnchorEl, anchorEl, ouvrir } = props
+  const{ token, currentUser, deleteProd, closeModal } = useAppContext()
   
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDelete =(prodId: string)=>{
+    deleteProd(prodId, token, currentUser._id)
+    handleClose()
+    closeModal('prodModal')
+  }
 
   return (
     <div>    
@@ -30,7 +39,7 @@ export default function PositionedMenu(props: typing.ForPositionedMenu) {
         elevation={0}
       >
         <MenuItem onClick={handleClose}>Edit this product</MenuItem>
-        <MenuItem onClick={handleClose}>Delete this product</MenuItem>
+        <MenuItem onClick={()=>handleDelete(prodId)}>Delete this product</MenuItem>
       </Menu>
     </div>
   );

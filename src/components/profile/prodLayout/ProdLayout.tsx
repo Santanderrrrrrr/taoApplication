@@ -21,7 +21,8 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
         currentUser, 
         products, 
         getMyProducts,
-        openModal } = useAppContext()
+        openModal,
+        toggleLike } = useAppContext()
 
 
     useEffect(()=>{
@@ -44,8 +45,13 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
         setAnchorEl(event.currentTarget);
     };
 
+    //function to like item
+    const handleLike = (prodId: string): void=>{
+        toggleLike(prodId, token)
+    }
 
-    const mappedprods = (products as typing.prodInterface['prod'][])!.map((product, index)=>{
+
+    const mappedprods = (products as typing.prodInterface['prod'][])!?.map((product, index)=>{
         const prodDate = new Date(product.createdAt).toString().substring(0, 15)
         return(
             <React.Fragment key={index}>
@@ -98,7 +104,8 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                             <Typography variant='body2' sx={{ maxWidth: '170px'}}>{product.name}</Typography>
                             <Typography variant='caption' sx={{mb: 1, fontSize: 10}}>{prodDate}</Typography>    
                             <Typography variant='subtitle2' sx={{}}><b>kes</b> {product.price}</Typography>    
-                            <Stack sx={{ 
+                            <Stack 
+                            sx={{ 
                                 width: '100%', 
                                 display: 'flex', 
                                 flexDirection: 'row', 
@@ -106,15 +113,25 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                 alignItems: 'center', 
                                 mt:2 , mb: 1
                             }}>
-                                <IconButton disableRipple={true} sx={{
-                                    width: '50%', 
-                                    display: 'flex', 
-                                    flexDirection: 'row', 
-                                    justifyContent:'flex-start',
-                                    
-                                }}>
-                                    {/* {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />} */}
-                                    <FavoriteBorder color='error' />
+                                <IconButton 
+                                    disableRipple={true} 
+                                    onClick={()=>handleLike(product._id)}
+                                    sx={{
+                                        width: '50%', 
+                                        display: 'flex', 
+                                        flexDirection: 'row', 
+                                        justifyContent:'flex-start',
+                                        
+                                    }}>
+                                    {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />}
+                                    <Typography 
+                                        variant="caption"
+                                        sx={{
+                                            fontSize: 12,
+                                            ml: 1
+                                        }}>
+                                            {`${product?.likes?.length} ${product?.likes?.length===1? "like": "likes"}`}
+                                    </Typography>
                                 </IconButton>
                                 <IconButton disableRipple={true}
                                         sx={{
@@ -132,7 +149,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                     >
                                     <MoreVert/>
                                 </IconButton>
-                                <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir}/>
+                                <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir} prodId={product._id}/>
                             </Stack>
                         </Stack>
                     </Box>
@@ -142,13 +159,24 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     })
     
 
+    if (!products) {
+        return (
+          <div>
+            <h2>No products to display just yet...</h2>
+          </div>
+        );
+      }
+
   return (
     <>
-        <Typography variant="subtitle2" sx={{color: '#048', m: 1}}>Products</Typography>
-        <div className="prodContainer">
-            {mappedprods}
-            <ProdModal/>
-        </div>
+        {products && 
+        <>
+            <Typography variant="subtitle2" sx={{color: '#048', m: 1}}>Products</Typography>
+            <div className="prodContainer">
+                {mappedprods}
+                <ProdModal/>
+            </div>
+        </>}
     </>
   )
 }

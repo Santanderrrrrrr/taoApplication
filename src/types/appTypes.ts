@@ -57,4 +57,5 @@ export interface ForPositionedMenu{
     setAnchorEl: React.Dispatch<React.SetStateAction<null | HTMLElement>>
     ouvrir: boolean
     anchorEl: null | HTMLElement
+    prodId: string
 }
