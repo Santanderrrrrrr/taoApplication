@@ -20,6 +20,7 @@ export const initialState ={
     //for modals and drawers
     isOpenModal: false,
     prodModalOpen: false,
+    warnModalOpen: false,
     displayProd: {}
 }
 const AppContext = createContext()
@@ -114,6 +115,13 @@ export const AppProvider = ({ children }) =>{
                     displayProd
                 }
             })
+        }else if(parametre === 'delWarning'){
+            dispatch({ 
+                type: Actiones.OPEN_WARN_MODAL,
+                payload: {
+                    displayProd
+                }
+            })
         }
     }
     const closeModal = (parametre)=>{
@@ -122,6 +130,13 @@ export const AppProvider = ({ children }) =>{
         }else if(parametre === 'prodModal'){
             dispatch({ 
                 type: Actiones.CLOSE_PROD_MODAL
+            })
+        }else if(parametre === 'delWarning'){
+            dispatch({ 
+                type: Actiones.CLOSE_PROD_MODAL
+            })
+            dispatch({ 
+                type: Actiones.CLOSE_WARN_MODAL
             })
         }
     }

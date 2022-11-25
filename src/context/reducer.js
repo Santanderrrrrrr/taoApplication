@@ -75,6 +75,18 @@ const reducer = (state, action) => {
                     ...state,
                     prodModalOpen: false,
                 }
+            //FOR WARN MODAL
+            case Actiones.OPEN_WARN_MODAL:
+                return{
+                    ...state,
+                    warnModalOpen: true,
+                    displayProd: action.payload.displayProd
+                }
+            case Actiones.CLOSE_WARN_MODAL:
+                return{
+                    ...state,
+                    warnModalOpen: false,
+                }
             //FOR Liking personal profile product
             case Actiones.TOGGLE_LIKE_PROD:
                 const foundProd = state.products.find(product => product._id === action.payload.product._id)

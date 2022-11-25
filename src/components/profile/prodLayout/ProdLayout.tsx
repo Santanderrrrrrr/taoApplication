@@ -40,8 +40,10 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
 
     //state for positionedMenu item
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [productId, setProductId] = React.useState<string>('');
     const ouvrir = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleClick = (event: React.MouseEvent<HTMLElement>, productId: string) => {
+        setProductId(productId)
         setAnchorEl(event.currentTarget);
     };
 
@@ -145,11 +147,11 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                         aria-controls={ouvrir ? 'demo-positioned-menu' : undefined}
                                         aria-haspopup="true"
                                         aria-expanded={ouvrir ? 'true' : undefined}
-                                        onClick={handleClick}
+                                        onClick={(e)=>handleClick(e, product._id)}
                                     >
                                     <MoreVert/>
                                 </IconButton>
-                                <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir} prodId={product._id}/>
+                                <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir} prodId={productId}/>
                             </Stack>
                         </Stack>
                     </Box>

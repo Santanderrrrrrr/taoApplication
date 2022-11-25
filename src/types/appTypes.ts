@@ -59,3 +59,7 @@ export interface ForPositionedMenu{
     anchorEl: null | HTMLElement
     prodId: string
 }
+
+export interface ForWarnModal{
+    prodId: string
+}

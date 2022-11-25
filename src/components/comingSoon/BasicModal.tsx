@@ -5,12 +5,8 @@ import { useAppContext } from '../../context/appContext'
 import './comingSoonCss/BasicModal.css'
 
 
-interface modalProperties{
-  
-}
 
-
-const BasicModal: React.FC<modalProperties> = () => {
+const BasicModal: React.FC = () => {
 
   const { isOpenModal, closeModal } = useAppContext()
 
