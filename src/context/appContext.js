@@ -21,6 +21,7 @@ export const initialState ={
     isOpenModal: false,
     prodModalOpen: false,
     warnModalOpen: false,
+    editModalOpen: false,
     displayProd: {}
 }
 const AppContext = createContext()
@@ -88,6 +89,14 @@ export const AppProvider = ({ children }) =>{
                 credentials: 'include',
                 })
             response = await response.json()
+            if(response === "Forbidden"){
+                return dispatch({ 
+                    type: Actiones.GET_PRODUCTS_ERROR,
+                    payload: {
+                        products: ''
+                    }
+                })
+            }
             dispatch({ 
                 type: Actiones.GET_PRODUCTS_SUCCESS,
                 payload: {
@@ -104,22 +113,28 @@ export const AppProvider = ({ children }) =>{
         }
     }
 
-    const openModal = (parametre, displayProd)=>{
-        if(!parametre && !displayProd){
+    const openModal = (parametre, displayProdParam)=>{
+        if(!parametre && !displayProdParam){
             dispatch({ type: Actiones.OPEN_MODAL })
-        }else if(parametre === 'prodModal' && displayProd){
-            // console.log(displayProd)
+        }else if(parametre === 'prodModal' && displayProdParam){
+            // console.log(displayProdParam)
             dispatch({ 
                 type: Actiones.OPEN_PROD_MODAL,
                 payload: {
-                    displayProd
+                    displayProdParam
                 }
             })
         }else if(parametre === 'delWarning'){
             dispatch({ 
                 type: Actiones.OPEN_WARN_MODAL,
+                
+            })
+        }else if(parametre === 'edit'){
+            console.log(displayProdParam)
+            dispatch({ 
+                type: Actiones.OPEN_EDIT_MODAL,
                 payload: {
-                    displayProd
+                    displayProdParam
                 }
             })
         }
@@ -137,6 +152,11 @@ export const AppProvider = ({ children }) =>{
             })
             dispatch({ 
                 type: Actiones.CLOSE_WARN_MODAL
+            })
+        }else if(parametre === 'edit'){
+            
+            dispatch({ 
+                type: Actiones.CLOSE_EDIT_MODAL
             })
         }
     }
@@ -209,6 +229,32 @@ export const AppProvider = ({ children }) =>{
             console.log(err)
         }
     }
+    const editProd = async(changes, prodId, token, sellerId)=>{
+        try{
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    updates:{
+                        ...changes
+                    },
+                    prodId
+                }),
+                credentials: 'include',
+            })
+            response = await response.json()
+            if(response.product){
+                getMyProducts(token, sellerId)
+                openModal( 'prodModal', response.product)  
+            }
+        }catch(err){
+            console.log(err)
+        }
+    }
 
     
 
@@ -223,7 +269,8 @@ export const AppProvider = ({ children }) =>{
                 openModal,
                 closeModal,
                 toggleLike,
-                deleteProd
+                deleteProd,
+                editProd
         
             }}
         >

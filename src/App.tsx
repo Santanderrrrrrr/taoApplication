@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
@@ -9,13 +9,7 @@ import Login from './components/login/Login'
 import PersProfilePage from './components/profile/PersProfilePage'
 
 
-function App() {
-
-  const [accessToken, setAccessToken] = useState<string>('')
-  const [persId, setPersId] = useState<string>('')
-
-
-  
+function App() {  
 
   return (
     <BrowserRouter>

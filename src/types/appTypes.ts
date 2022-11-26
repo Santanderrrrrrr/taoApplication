@@ -63,3 +63,19 @@ export interface ForPositionedMenu{
 export interface ForWarnModal{
     prodId: string
 }
+
+export interface ForUploadProd{
+    accessToken: string,
+    setAccessToken: React.Dispatch<React.SetStateAction<string>>,
+    persId: string
+}
+
+export type changesKeys = {
+    name: string;
+    description: string;
+    category: string;
+    size: string;
+    gender: string;
+    price: number | undefined;
+    inventory: number | undefined;
+}

@@ -8,7 +8,7 @@ import PositionedMenu from './positionedMenu/PositionedMenu'
 import ProdModal from './prodModal/ProdModal'
 import { useAppContext } from '../../../context/appContext'
 import * as typing from '../../../types/appTypes'
-import './prodlayout.css'
+import './CSS/prodlayout.css'
 
 
 

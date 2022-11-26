@@ -49,7 +49,8 @@ const reducer = (state, action) => {
                     ...state,
                     isLoading: false,
                     showAlert: true,
-                    alertText: action.payload.msg,
+                    products: action.payload.products,
+                    // alertText: action.payload.msg,
                     alertType: "danger",
                 }
             //for modal
@@ -68,7 +69,7 @@ const reducer = (state, action) => {
                 return{
                     ...state,
                     prodModalOpen: true,
-                    displayProd: action.payload.displayProd
+                    displayProd: action.payload.displayProdParam
                 }
             case Actiones.CLOSE_PROD_MODAL:
                 return{
@@ -80,12 +81,26 @@ const reducer = (state, action) => {
                 return{
                     ...state,
                     warnModalOpen: true,
-                    displayProd: action.payload.displayProd
                 }
             case Actiones.CLOSE_WARN_MODAL:
                 return{
                     ...state,
                     warnModalOpen: false,
+                }
+            //FOR EDIT MODAL
+            case Actiones.OPEN_EDIT_MODAL:
+                console.log(action.payload.displayProdParam)
+                const tbe = state.products.find(p => p._id === action.payload.displayProdParam)
+                console.log(tbe)
+                return{
+                    ...state,
+                    editModalOpen: true,
+                    displayProd: tbe
+                }
+            case Actiones.CLOSE_EDIT_MODAL:
+                return{
+                    ...state,
+                    editModalOpen: false,
                 }
             //FOR Liking personal profile product
             case Actiones.TOGGLE_LIKE_PROD:

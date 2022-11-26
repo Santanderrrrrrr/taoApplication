@@ -11,7 +11,9 @@
 }
 
 .oddLastProdListItem{
-    margin-left: 9px;
+    box-sizing: border-box;
+    max-width: 175px;
+    margin-left: 12px;
     margin-right: auto;
 
 }

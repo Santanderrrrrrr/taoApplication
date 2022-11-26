@@ -2,6 +2,7 @@ import React from 'react'
 import {Menu, MenuItem} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import WarnModal from '../warnModal/WarnModal'
+import Edit from '../../../Edit/Edit'
 import { useAppContext } from '../../../../context/appContext'
 import * as typing from '../../../../types/appTypes'
 
@@ -33,6 +34,13 @@ export default function PositionedMenu(props: typing.ForPositionedMenu) {
     closeModal('prodModal')
   }
 
+  const handleEdit=(prodId: string)=>{
+    console.log(prodId)
+    openModal('edit', prodId)
+    handleClose()
+    // closeModal('prodModal')
+  }
+
   return (
     <div style={{border: '2px solid #48'}}>    
     <ThemeProvider theme={theme}>
@@ -53,11 +61,12 @@ export default function PositionedMenu(props: typing.ForPositionedMenu) {
           elevation={1}
           
         >
-          <MenuItem onClick={handleClose}>Edit this product</MenuItem>
+          <MenuItem onClick={()=> handleEdit(prodId)}>Edit this product</MenuItem>
           <MenuItem onClick={()=>handleDelete(prodId)}>Delete this product</MenuItem>
         </Menu>
       </ThemeProvider>
       <WarnModal prodId={prodId}/>
+      <Edit />
     </div>
   );
 }
