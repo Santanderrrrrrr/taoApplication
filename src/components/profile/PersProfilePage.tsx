@@ -84,7 +84,6 @@ const PersProfilePage: React.FC = () => {
                 </Box>
                 <Divider variant="middle" sx={{mt: 2, mb:1}} />
                 {theUser && <ProdLayout/>}
-
             </div>
         </div>}
     </>

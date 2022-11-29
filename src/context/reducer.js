@@ -25,6 +25,7 @@ const reducer = (state, action) => {
             return{
                 ...state,
                 isLoading: false,
+                isLoggedIn: false,
                 showAlert: true,
                 alertText: action.payload.msg,
                 alertType: "danger",
