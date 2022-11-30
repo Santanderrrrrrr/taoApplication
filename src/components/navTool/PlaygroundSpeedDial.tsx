@@ -9,14 +9,30 @@ import { Settings, Save, AddAPhoto, Search, Storefront } from '@mui/icons-materi
 
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
+    // components: {
+    //     // Name of the component
+    //     MuiSpeedDial: {
+    //         styleOverrides: {
+    //             // Name of the slot
+    //             fab: {
+    //               // Some CSS
+    //               backgroundColor: 'gold', 
+    //               color: 'blue'
+    //             },
+    //           },
+    //     },
+    // },
+  
   position: 'absolute',
   bottom: 16, 
   right:16,
   '&.MuiSpeedDial-directionLeft': {
     bottom: theme.spacing(2),
     right: theme.spacing(2),
-  },
-  
+  },  
+  '&.MuiSpeedDial-fab':{
+    backgroundColor: "#048",
+  }
 }));
 
 const actions = [
@@ -34,16 +50,15 @@ export default function PlaygroundSpeedDial() {
         transform: 'translateZ(0px)', 
         flexGrow: 1, 
         width: '100vw',
+        height: '100vh',
         display: 'flex', 
         justifyContent: 'center',
-        position: 'absolute',
-        // ml: '368px', 
+        position: 'fixed',
         zIndex: 77 }}	>
       
       <Box sx={{ 
-        position: 'sticky', 
+        position: 'fixed', 
         width: '390px',
-        // height: '100vh',
         b: 3, 
         zIndex: 77 }}>
         <StyledSpeedDial
@@ -51,6 +66,11 @@ export default function PlaygroundSpeedDial() {
           hidden={false}
           icon={<SpeedDialIcon />}
           direction={"left"}
+          FabProps={{
+            sx:{
+                backgroundColor: "#048"
+            }
+          }}
         >
           {actions.map((action) => (
             <SpeedDialAction
