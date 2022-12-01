@@ -1,49 +1,52 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { Link } from "react-router-dom"
 import Box from '@mui/material/Box';
-
+import { useAppContext } from "../../context/appContext"
 import SpeedDial, { SpeedDialProps } from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { Settings, Save, AddAPhoto, Search, Storefront } from '@mui/icons-material';
+import './psd.css'
 
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
-    // components: {
-    //     // Name of the component
-    //     MuiSpeedDial: {
-    //         styleOverrides: {
-    //             // Name of the slot
-    //             fab: {
-    //               // Some CSS
-    //               backgroundColor: 'gold', 
-    //               color: 'blue'
-    //             },
-    //           },
-    //     },
-    // },
-  
-  position: 'absolute',
-  bottom: 16, 
-  right:16,
+    position: 'absolute',
+    bottom: 16, 
+    right:16,
   '&.MuiSpeedDial-directionLeft': {
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },  
   '&.MuiSpeedDial-fab':{
-    backgroundColor: "#048",
+    backgroundColor: "red",
   }
 }));
 
-const actions = [
-  { icon: <Settings sx={{color:'#048'}}/>, name: 'Settings' },
-  { icon: 'me', name: 'Profile' },
-  { icon: <AddAPhoto sx={{color:'#048'}}/>, name: 'New' },
-  { icon: <Search sx={{color:'#048'}}/>, name: 'Search' },
-  { icon: <Storefront sx={{color:'#048'}}/>, name: 'Home' },
-];
+const links = [
+    '/profile', '/profile', '/new', '/profile', '/profile'
+]
+
+
 
 export default function PlaygroundSpeedDial() {
+    
+    const { currentUser } = useAppContext()
+    
+    const actions = [
+        { icon: <Settings sx={{color:'#048'}}/>, name: 'Settings' },
+        { icon: <Link to={`${links[1]}`}>
+            <div className="speedDialProfilePic">
+                <img className="sdProfilePicImg" src={`${currentUser.picture}`}/>
+            </div>
+        </Link>, name: 'Profile' },
+        { icon: <Link to={`${links[2]}`}><AddAPhoto sx={{color:'#048'}}/></Link>, name: 'New' },
+        { icon: <Search sx={{color:'#048'}}/>, name: 'Search' },
+        { icon: <Storefront sx={{color:'#048'}}/>, name: 'Home' },
+    ];
+    
+    
+    
 
   return (
     <Box sx={{ 
@@ -66,18 +69,15 @@ export default function PlaygroundSpeedDial() {
           hidden={false}
           icon={<SpeedDialIcon />}
           direction={"left"}
-          FabProps={{
-            sx:{
-                backgroundColor: "#048"
-            }
-          }}
         >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
+          {actions.map((action, index) => (
+            
+                <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                />
+            
           ))}
         </StyledSpeedDial>
       </Box>
