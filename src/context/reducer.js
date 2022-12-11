@@ -30,6 +30,24 @@ const reducer = (state, action) => {
                 alertText: action.payload.msg,
                 alertType: "danger",
             }
+        //FOR LOGOUT
+        case Actiones.LOGOUT_BEGIN:
+            return{
+                ...state,
+                isLoading: true
+            }
+        case Actiones.LOGOUT_SUCCESS:
+            return{
+                ...state,
+                isLoading: false,
+                currentUser: "",
+                token: "",
+                showAlert: false,
+                isLoggedIn: false,
+                settingsDrawerOpen: false,
+                alertText: "Successfully logged OUT!",
+                alertType: "success",
+            }
         //FOR PRODUCTS
         case Actiones.GET_PRODUCTS_BEGIN:
             return{
@@ -77,6 +95,12 @@ const reducer = (state, action) => {
                     ...state,
                     prodModalOpen: false,
                 }
+            //FOR Search Type
+            case Actiones.SET_SEARCH_TYPE:
+                return{
+                    ...state,
+                    searchType: action.payload.type
+                }
             //FOR WARN MODAL
             case Actiones.OPEN_WARN_MODAL:
                 return{
@@ -102,6 +126,17 @@ const reducer = (state, action) => {
                 return{
                     ...state,
                     editModalOpen: false,
+                }
+            //FOR SETTINGS DRAWER
+            case Actiones.OPEN_SETTINGS_DRAWER:
+                return{
+                    ...state,
+                    settingsDrawerOpen: true,
+                }
+            case Actiones.CLOSE_SETTINGS_DRAWER:
+                return{
+                    ...state,
+                    settingsDrawerOpen: false,
                 }
             //FOR Liking personal profile product
             case Actiones.TOGGLE_LIKE_PROD:

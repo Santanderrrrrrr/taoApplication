@@ -1,0 +1,46 @@
+.scaffolding{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.searchHeading{
+    position: sticky;
+    width: 100%;
+    top: 0;
+    background: rgb(9,29,150);
+    background: linear-gradient(187deg, rgba(9,29,150,1) 0%, rgba(26,117,255,1) 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 138.594px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    z-index: 14;
+    margin-bottom: 0;
+}
+
+.searchBox{
+    /* background-color: rgb(255, 255, 255); */
+    width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 15;
+    margin-top: -75px;
+}
+
+.byjLogoSearch{
+    width: 85px;
+    /* justify-self: flex-start; */
+    margin-left: 12px;
+    margin-right: 'auto';
+    margin-bottom: 12px;
+}
+
+.logoItselfSearch{
+    max-width: 100%;
+    object-fit: cover;
+    /* filter: invert(1) */
+}

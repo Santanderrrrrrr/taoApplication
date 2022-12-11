@@ -4,11 +4,13 @@ import { useAppContext } from './context/appContext'
 
 
 
-import UploadProd from './components/uploadProd/UploadProd'
-import ComingSoon from './components/comingSoon/ComingSoon'
-import Login from './components/login/Login'
-import PersProfilePage from './components/profile/PersProfilePage'
-import PlaygroundSpeedDial from './components/navTool/PlaygroundSpeedDial'
+import UploadProd from './pages/uploadProd/UploadProd'
+import ComingSoon from './pages/comingSoon/ComingSoon'
+import Login from './pages/login/Login'
+import PersProfilePage from './pages/profile/PersProfilePage'
+import PlaygroundSpeedDial from './pages/navTool/PlaygroundSpeedDial'
+import SettingsDrawer from './pages/settingDrawer/SettingsDrawer'
+import Search from './pages/search/Search'
 
 
 function App() {  
@@ -23,8 +25,10 @@ function App() {
         <Route path='/new' element={<UploadProd  />} />
         <Route path='/login' element={<Login />} />
         <Route path='/profile' element={<PersProfilePage/>} />
+        <Route path='/search' element={<Search/>} />
       </Routes>
       {currentUser && <PlaygroundSpeedDial />}
+      {currentUser && <SettingsDrawer />}
     </BrowserRouter>
   );
 }

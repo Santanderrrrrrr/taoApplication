@@ -15,7 +15,7 @@ import Forgot from './Forgot'
 
 const Login: React.FC = () => {
 
-    const { login, isOpenModal, openModal, user } = useAppContext()
+    const { login, isOpenModal, openModal, user, isLoggedIn } = useAppContext()
 
 
     //state for the form submission
@@ -47,8 +47,8 @@ const Login: React.FC = () => {
 
         if(!email || !password) return alert(`Please enter your email AND password`)
         const loggedIn = await login( email, password )
-        console.log(loggedIn)
-        if (loggedIn) navigate('/profile')
+        if (typeof loggedIn === 'boolean' && loggedIn) return navigate('/profile')
+        if (typeof loggedIn === 'string') return console.log("log in error")
         
    }
 
@@ -157,10 +157,12 @@ const Login: React.FC = () => {
                 sx:{
                     display:'block',
                     width:'390px',
+                    height: '100vh',
                     position:'absolute',
                     ml: 'auto',
                     mr:'auto',
-                    borderRadius: '15px',
+                    borderTopRightRadius: '15px',
+                    borderBottomRightRadius: '15px',
                 }
             }}>
             <Forgot/>

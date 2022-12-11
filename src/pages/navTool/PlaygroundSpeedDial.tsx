@@ -24,29 +24,32 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 }));
 
 const links = [
-    '/profile', '/profile', '/new', '/profile', '/profile'
+  '/profile', '/new', '/search', '/profile'
 ]
 
 
 
 export default function PlaygroundSpeedDial() {
     
-    const { currentUser } = useAppContext()
+    const { currentUser, openModal } = useAppContext()
     
     const actions = [
         { icon: <Settings sx={{color:'#048'}}/>, name: 'Settings' },
-        { icon: <Link to={`${links[1]}`}>
+        { icon: <Link to={`${links[0]}`}>
             <div className="speedDialProfilePic">
-                <img className="sdProfilePicImg" src={`${currentUser.picture}`}/>
+                <img className="sdProfilePicImg" alt="current user" src={`${currentUser.picture}`}/>
             </div>
         </Link>, name: 'Profile' },
-        { icon: <Link to={`${links[2]}`}><AddAPhoto sx={{color:'#048'}}/></Link>, name: 'New' },
-        { icon: <Search sx={{color:'#048'}}/>, name: 'Search' },
+        { icon: <Link to={`${links[1]}`}><AddAPhoto sx={{color:'#048'}}/></Link>, name: 'New' },
+        { icon: <Link to={`${links[2]}`}><Search sx={{color:'#048'}}/></Link>, name: 'Search' },
         { icon: <Storefront sx={{color:'#048'}}/>, name: 'Home' },
     ];
     
-    
-    
+    const handleClick = ()=>{
+      openModal('settings')
+    }
+    //Type 'string | ((e: MouseEvent<HTMLDivElement, MouseEvent>) => void)' is not assignable to type 'MouseEventHandler<HTMLDivElement> | undefined'.
+    // Type 'string' is not assignable to type 'MouseEventHandler<HTMLDivElement>'.
 
   return (
     <Box sx={{ 
@@ -73,9 +76,10 @@ export default function PlaygroundSpeedDial() {
           {actions.map((action, index) => (
             
                 <SpeedDialAction
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
+                  key={action.name}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                  onClick={action.name === 'Settings'? () => handleClick(): undefined}
                 />
             
           ))}

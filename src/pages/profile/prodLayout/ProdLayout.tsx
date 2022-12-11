@@ -28,12 +28,9 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     useEffect(()=>{
         //fetching the user products
         if(currentUser){
-            getMyProducts( token, currentUser._id )
+            const willNavigate = getMyProducts( token, currentUser._id )
+            if(typeof willNavigate === "string") navigate('/login')
         }
-        if(!products){
-            navigate('/login')
-        }
-        
     },[])
 
     const handleOpen = (displayProd: typing.prodInterface['prod']) => openModal('prodModal', displayProd);    

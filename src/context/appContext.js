@@ -22,7 +22,9 @@ export const initialState ={
     prodModalOpen: false,
     warnModalOpen: false,
     editModalOpen: false,
-    displayProd: {}
+    settingsDrawerOpen: false,
+    displayProd: {},
+    searchType: ""
 }
 const AppContext = createContext()
 
@@ -33,6 +35,30 @@ export const AppProvider = ({ children }) =>{
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("token", accessToken);
     };
+
+    const logout = async ()=>{
+        dispatch({type: Actiones.LOGOUT_BEGIN})
+
+        try{
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/logout`,{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                credentials: 'include',
+            })
+            // console.log(response)
+            if(response.status === 204){
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+                dispatch({ type: Actiones.LOGOUT_SUCCESS })
+                return true
+            }
+        }catch(error){
+
+        }
+    }
 
     const login = async (email, password)=>{
         dispatch({type: Actiones.LOGIN_BEGIN})
@@ -61,8 +87,8 @@ export const AppProvider = ({ children }) =>{
                         token: response.accessToken
                     }
                 })
-                getMyProducts(response.accessToken, response.user?._id)
-                return true
+                const direction = await getMyProducts(response.accessToken, response.user?._id)
+                return direction
             }else{
                 throw new Error("Failed to get user's access token in time")
             }
@@ -90,12 +116,13 @@ export const AppProvider = ({ children }) =>{
                 })
             response = await response.json()
             if(response === "Forbidden"){
-                return dispatch({ 
+                dispatch({ 
                     type: Actiones.GET_PRODUCTS_ERROR,
                     payload: {
                         products: ''
                     }
                 })
+                return "there was an error. Please try again in a few seconds"
             }
             dispatch({ 
                 type: Actiones.GET_PRODUCTS_SUCCESS,
@@ -103,7 +130,7 @@ export const AppProvider = ({ children }) =>{
                     products: response
                 }
             })
-            
+            return true
         }catch(err){
             console.log(err)
             dispatch({
@@ -137,6 +164,10 @@ export const AppProvider = ({ children }) =>{
                     displayProdParam
                 }
             })
+        }else if(parametre === 'settings'){
+            dispatch({ 
+                type: Actiones.OPEN_SETTINGS_DRAWER,
+            })
         }
     }
     const closeModal = (parametre)=>{
@@ -154,9 +185,12 @@ export const AppProvider = ({ children }) =>{
                 type: Actiones.CLOSE_WARN_MODAL
             })
         }else if(parametre === 'edit'){
-            
             dispatch({ 
                 type: Actiones.CLOSE_EDIT_MODAL
+            })
+        }else if(parametre === 'settings'){
+            dispatch({ 
+                type: Actiones.CLOSE_SETTINGS_DRAWER,
             })
         }
     }
@@ -256,6 +290,32 @@ export const AppProvider = ({ children }) =>{
         }
     }
 
+    const setSearchType = (type) => {
+        dispatch({ type: Actiones.SET_SEARCH_TYPE, payload:{type} })
+    }
+
+    const doTheSearch = async (database, value, token)=>{
+        if(!value) return console.log("value cannot be empty!")
+        try{
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${database}/find/${value}`,{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include',
+            })
+            response = await response.json()
+            if(response){
+                console.log(response)  
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+
     
 
 
@@ -265,12 +325,15 @@ export const AppProvider = ({ children }) =>{
                 ...state,
                 addUserToLocalStorage,
                 login,
+                logout,
                 getMyProducts,
                 openModal,
                 closeModal,
                 toggleLike,
                 deleteProd,
-                editProd
+                editProd,
+                setSearchType,
+                doTheSearch
         
             }}
         >

@@ -27,7 +27,7 @@
 
 .profileHeading{
     position: sticky;
-    height: 100%;
+    /* height: 100%; */
     top: 0;
     background: rgb(9,29,150);
     background: linear-gradient(187deg, rgba(9,29,150,1) 0%, rgba(26,117,255,1) 100%);
