@@ -23,6 +23,7 @@
 }
 
 .stackInButton{
+    min-height: 150px;
     position: relative;
 }
 

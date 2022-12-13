@@ -1,16 +1,19 @@
 import React, { useState, useMemo } from 'react'
 import { FormControl,
+    Typography,
     OutlinedInput,
     InputAdornment,
     IconButton, 
     Stack, 
-    Button
+    Button,
+    Box
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import SelectMenu from './SelectMenu'
+import Results from '../resultComponent/Results'
 import { useAppContext } from '../../../context/appContext'
 
 const SelectTextFields = () => {
@@ -31,7 +34,7 @@ const SelectTextFields = () => {
             case "products":
                 doTheSearch("products", searchValue, token)
                 break;
-            case "people":
+            case "users":
                 doTheSearch("users", searchValue, token)        
                 break;
             default:
@@ -50,7 +53,7 @@ const SelectTextFields = () => {
           clearTimeout(timeoutID);
           timeoutID = setTimeout(() => {
             handleSearch(e, st, sv);
-          }, 1500);
+          }, 1000);
         };
       };
       
@@ -61,56 +64,67 @@ const SelectTextFields = () => {
         
   return (
     <>
-        <Stack 
-            component="form"
-            onSubmit={(e)=>handleSearch(e, searchType, searchValue)}
-            sx={{
-                // zIndex: 15,
-                backgroundColor: "white",
-                borderRadius: '5px',
-                width: '100%', 
-                display: 'flex',
-                flexDirection:'row'
-            }}>
-            <FormControl sx={{  width: '100%' }} variant="outlined">
-                <OutlinedInput
-                    id="outlined-adornment-search"
-                    type={'text'}
-                    placeholder={searchType === ""? "pick a search category first!": searchType === "products" ? "search products" : "search people"}
-                    disabled = {searchType === ""? true : false}
-                    onChange={optimizedDebounce}
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <SearchIcon/>
-                        </InputAdornment>
-                    }
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-controls={open ? 'fade-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleSetAnchor}
-                                edge="end"
-                            >
-                                {searchType === "" ? <KeyboardArrowDownIcon/> : searchType === "people"? <SupervisorAccountIcon /> : <CheckroomIcon />}
-                            </IconButton>
-                            <SelectMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} ouvrir={open} />
-                        </InputAdornment>
-                    }
-                    // label="Search"
-                />
-            </FormControl>
-        </Stack>
-        <Button
-            type="submit"
-            onClick ={(e)=>handleSearch(e, searchType, searchValue)}
-            sx={{
-                color:"white",
-            }}
-        >
-            Go!
-        </Button>
+        <Box>
+            {/**Responsible for the search bar up top */}
+            <Stack className="searchSegment"
+                sx={{
+                    display: "flex",
+                    flexDirection:"row"
+                }}
+                >
+                <Stack 
+                    component="form"
+                    onSubmit={(e)=>handleSearch(e, searchType, searchValue)}
+                    sx={{
+                        // zIndex: 15,
+                        backgroundColor: "white",
+                        borderRadius: '5px',
+                        width: '100%', 
+                        display: 'flex',
+                        flexDirection:'row'
+                    }}>
+                    <FormControl sx={{  width: '100%' }} variant="outlined">
+                        <OutlinedInput
+                            id="outlined-adornment-search"
+                            type={'text'}
+                            placeholder={searchType === ""? "pick a search category first!": searchType === "products" ? "search products" : "search people"}
+                            disabled = {searchType === ""? true : false}
+                            onChange={optimizedDebounce}
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <SearchIcon/>
+                                </InputAdornment>
+                            }
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-controls={open ? 'fade-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={handleSetAnchor}
+                                        edge="end"
+                                    >
+                                        {searchType === "" ? <KeyboardArrowDownIcon/> : searchType === "users"? <SupervisorAccountIcon /> : <CheckroomIcon />}
+                                    </IconButton>
+                                    <SelectMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} ouvrir={open} />
+                                </InputAdornment>
+                            }
+                            // label="Search"
+                        />
+                    </FormControl>
+                </Stack>
+                <Button
+                    type="submit"
+                    onClick ={(e)=>handleSearch(e, searchType, searchValue)}
+                    sx={{
+                        color:"white",
+                    }}
+                >
+                    Go!
+                </Button>
+            </Stack>
+            {searchValue.length>0 && <Results/>}
+        </Box>
     </>
   )
 }

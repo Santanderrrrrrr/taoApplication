@@ -65,7 +65,8 @@ export default function PlaygroundSpeedDial() {
       <Box sx={{ 
         position: 'fixed', 
         width: '390px',
-        b: 3, 
+        // height: '100vh',
+        b: 12, 
         zIndex: 77 }}>
         <StyledSpeedDial
           ariaLabel="SpeedDial playground example"

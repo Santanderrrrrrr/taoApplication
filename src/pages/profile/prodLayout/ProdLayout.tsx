@@ -160,7 +160,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     })
     
 
-    if (!products) {
+    if (products.length <= 0) {
         return (
           <div>
             <h2>No products to display just yet...</h2>
@@ -170,7 +170,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
 
   return (
     <>
-        {products && 
+        {products.length > 0 && 
         <>
             <Typography variant="subtitle2" sx={{color: '#048', m: 1}}>Products</Typography>
             <div className="prodContainer">

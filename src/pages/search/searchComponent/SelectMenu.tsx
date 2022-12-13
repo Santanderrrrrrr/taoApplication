@@ -30,7 +30,7 @@ const SelectMenu: React.FC<Partial<forSelectMenu>> = ({ setAnchorEl, anchorEl, o
             onClose={handleClose}
             TransitionComponent={Fade}
         >
-            <MenuItem onClick={()=>handleClose("people")}>Search People</MenuItem>
+            <MenuItem onClick={()=>handleClose("users")}>Search People</MenuItem>
             <MenuItem onClick={()=>handleClose("products")}>Search Products</MenuItem>
         </Menu>
     </div>

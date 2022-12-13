@@ -34,6 +34,7 @@ export type prodInterface = {
 
 export type theUser = {
     user:{
+        _id?: string
         firstname: string;
         lastname: string;
         username: string;

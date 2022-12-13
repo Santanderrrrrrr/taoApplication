@@ -5,14 +5,6 @@ import logo from '../../assets/logo.png'
 import './css/UploadProd.css'
 
 
-interface ForUploadProd{
-  accessToken: string,
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>,
-  persId: string
-
-}
-
-
 const UploadProd: React.FC = () => {
 
   //delete these>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

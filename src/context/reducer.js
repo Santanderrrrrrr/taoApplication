@@ -101,6 +101,56 @@ const reducer = (state, action) => {
                     ...state,
                     searchType: action.payload.type
                 }
+            //FOR Search BEGIN
+            case Actiones.SEARCH_BEGIN:
+                return{
+                    ...state,
+                isLoading: true
+                }
+            //FOR Search SUCCESS
+            case Actiones.SEARCH_SUCCESS_USERS:
+                return{
+                    ...state,
+                isLoading: false,
+                searchUsersResults: action.payload.response,
+                searchType: "users"
+                }
+            case Actiones.SEARCH_SUCCESS_PRODUCTS:
+                return{
+                    ...state,
+                isLoading: false,
+                searchProductsResults: action.payload.response,
+                searchType: "products"
+
+                }
+            //FOR FOLLOW ACTION BEGIN
+            case Actiones.FOLLOW_ACTION_BEGIN:
+                return{
+                    ...state,
+                isLoading: true
+                }
+
+            //FOR FOLLOW ACTION SUCCESS
+            case Actiones.FOLLOW_ACTION_SUCCESS_USERS:
+                return{
+                    ...state,
+                    isLoading: false,
+                    currentUser: action.payload.newUser
+                }
+            //FOR GETTING_USER_PRODUCT_BEGIN
+            case Actiones.GETTING_USER_PRODUCT_BEGIN:
+                return{
+                    ...state,
+                isLoading: true
+                }
+
+            //FOR FOLLOW ACTION SUCCESS
+            case Actiones.GETTING_USER_PRODUCT_SUCCESS:
+                return{
+                    ...state,
+                    isLoading: false,
+                    userToView: action.payload.user
+                }
             //FOR WARN MODAL
             case Actiones.OPEN_WARN_MODAL:
                 return{

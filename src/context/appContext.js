@@ -17,6 +17,10 @@ export const initialState ={
     token: token,
     currentUser: JSON.parse(user),
     products: [],
+    searchType: "",
+    searchUsersResults: {},
+    searchProductsResults: {},
+    userToView: {},
     //for modals and drawers
     isOpenModal: false,
     prodModalOpen: false,
@@ -24,7 +28,6 @@ export const initialState ={
     editModalOpen: false,
     settingsDrawerOpen: false,
     displayProd: {},
-    searchType: ""
 }
 const AppContext = createContext()
 
@@ -295,7 +298,7 @@ export const AppProvider = ({ children }) =>{
     }
 
     const doTheSearch = async (database, value, token)=>{
-        if(!value) return console.log("value cannot be empty!")
+        dispatch({type: Actiones.SEARCH_BEGIN})
         try{
             let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${database}/find/${value}`,{
                 method: 'GET',
@@ -308,10 +311,73 @@ export const AppProvider = ({ children }) =>{
             })
             response = await response.json()
             if(response){
-                console.log(response)  
+                if(database==="users"){
+                    await dispatch({ type: Actiones.SEARCH_SUCCESS_USERS, payload: {response}})
+                }  
+                if(database==="products"){
+                    dispatch({ type: Actiones.SEARCH_SUCCESS_PRODUCTS, payload: {response}})
+                }
+            }else{
+                throw new Error("search failed", response)
             }
         }catch(error){
             console.log(error)
+        }
+    }
+
+    const doFollow = async(userId, token, funcSearchType)=>{
+        console.log(funcSearchType)
+        dispatch({type: Actiones.FOLLOW_ACTION_BEGIN})
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${funcSearchType}/follow/${userId}`,{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include',
+            })
+            response = await response.json()
+            if(response){
+                if(funcSearchType==="users") {
+                    dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_USERS, payload: {newUser: response?.follower}})  
+                }
+                console.log(state.searchType)
+                // if(funcSearchType==="products") dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_PRODUCTS, payload: {response}})  
+            }else{
+                throw new Error("search failed", response)
+            }        
+        } catch (error) {
+            
+        }
+    }
+
+    const getTheView = async(theId, token, funcSearchType)=>{
+        dispatch({type: Actiones.GETTING_USER_PRODUCT_BEGIN})
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${funcSearchType}/${theId}`,{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include',
+            })
+            response = await response.json()
+            if(response){
+                if(funcSearchType==="users") {
+                    await dispatch({ type: Actiones.GETTING_USER_PRODUCT_SUCCESS, payload: {user: response?.user}})  
+                    return true
+                }
+                // if(funcSearchType==="products") dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_PRODUCTS, payload: {response}})  
+            }else{
+                throw new Error("search failed", response)
+            }        
+        } catch (error) {
+            console.log(error)
+            return false
         }
     }
 
@@ -333,8 +399,9 @@ export const AppProvider = ({ children }) =>{
                 deleteProd,
                 editProd,
                 setSearchType,
-                doTheSearch
-        
+                doTheSearch,
+                doFollow,
+                getTheView
             }}
         >
          {children}
