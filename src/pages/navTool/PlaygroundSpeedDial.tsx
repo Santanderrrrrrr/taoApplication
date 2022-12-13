@@ -15,8 +15,8 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     bottom: 16, 
     right:16,
   '&.MuiSpeedDial-directionLeft': {
-    // bottom: theme.spacing(2),
-    // right: theme.spacing(2),
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },  
 }));
 
@@ -49,22 +49,23 @@ export default function PlaygroundSpeedDial() {
     // Type 'string' is not assignable to type 'MouseEventHandler<HTMLDivElement>'.
 
   return (
-    <Box sx={{ 
-        transform: 'translateZ(0px)', 
-        flexGrow: 1, 
-        width: '100vw',
-        height: '100vh',
-        display: 'flex', 
-        justifyContent: 'center',
-        position: 'fixed',
-        zIndex: 77 }}	>
+    // <Box sx={{ 
+    //     transform: 'translateZ(0px)', 
+    //     flexGrow: 1, 
+    //     width: '100vw',
+    //     // height: '100vh',
+    //     display: 'flex', 
+    //     justifyContent: 'center',
+    //     position: 'fixed',
+    //     zIndex: 77 }}	>
       
-      <Box sx={{ 
-        position: 'relative', 
-        width: '390px',
-        height: '0vh',
-        // b: 12, 
-        zIndex: 77 }}>
+    //   <Box sx={{ 
+    //     position: 'relative', 
+    //     width: '390px',
+    //     height: '0vh',
+    //     // b: 12, 
+    //     zIndex: 77 }}>
+    <>
         <StyledSpeedDial
           ariaLabel="SpeedDial playground example"
           hidden={false}
@@ -82,7 +83,8 @@ export default function PlaygroundSpeedDial() {
             
           ))}
         </StyledSpeedDial>
-      </Box>
-    </Box>
+      </>
+      // </Box>
+    // </Box>
   );
 }
