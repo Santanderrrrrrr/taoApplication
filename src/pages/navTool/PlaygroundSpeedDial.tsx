@@ -15,12 +15,9 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     bottom: 16, 
     right:16,
   '&.MuiSpeedDial-directionLeft': {
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
+    // bottom: theme.spacing(2),
+    // right: theme.spacing(2),
   },  
-  '&.MuiSpeedDial-fab':{
-    backgroundColor: "red",
-  }
 }));
 
 const links = [
@@ -63,10 +60,10 @@ export default function PlaygroundSpeedDial() {
         zIndex: 77 }}	>
       
       <Box sx={{ 
-        position: 'fixed', 
+        position: 'relative', 
         width: '390px',
-        // height: '100vh',
-        b: 12, 
+        height: '0vh',
+        // b: 12, 
         zIndex: 77 }}>
         <StyledSpeedDial
           ariaLabel="SpeedDial playground example"
