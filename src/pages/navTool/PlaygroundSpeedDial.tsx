@@ -11,7 +11,7 @@ import './psd.css'
 
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
-    position: 'absolute',
+    position: 'fixed',
     bottom: 16, 
     right:16,
   '&.MuiSpeedDial-directionLeft': {
@@ -45,8 +45,7 @@ export default function PlaygroundSpeedDial() {
     const handleClick = ()=>{
       openModal('settings')
     }
-    //Type 'string | ((e: MouseEvent<HTMLDivElement, MouseEvent>) => void)' is not assignable to type 'MouseEventHandler<HTMLDivElement> | undefined'.
-    // Type 'string' is not assignable to type 'MouseEventHandler<HTMLDivElement>'.
+
 
   return (
     // <Box sx={{ 
