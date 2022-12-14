@@ -18,6 +18,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
 
     const { 
         token, 
+        currentUser,
 
         userToView, 
         userToViewProducts, 
@@ -135,7 +136,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                         justifyContent:'flex-start',
                                         
                                     }}>
-                                    {product?.likes?.includes(userToView) || product!?.likes!?.length > 0 ? <Favorite color='error' /> : <FavoriteBorder color='error' />}
+                                    {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : product!?.likes!?.length > 0 ? <FavoriteBorder color='error' /> : <FavoriteBorder/>}
                                     <Typography 
                                         variant="caption"
                                         sx={{

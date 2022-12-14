@@ -132,7 +132,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                         justifyContent:'flex-start',
                                         
                                     }}>
-                                    {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />}
+                                    {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : product!?.likes!?.length > 0 ? <FavoriteBorder color='error' /> : <FavoriteBorder/>}
                                     <Typography 
                                         variant="caption"
                                         sx={{
