@@ -47,6 +47,7 @@ const Login: React.FC = () => {
 
         if(!email || !password) return alert(`Please enter your email AND password`)
         const loggedIn = await login( email, password )
+        // console.log(loggedIn)
         if (typeof loggedIn === 'boolean' && loggedIn) return navigate('/profile')
         if (typeof loggedIn === 'string') return console.log("log in error")
         

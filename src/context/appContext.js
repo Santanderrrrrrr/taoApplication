@@ -5,6 +5,7 @@ import * as Actiones from './actions'
 
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
+const userToView = localStorage.getItem("userToView");
 
 export const initialState ={
     isLoggedIn: false,
@@ -20,7 +21,8 @@ export const initialState ={
     searchType: "",
     searchUsersResults: {},
     searchProductsResults: {},
-    userToView: {},
+    userToView: userToView? JSON.parse(userToView) : "",
+    userToViewProducts: [],
     //for modals and drawers
     isOpenModal: false,
     prodModalOpen: false,
@@ -39,6 +41,11 @@ export const AppProvider = ({ children }) =>{
         localStorage.setItem("token", accessToken);
     };
 
+    const storeUserToView = async(userToView)=>{
+        await localStorage.setItem("userToView", userToView)
+        // console.log(localStorage.getItem("userToView"))
+    }
+
     const logout = async ()=>{
         dispatch({type: Actiones.LOGOUT_BEGIN})
 
@@ -51,7 +58,6 @@ export const AppProvider = ({ children }) =>{
                   },
                 credentials: 'include',
             })
-            // console.log(response)
             if(response.status === 204){
                 localStorage.removeItem("user");
                 localStorage.removeItem("token");
@@ -118,7 +124,9 @@ export const AppProvider = ({ children }) =>{
                 credentials: 'include',
                 })
             response = await response.json()
-            if(response === "Forbidden"){
+            // console.log(response)
+            if(response.message && response.message?.toLowerCase().indexOf('expired') !== -1){
+                // console.log("true dat", response.message)
                 dispatch({ 
                     type: Actiones.GET_PRODUCTS_ERROR,
                     payload: {
@@ -126,14 +134,15 @@ export const AppProvider = ({ children }) =>{
                     }
                 })
                 return "there was an error. Please try again in a few seconds"
+            }else{
+                dispatch({ 
+                    type: Actiones.GET_PRODUCTS_SUCCESS,
+                    payload: {
+                        products: response
+                    }
+                })
+                return true
             }
-            dispatch({ 
-                type: Actiones.GET_PRODUCTS_SUCCESS,
-                payload: {
-                    products: response
-                }
-            })
-            return true
         }catch(err){
             console.log(err)
             dispatch({
@@ -198,7 +207,7 @@ export const AppProvider = ({ children }) =>{
         }
     }
 
-    const likeToggleFunction = async(lOrU, prodId, token)=>{
+    const likeToggleFunction = async(lOrU, prodId, token, theContext)=>{
         try{
         // console.log(prodId)
             let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products/${lOrU}`,{
@@ -215,7 +224,14 @@ export const AppProvider = ({ children }) =>{
 
             if(response.message === `${lOrU}`){
                 const likedProd = response.product
-
+                if(theContext){
+                    dispatch({ 
+                        type: Actiones.TOGGLE_LIKE_PROD_VIEW,
+                        payload: {
+                            product: likedProd
+                        }
+                    })
+                }
                 dispatch({ 
                     type: Actiones.TOGGLE_LIKE_PROD,
                     payload: {
@@ -230,15 +246,15 @@ export const AppProvider = ({ children }) =>{
         }
     }
     
-    const toggleLike = async (prodId, token)=>{
-        const thisProd = state.products.find(prod => prod._id === prodId)
-        const bewl = thisProd.likes.includes(state.currentUser._id)
+    const toggleLike = async (prodId, token, theContext)=>{
+        const thisProd = theContext === "userToViewProducts"? state.userToViewProducts.find(prod => prod._id === prodId): state.products.find(prod => prod._id === prodId)
+        // console.log(thisProd)
+        const bewl = thisProd.likes?.includes(state.currentUser._id)
         if(bewl){
-            await likeToggleFunction('unlike', prodId, token)
+            await likeToggleFunction('unlike', prodId, token, theContext)
         }else{
-            await likeToggleFunction('like', prodId, token)
+            await likeToggleFunction('like', prodId, token, theContext)
         }
-
     }
 
     const deleteProd = async(prodId, token, sellerId)=>{
@@ -326,7 +342,6 @@ export const AppProvider = ({ children }) =>{
     }
 
     const doFollow = async(userId, token, funcSearchType)=>{
-        console.log(funcSearchType)
         dispatch({type: Actiones.FOLLOW_ACTION_BEGIN})
         try {
             let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${funcSearchType}/follow/${userId}`,{
@@ -343,13 +358,54 @@ export const AppProvider = ({ children }) =>{
                 if(funcSearchType==="users") {
                     dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_USERS, payload: {newUser: response?.follower}})  
                 }
-                console.log(state.searchType)
                 // if(funcSearchType==="products") dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_PRODUCTS, payload: {response}})  
             }else{
                 throw new Error("search failed", response)
             }        
         } catch (error) {
-            
+            console.log(error)
+        }
+    }
+
+    const getUserToViewProds = async(accessToken, userId)=>{
+        dispatch({ type: Actiones.GET_PRODUCTS_BEGIN})
+        try{    
+            // console.log(persId)
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products/u/${userId}`,{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                    },
+                credentials: 'include',
+                })
+            response = await response.json()
+            // console.log(response)
+            if(response.message && response.message?.toLowerCase().indexOf('expired') !== -1){
+                // console.log("jwt expired", response.message)
+                dispatch({ 
+                    type: Actiones.GET_PRODUCTS_ERROR,
+                    payload: {
+                        products: ''
+                    }
+                })
+                return "there was an error. Please try again in a few seconds"
+            }else{
+                dispatch({ 
+                    type: Actiones.GET_USER_TO_VIEW_PRODUCTS_SUCCESS,
+                    payload: {
+                        products: response
+                    }
+                })
+                return true
+            }
+        }catch(err){
+            console.log(err)
+            dispatch({
+                type: Actiones.GET_PRODUCTS_ERROR,
+                payload: { msg: err.message}
+            })
         }
     }
 
@@ -366,10 +422,15 @@ export const AppProvider = ({ children }) =>{
                 credentials: 'include',
             })
             response = await response.json()
+            // console.log(response)
             if(response){
                 if(funcSearchType==="users") {
+                    const utv = JSON.stringify(response.user)
+                    // console.log(utv)
+                    await storeUserToView(utv)
                     await dispatch({ type: Actiones.GETTING_USER_PRODUCT_SUCCESS, payload: {user: response?.user}})  
-                    return true
+                    const productsAttained = getUserToViewProds(token, theId)
+                    return productsAttained
                 }
                 // if(funcSearchType==="products") dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_PRODUCTS, payload: {response}})  
             }else{
@@ -401,7 +462,8 @@ export const AppProvider = ({ children }) =>{
                 setSearchType,
                 doTheSearch,
                 doFollow,
-                getTheView
+                getTheView,
+                getUserToViewProds
             }}
         >
          {children}

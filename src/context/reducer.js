@@ -63,6 +63,15 @@ const reducer = (state, action) => {
                     alertText: "The products are here!",
                     alertType: "success",
                 }
+            case Actiones.GET_USER_TO_VIEW_PRODUCTS_SUCCESS:
+                return{
+                    ...state,
+                    userToViewProducts: action.payload.products,
+                    isLoading: false,
+                    showAlert: true,
+                    alertText: "The products are here!",
+                    alertType: "success",
+                }
             case Actiones.GET_PRODUCTS_ERROR:
                 return{
                     ...state,
@@ -197,6 +206,16 @@ const reducer = (state, action) => {
                 return{
                     ...state,
                     products: cloneProducts,
+                    displayProd: action.payload.product
+                }
+            case Actiones.TOGGLE_LIKE_PROD_VIEW:
+                const foundProdV = state.userToViewProducts.find(product => product._id === action.payload.product._id)
+                const indexOfProdV = state.userToViewProducts.indexOf(foundProdV)
+                let cloneProductsV = [...state.userToViewProducts]
+                cloneProductsV[indexOfProdV] = action.payload.product
+                return{
+                    ...state,
+                    userToViewProducts: cloneProductsV,
                     displayProd: action.payload.product
                 }
             

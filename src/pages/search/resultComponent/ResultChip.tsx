@@ -29,7 +29,7 @@ const ResultChip: React.FC<forResultChips> = ({ result }) => {
 
     const handleShowUser = async (userId: string)=>{
         const canNavigate = await getTheView(userId, token, searchType)
-        if (canNavigate) return navigate(`/u/:${userId}`)
+        if (canNavigate) return navigate(`/u/${userId}`)
     }
 
     useEffect(()=>{

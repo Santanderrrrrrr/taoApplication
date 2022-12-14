@@ -3,12 +3,12 @@ import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material'
 import Carousel from 'react-material-ui-carousel'
 import { useNavigate } from "react-router-dom";
-import { MoreVert, FavoriteBorder, Favorite } from '@mui/icons-material'
-import PositionedMenu from './positionedMenu/PositionedMenu'
+import { FavoriteBorder, Favorite } from '@mui/icons-material' // MoreVert,
+// import PositionedMenu from './positionedMenu/PositionedMenu'
 import ProdModal from './prodModal/ProdModal'
 import { useAppContext } from '../../../context/appContext'
 import * as typing from '../../../types/appTypes'
-import './CSS/prodlayout.css'
+import './CSS/prodlayoutB.css'
 
 
 
@@ -18,9 +18,11 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
 
     const { 
         token, 
-        currentUser, 
-        products, 
-        getMyProducts,
+
+        userToView, 
+        userToViewProducts, 
+        getUserToViewProds,
+
         openModal,
         toggleLike,
         logout } = useAppContext()
@@ -29,9 +31,9 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     useEffect(()=>{
         const firstTake = async()=>{
         //fetching the user products
-            if(currentUser){
-                const willNavigate = await getMyProducts( token, currentUser._id )
-                // console.log(willNavigate)
+            if(userToView){
+                const utv = typeof userToView === "object" ? userToView._id : userToView
+                const willNavigate = await getUserToViewProds( token, utv)
                 if(typeof willNavigate === 'string' && willNavigate.includes("error")){ 
                     await logout()
                     navigate('/login')
@@ -44,27 +46,28 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     const handleOpen = (displayProd: typing.prodInterface['prod']) => openModal('prodModal', displayProd);    
 
     //state for positionedMenu item
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [productId, setProductId] = React.useState<string>('');
-    const ouvrir = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>, productId: string) => {
-        setProductId(productId)
-        setAnchorEl(event.currentTarget);
-    };
+    // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    // const [productId, setProductId] = React.useState<string>('');
+    // const ouvrir = Boolean(anchorEl);
+    // const handleClick = (event: React.MouseEvent<HTMLElement>, productId: string) => {
+    //     setProductId(productId)
+    //     setAnchorEl(event.currentTarget);
+    // };
 
     //function to like item
     const handleLike = (prodId: string): void=>{
-        toggleLike(prodId, token)
+        // console.log(prodId)
+        toggleLike(prodId, token, "userToViewProducts")
     }
 
 
-    const mappedprods = Array.isArray(products)? (products! as typing.prodInterface['prod'][])?.map((product, index)=>{
+    const mappedprods = Array.isArray(userToViewProducts)? (userToViewProducts! as typing.prodInterface['prod'][])?.map((product, index)=>{
         const prodDate = new Date(product.createdAt).toString().substring(0, 15)
         return(
             <React.Fragment key={index}>
                 {/* <h3 >{product.name}</h3> */}
                     <Box 
-                        className={ index%2 === 0 && index == products.length-1?  "oddLastProdListItem" : "prodListItem"}
+                        className={ index%2 === 0 && index === userToViewProducts.length-1?  "oddLastProdListItem" : "prodListItem"}
                         sx={{ 
                             borderRadius: '10px',
                             border: '1px solid rgb(247,247,247)',
@@ -132,7 +135,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                         justifyContent:'flex-start',
                                         
                                     }}>
-                                    {product?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />}
+                                    {product?.likes?.includes(userToView) || product!?.likes!?.length > 0 ? <Favorite color='error' /> : <FavoriteBorder color='error' />}
                                     <Typography 
                                         variant="caption"
                                         sx={{
@@ -142,7 +145,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                             {`${product?.likes?.length} ${product?.likes?.length===1? "like": "likes"}`}
                                     </Typography>
                                 </IconButton>
-                                <IconButton disableRipple={true}
+                                {/* <IconButton disableRipple={true}
                                         sx={{
                                             width: '50%', 
                                             display: 'flex', 
@@ -157,8 +160,8 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                                         onClick={(e)=>handleClick(e, product._id)}
                                     >
                                     <MoreVert/>
-                                </IconButton>
-                                <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir} prodId={productId}/>
+                                </IconButton> */}
+                                {/* <PositionedMenu setAnchorEl={setAnchorEl} anchorEl={anchorEl} ouvrir={ouvrir} prodId={productId}/> */}
                             </Stack>
                         </Stack>
                     </Box>
@@ -168,19 +171,19 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     }) : ""
     
 
-    if (products?.length <= 0) {
+    if (userToViewProducts?.length <= 0) {
         return (
           <div className="nothingDiv">
-            <h2>Add some products to get started!</h2>
+            <h2>No products added just yet...</h2>
           </div>
         );
       }
 
   return (
     <>
-        {products.length > 0 && 
+        {userToViewProducts?.length > 0 && 
         <>
-            <Typography variant="subtitle2" sx={{color: '#048', m: 1}}>Products</Typography>
+            <Typography variant="subtitle2" sx={{color: '#048', m: 1}}>products</Typography>
             <div className="prodContainer">
                 {mappedprods}
                 <ProdModal/>
