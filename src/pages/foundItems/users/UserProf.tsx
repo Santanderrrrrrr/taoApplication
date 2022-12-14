@@ -63,8 +63,8 @@ const UserProf: React.FC = () => {
                                     >{ "Followers"}
                                 </Typography>
                                 <Typography 
-                                    variant="caption"
-                                    // sx={{mt:1}}
+                                    variant="subtitle2"
+                                    sx={{ color: "rgba(26,117,255,1)"}}
                                     >{ theUser!.followers?.length}
                                 </Typography>
                             </Stack>

@@ -16,6 +16,7 @@
     flex-direction: column;
     align-items: flex-start;
     min-height: 138.594px;
+    max-height: 138.594px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     z-index: 14;
@@ -24,6 +25,7 @@
 
 .searchBox{
     /* background-color: rgb(255, 255, 255); */
+    /* position: fixed; */
     width: 360px;
     margin-left: auto;
     margin-right: auto;

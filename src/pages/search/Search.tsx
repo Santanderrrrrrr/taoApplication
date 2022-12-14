@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, Stack, 
+import { Box, Divider, Stack, 
     
 } from '@mui/material'
 import SelectTextFields from './searchComponent/SelectTextFields'
+import CatChips from './categoryComponent/CatChips'
 import './css/search.css'
 import logo from '../../assets/logo.png'
 
@@ -44,8 +45,12 @@ const Search = () => {
                     >
                     <SelectTextFields/>
                 </Box>
+
+                <CatChips/>
             </Stack>
-            {/* Search */}
+            <Stack>
+
+            </Stack>
         </Stack>
     </div>
   )
