@@ -1,0 +1,36 @@
+.prodCard{
+    filter: drop-shadow(0 1px 0.4px rgba(1, 81, 161, 0.5));
+}
+
+.exploreCarousel{
+    /* border-radius: 10px; */
+    /* border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px; */
+    border: '1px solid #f7f7f7'
+}
+
+.exploreCarouselImg{
+    /* max-width: 100%; */
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.exploreUserAvatar{
+    height: 80%;
+    width: calc(80%*30px);
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+.exploreUserAvatarPic{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.exploreUserAvatarUsername{
+    margin-right: auto;
+    margin-left: 8px;
+    color: #048;
+}

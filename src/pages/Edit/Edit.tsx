@@ -22,7 +22,7 @@ const Edit: React.FC = () => {
   const [size, setSize] = useState<string>('')
   const [gender, setGender] = useState<string>('')
   const [price, setPrice] = useState<number | undefined>(undefined)
-  const [inventory, setInventory] = useState<number | undefined>(undefined)
+  const [brand, setBrand] = useState<string | undefined>(undefined)
 
 
 
@@ -58,7 +58,7 @@ const Edit: React.FC = () => {
       setSize('')
       setGender('')
       setPrice(undefined)
-      setInventory(undefined)
+      setBrand(undefined)
       closeModal('edit')
     }
 
@@ -69,7 +69,7 @@ const Edit: React.FC = () => {
     size, 
     gender,
     price,
-    inventory
+    brand
         ].some(Boolean)
 
   const handleEdit = async(event: { preventDefault: () => void })=>{
@@ -84,7 +84,7 @@ const Edit: React.FC = () => {
                 size, 
                 gender,
                 price,
-                inventory
+                brand
             }
             for(let [key, value] of Object.entries(changes)){
                 if(!Boolean(value)){
@@ -205,7 +205,7 @@ const Edit: React.FC = () => {
                                 
                             </Box>
                             </Stack>
-                            <Grid className="inventory" sx={{
+                            <Grid className="brand" sx={{
                             mt:2,
                             ml: 2,
                             width: '152px',
@@ -214,13 +214,12 @@ const Edit: React.FC = () => {
                             <TextField
                                 required
                                 fullWidth
-                                id="inventory"
-                                label="Inventory"
-                                name="inventory"
-                                autoComplete="email"
+                                id="brand"
+                                label="brand"
+                                name="brand"
                                 
                                 sx={{ backgroundColor: 'white'}}
-                                onChange={(e) => setInventory(Number(e.target.value))} defaultValue={displayProd?.inventory}
+                                onChange={(e) => setBrand(e.target.value)} defaultValue={displayProd?.brand}
                             />
                             </Grid>
                         </Stack>

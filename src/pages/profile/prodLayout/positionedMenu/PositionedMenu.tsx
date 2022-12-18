@@ -35,7 +35,7 @@ export default function PositionedMenu(props: typing.ForPositionedMenu) {
   }
 
   const handleEdit=(prodId: string)=>{
-    console.log(prodId)
+    // console.log(prodId)
     openModal('edit', prodId)
     handleClose()
     // closeModal('prodModal')

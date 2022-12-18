@@ -15,7 +15,11 @@ const Results = () => {
   return (
     <>
         {/**Responsible for the results beign displayed below the search bar */}
-        <Stack className="resultSegment">
+        <Stack className="resultSegment"
+            	sx={{
+                    
+                }}
+        >
             <Stack className='resultCards'
                 sx={{
                     width: '360px', 
@@ -25,7 +29,8 @@ const Results = () => {
                     display:'flex', 
                     flexDirection: 'row', 
                     alignItems: 'center', 
-                    backgroundColor: 'white'
+                    backgroundColor: 'white',
+                    // filter:"drop-shadow(0 1px 0px rgba(1, 81, 161, 0.5))"
                 }}>
                     {searchUsersResults.length>0 && searchUsersResults.map(( result: typing.theUser['user'], index: number)=>{
                         return <ResultChip key={index} result={result}/>

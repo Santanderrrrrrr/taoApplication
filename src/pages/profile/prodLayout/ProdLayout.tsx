@@ -23,7 +23,8 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
         getMyProducts,
         openModal,
         toggleLike,
-        logout } = useAppContext()
+        logout 
+    } = useAppContext()
 
 
     useEffect(()=>{

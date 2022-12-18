@@ -3,7 +3,8 @@ import { Box, Divider, Stack,
     
 } from '@mui/material'
 import SelectTextFields from './searchComponent/SelectTextFields'
-import CatChips from './categoryComponent/CatChips'
+import Filters from './filterComponent/Filters'
+import Everything from './everything/Everything'
 import './css/search.css'
 import logo from '../../assets/logo.png'
 
@@ -45,8 +46,12 @@ const Search = () => {
                     >
                     <SelectTextFields/>
                 </Box>
-
-                <CatChips/>
+                <Stack>
+                    <Filters />
+                </Stack>
+                <Stack>
+                    <Everything />
+                </Stack>
             </Stack>
             <Stack>
 

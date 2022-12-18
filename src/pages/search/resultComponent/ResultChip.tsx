@@ -53,7 +53,8 @@ const ResultChip: React.FC<forResultChips> = ({ result }) => {
                 jusifyContent: "space-between",
                 "&.MuiBox-root:hover":{
                     backgroundColor: "#e8f2fc"
-                }
+                },
+                filter:"drop-shadow(0 1px 0px rgba(1, 81, 161, 0.5))"
             }}
         >
             <div className="resultChipImageDiv" onClick={()=>handleShowUser(result?._id as string)}>

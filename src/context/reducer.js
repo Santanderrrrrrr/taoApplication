@@ -72,6 +72,16 @@ const reducer = (state, action) => {
                     alertText: "The products are here!",
                     alertType: "success",
                 }
+            case Actiones.GETTING_EXPLORE_PRODUCT_SUCCESS:
+                return{
+                    ...state,
+                    exploreProducts: action.payload.products,
+                    initialExploreProducts: action.payload.products,
+                    isLoading: false,
+                    showAlert: true,
+                    alertText: "The products are here!",
+                    alertType: "success",
+                }
             case Actiones.GET_PRODUCTS_ERROR:
                 return{
                     ...state,
@@ -152,6 +162,12 @@ const reducer = (state, action) => {
                     ...state,
                 isLoading: true
                 }
+            //FOR GETTING_EXPLORE_PRODUCT_BEGIN
+            case Actiones.GETTING_EXPLORE_PRODUCT_BEGIN:
+                return{
+                    ...state,
+                isLoading: true
+                }
 
             //FOR FOLLOW ACTION SUCCESS
             case Actiones.GETTING_USER_PRODUCT_SUCCESS:
@@ -173,9 +189,9 @@ const reducer = (state, action) => {
                 }
             //FOR EDIT MODAL
             case Actiones.OPEN_EDIT_MODAL:
-                console.log(action.payload.displayProdParam)
+                // console.log(action.payload.displayProdParam)
                 const tbe = state.products.find(p => p._id === action.payload.displayProdParam)
-                console.log(tbe)
+                // console.log(tbe)
                 return{
                     ...state,
                     editModalOpen: true,
@@ -209,16 +225,47 @@ const reducer = (state, action) => {
                     displayProd: action.payload.product
                 }
             case Actiones.TOGGLE_LIKE_PROD_VIEW:
-                const foundProdV = state.userToViewProducts.find(product => product._id === action.payload.product._id)
-                const indexOfProdV = state.userToViewProducts.indexOf(foundProdV)
-                let cloneProductsV = [...state.userToViewProducts]
+                // console.log(`app context, context: ${action.payload.context}`)
+                const foundProdV = state[`${action.payload.context}`].find(product => product._id === action.payload.product._id)
+                const indexOfProdV = state[`${action.payload.context}`].indexOf(foundProdV)
+                let cloneProductsV = [...state[`${action.payload.context}`]]
                 cloneProductsV[indexOfProdV] = action.payload.product
+                // console.log(cloneProductsV)
                 return{
                     ...state,
-                    userToViewProducts: cloneProductsV,
+                    [`${action.payload.context}`]: cloneProductsV,
                     displayProd: action.payload.product
                 }
-            
+            //for filtering products
+            case Actiones.FILTER_EXPLORE_PRODS_BEGIN:
+                return{
+                    ...state,
+                    isLoading: true,
+                }
+            case Actiones.FILTER_EXPLORE_PRODS_SUCCESS:
+                console.log("reducer hit", action.payload.products)
+                return {
+                    ...state,
+                    isLoading: false,
+                    exploreProducts: action.payload.products,
+                }
+            //for filtering products B
+            case Actiones.SET_EXPLORE_PARAMS_INITIAL:
+                return{
+                    ...state,
+                    isLoading: true,
+                    filterExploreProducts: initialState.filterExploreProducts,
+                }
+            case Actiones.SET_PARAMS_EXPLORE_FILTER:
+                return {
+                    ...state,
+                    filterExploreProducts: action.payload.settings,
+                }
+            case Actiones.SET_PARAMS_EXPLORE_FILTER_SUCCESS:
+                return {
+                    ...state,
+                    isLoading: false,
+                }
             
             
     

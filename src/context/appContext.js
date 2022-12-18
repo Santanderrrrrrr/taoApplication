@@ -23,6 +23,9 @@ export const initialState ={
     searchProductsResults: {},
     userToView: userToView? JSON.parse(userToView) : "",
     userToViewProducts: [],
+    initialExploreProducts: [],
+    exploreProducts: [],
+    filterExploreProducts: { gender: [], category: []},
     //for modals and drawers
     isOpenModal: false,
     prodModalOpen: false,
@@ -43,7 +46,6 @@ export const AppProvider = ({ children }) =>{
 
     const storeUserToView = async(userToView)=>{
         await localStorage.setItem("userToView", userToView)
-        // console.log(localStorage.getItem("userToView"))
     }
 
     const logout = async ()=>{
@@ -113,7 +115,6 @@ export const AppProvider = ({ children }) =>{
     const getMyProducts = async( accessToken, userId )=>{
         dispatch({ type: Actiones.GET_PRODUCTS_BEGIN})
         try{    
-            // console.log(persId)
             let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products/u/${userId}`,{
                 method: 'GET',
                 headers: {
@@ -124,9 +125,7 @@ export const AppProvider = ({ children }) =>{
                 credentials: 'include',
                 })
             response = await response.json()
-            // console.log(response)
             if(response.message && response.message?.toLowerCase().indexOf('expired') !== -1){
-                // console.log("true dat", response.message)
                 dispatch({ 
                     type: Actiones.GET_PRODUCTS_ERROR,
                     payload: {
@@ -156,7 +155,6 @@ export const AppProvider = ({ children }) =>{
         if(!parametre && !displayProdParam){
             dispatch({ type: Actiones.OPEN_MODAL })
         }else if(parametre === 'prodModal' && displayProdParam){
-            // console.log(displayProdParam)
             dispatch({ 
                 type: Actiones.OPEN_PROD_MODAL,
                 payload: {
@@ -169,7 +167,6 @@ export const AppProvider = ({ children }) =>{
                 
             })
         }else if(parametre === 'edit'){
-            console.log(displayProdParam)
             dispatch({ 
                 type: Actiones.OPEN_EDIT_MODAL,
                 payload: {
@@ -209,7 +206,6 @@ export const AppProvider = ({ children }) =>{
 
     const likeToggleFunction = async(lOrU, prodId, token, theContext)=>{
         try{
-        // console.log(prodId)
             let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products/${lOrU}`,{
                 method: 'PATCH',
                 headers: {
@@ -228,16 +224,18 @@ export const AppProvider = ({ children }) =>{
                     dispatch({ 
                         type: Actiones.TOGGLE_LIKE_PROD_VIEW,
                         payload: {
+                            product: likedProd,
+                            context: theContext
+                        }
+                    })
+                }else{
+                    dispatch({ 
+                        type: Actiones.TOGGLE_LIKE_PROD,
+                        payload: {
                             product: likedProd
                         }
                     })
                 }
-                dispatch({ 
-                    type: Actiones.TOGGLE_LIKE_PROD,
-                    payload: {
-                        product: likedProd
-                    }
-                })
             }
             getMyProducts(token, response.product?.sellerId._id)
 
@@ -247,9 +245,11 @@ export const AppProvider = ({ children }) =>{
     }
     
     const toggleLike = async (prodId, token, theContext)=>{
-        const thisProd = theContext === "userToViewProducts"? state.userToViewProducts.find(prod => prod._id === prodId): state.products.find(prod => prod._id === prodId)
-        // console.log(thisProd)
-        const bewl = thisProd.likes?.includes(state.currentUser._id)
+        
+        let thisProd = theContext ? state[`${theContext}`].find(prod => prod._id === prodId): state.products.find(prod => prod._id === prodId)
+        
+        
+        const bewl = thisProd?.likes?.includes(state.currentUser._id)
         if(bewl){
             await likeToggleFunction('unlike', prodId, token, theContext)
         }else{
@@ -370,7 +370,6 @@ export const AppProvider = ({ children }) =>{
     const getUserToViewProds = async(accessToken, userId)=>{
         dispatch({ type: Actiones.GET_PRODUCTS_BEGIN})
         try{    
-            // console.log(persId)
             let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products/u/${userId}`,{
                 method: 'GET',
                 headers: {
@@ -381,9 +380,7 @@ export const AppProvider = ({ children }) =>{
                 credentials: 'include',
                 })
             response = await response.json()
-            // console.log(response)
             if(response.message && response.message?.toLowerCase().indexOf('expired') !== -1){
-                // console.log("jwt expired", response.message)
                 dispatch({ 
                     type: Actiones.GET_PRODUCTS_ERROR,
                     payload: {
@@ -422,17 +419,14 @@ export const AppProvider = ({ children }) =>{
                 credentials: 'include',
             })
             response = await response.json()
-            // console.log(response)
             if(response){
                 if(funcSearchType==="users") {
                     const utv = JSON.stringify(response.user)
-                    // console.log(utv)
                     await storeUserToView(utv)
                     await dispatch({ type: Actiones.GETTING_USER_PRODUCT_SUCCESS, payload: {user: response?.user}})  
                     const productsAttained = getUserToViewProds(token, theId)
                     return productsAttained
                 }
-                // if(funcSearchType==="products") dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_PRODUCTS, payload: {response}})  
             }else{
                 throw new Error("search failed", response)
             }        
@@ -440,6 +434,82 @@ export const AppProvider = ({ children }) =>{
             console.log(error)
             return false
         }
+    }
+
+    const getExploreProducts = async( token, funcSearchType)=>{
+        dispatch({type: Actiones.GETTING_EXPLORE_PRODUCT_BEGIN})
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${funcSearchType}`,{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include',
+            })
+            response = await response.json()
+            let logoutCondition = response.message && response.message?.toLowerCase().indexOf('expired') !== -1 || response === "Unauthorized"
+            if(logoutCondition || response.message === "jwt malformed"){
+                dispatch({ 
+                    type: Actiones.GET_PRODUCTS_ERROR,
+                    payload: {
+                        products: ''
+                    }
+                })
+                return "there was an error. Please try again in a few seconds"
+            }else{
+                dispatch({ 
+                    type: Actiones.GETTING_EXPLORE_PRODUCT_SUCCESS,
+                    payload: {
+                        products: response,
+                        users: response
+                    }
+                })
+                return true
+            }
+              
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
+    const filterProds = (genderParameter, categoryParameter) => {
+        if(!genderParameter && !categoryParameter){
+            return
+        }
+        dispatch({ type: Actiones.FILTER_EXPLORE_PRODS_BEGIN})
+        const products = state.initialExploreProducts
+        const filteredProducts = products.filter(prod => {
+            let catBool = categoryParameter.length> 0 ? categoryParameter.indexOf(prod?.categoryId.name) !== -1 : true
+            let genBool = genderParameter.length> 0 ? genderParameter.indexOf(prod?.genderId.name) !== -1 : true
+            return genBool && catBool
+        })
+
+        dispatch({
+            type: Actiones.FILTER_EXPLORE_PRODS_SUCCESS,
+            payload: {
+                products: filteredProducts,
+            }
+        })
+    }
+
+    const filterProdsB =(genderParameter, categoryParameter)=>{
+        if(!genderParameter && !categoryParameter){
+            return dispatch({
+                type: Actiones.SET_EXPLORE_PARAMS_INITIAL
+            })
+        }
+        dispatch({ type: Actiones.FILTER_EXPLORE_PRODS_BEGIN})
+        const settings = { gender: genderParameter, category: categoryParameter }
+        dispatch({ 
+            type: Actiones.SET_PARAMS_EXPLORE_FILTER,
+            payload: {
+                settings: settings
+            }
+        })
+        dispatch({type: Actiones.SET_PARAMS_EXPLORE_FILTER_SUCCESS})
     }
 
 
@@ -463,7 +533,10 @@ export const AppProvider = ({ children }) =>{
                 doTheSearch,
                 doFollow,
                 getTheView,
-                getUserToViewProds
+                getUserToViewProds,
+                getExploreProducts,
+                // filterProds,
+                filterProdsB,
             }}
         >
          {children}

@@ -21,7 +21,7 @@ const UploadProd: React.FC = () => {
   const [size, setSize] = useState<string>('')
   const [gender, setGender] = useState<string>('')
   const [price, setPrice] = useState<number | undefined>(undefined)
-  const [inventory, setInventory] = useState<number | undefined>(undefined)
+  const [brand, setBrand] = useState<string | undefined>(undefined)
   const [uploadingImg, setUploadingImg] = useState<boolean>(false);
 
 
@@ -109,7 +109,7 @@ const UploadProd: React.FC = () => {
         !size ||
         !gender ||
         !price ||
-        !inventory) return alert(' All fields of the form need to be filled! ')
+        !brand) return alert(' All fields of the form need to be filled! ')
         if(!theImages) return alert(' You must provide product images! ')
         let urls: string[] | undefined = await uploadImgs()
         
@@ -124,7 +124,7 @@ const UploadProd: React.FC = () => {
               size: size,
               gender: gender,
               price: price,
-              inventory: inventory,
+              brand: brand,
               images: urls
               })
                   
@@ -268,7 +268,7 @@ const UploadProd: React.FC = () => {
                       
                   </Box>
                 </Stack>
-                <Grid className="inventory" sx={{
+                <Grid className="brand" sx={{
                   mt:2,
                   ml: 2,
                   width: '152px',
@@ -277,13 +277,12 @@ const UploadProd: React.FC = () => {
                   <TextField
                     required
                     fullWidth
-                    id="inventory"
-                    label="Inventory"
-                    name="inventory"
-                    autoComplete="email"
+                    id="brand"
+                    label="brand"
+                    name="brand"
                     
                     sx={{ backgroundColor: 'white'}}
-                    onChange={(e) => setInventory(Number(e.target.value))} value={inventory}
+                    onChange={(e) => setBrand(e.target.value)} value={brand}
                   />
                 </Grid>
               </Stack>

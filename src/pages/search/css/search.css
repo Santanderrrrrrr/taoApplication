@@ -21,6 +21,7 @@
     border-bottom-left-radius: 10px;
     z-index: 14;
     margin-bottom: 0;
+    filter:drop-shadow(0 1px 0px rgba(1, 81, 161, 0.5));
 }
 
 .searchBox{

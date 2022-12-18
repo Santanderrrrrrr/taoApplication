@@ -102,7 +102,7 @@ export default function BasicModal() {
                 <Chip 
                     sx={{color:'#048'}} 
                     variant={"outlined"}
-                    label={`available: ${displayProd.inventory}`} 
+                    label={`Brand: ${displayProd.brand? displayProd.brand : "tbd"}`} 
                 />
 
             </Stack>

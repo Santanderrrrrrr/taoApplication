@@ -2,12 +2,18 @@ import * as React from 'react';
 // import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { useAppContext } from '../../../../context/appContext'
-import { Box, Chip, IconButton, Stack, Typography } from '@mui/material'
+import { 
+    Box, 
+    Chip, 
+    createTheme, 
+    IconButton, 
+    Stack, 
+    Typography, 
+    ThemeProvider
+} from '@mui/material'
 import { ArrowBackIos, ArrowForwardIos, Favorite, FavoriteBorder } from '@mui/icons-material'
 import Carousel from 'react-material-ui-carousel'
-// import { MoreVert } from '@mui/icons-material'
 import * as typing from '../../../../types/appTypes'
-// import PositionedMenu from '../positionedMenu/PositionedMenu';
 
 
 const style = {
@@ -16,11 +22,26 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '350px',
-    // height: 600,
     bgcolor: 'rgb(247, 247, 247)',
     borderRadius: '10px',
+    filter: "drop-shadow(0 2px 1px rgba(54, 62, 69, 0.5))",
+
     p: 2
 };
+
+// const theme = createTheme({
+//     components: {
+//       // Name of the component
+//       MuiModal: {
+//         styleOverrides: {
+//           // Name of the slot
+//           backdrop: {
+//             // Some CSS
+//             // margin: '0px',
+//           },
+//         },
+//       },
+//     }})
   
 export default function BasicModal() {
 
@@ -30,11 +51,7 @@ export default function BasicModal() {
 
   const handleClose = () => closeModal('prodModal');
 
-//   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-//   const ouvrir = Boolean(anchorEl);
-//   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-//       setAnchorEl(event.currentTarget);
-//   };
+
 
   //function to like item
   const handleLike = (prodId: string): void=>{
@@ -44,10 +61,12 @@ export default function BasicModal() {
   return (
     <div>
       {displayProd && <Modal
+        className="prodModalItself"
         open={prodModalOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        BackdropProps={{style: {backgroundColor: 'rgba(0,68,136,0.1)'}}}
       >
         <Box sx={style}>
             
@@ -136,7 +155,7 @@ export default function BasicModal() {
                       justifyContent:'flex-start',
                       
                   }}>
-                  {displayProd?.likes?.includes(currentUser._id)? <Favorite color='error' /> : <FavoriteBorder color='error' />}
+                    {displayProd?.likes?.includes(currentUser?._id)? <Favorite color='error' /> : displayProd!?.likes!?.length > 0 ? <FavoriteBorder color='error' /> : <FavoriteBorder/>}
                   <Typography 
                       variant="caption"
                       sx={{

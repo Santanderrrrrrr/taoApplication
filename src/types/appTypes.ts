@@ -20,10 +20,11 @@ export type prodInterface = {
         sellerId: {
             _id: string
             username: string
+            picture?: string
         },
         createdAt: string,
         description: string,
-        inventory: number,
+        brand: string,
         name: string,
         price: number,
         updatedAt: string,
@@ -78,5 +79,5 @@ export type changesKeys = {
     size: string;
     gender: string;
     price: number | undefined;
-    inventory: number | undefined;
+    brand: string | undefined;
 }
