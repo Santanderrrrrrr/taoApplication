@@ -12,6 +12,7 @@ import {
   Button,
  } from '@mui/material';
  import { ExpandMore, Done } from '@mui/icons-material';
+ import DiscreteSliderLabel from './priceComponent/DiscreteSliderLabel'
  import { useAppContext } from "../../../context/appContext"
 import './Filters.css'
 
@@ -30,7 +31,8 @@ const theme = createTheme({
           // Some CSS
           maxHeight: '30px',
           minHeight: "30px",
-          backgroundColor: "#f7f7f7"
+          backgroundColor: "#f7f7f7",
+          width: "375px",
         },
       },
     },
@@ -62,20 +64,24 @@ const Filters = () => {
 
   const [ selectedChip, setSelectedChip ] = useState<string[]>([])
   const [ gender, setGender ] = useState<Object[]>([])
+  const [price, setPrice] = React.useState<number | undefined>(0);
 
   
 
+  useEffect(() => {
+    filterProdsB(gender, selectedChip, price)
+  },[price])
 
 
   const handleChipSelection = (cat: string)=>{
     if(selectedChip.indexOf(cat)!== -1){
       let newCat = selectedChip.filter(chip=> chip !== cat)
       setSelectedChip(newCat)
-      filterProdsB(gender, newCat)
+      filterProdsB(gender, newCat, price)
     }else{
       let newCat = [...selectedChip, cat]
       setSelectedChip(newCat)
-      filterProdsB(gender, newCat)
+      filterProdsB(gender, newCat, price)
     }
   }
 
@@ -83,12 +89,12 @@ const Filters = () => {
     if(gender.indexOf(sex)!== -1){
       let newGen = gender.filter(pronoun => pronoun !== sex)
       setGender(newGen)
-      filterProdsB(newGen, selectedChip)
+      filterProdsB(newGen, selectedChip, price)
 
     }else{
       let newGen = [...gender, sex]
       setGender(newGen)
-      filterProdsB(newGen, selectedChip)
+      filterProdsB(newGen, selectedChip, price)
     }
   }
 
@@ -152,7 +158,7 @@ const Filters = () => {
             disableGutters={true}
             elevation={0}
             sx={{
-              mt:1,
+              // mt:1,
             }}
           >
             <AccordionSummary
@@ -190,6 +196,46 @@ const Filters = () => {
           </Accordion>
         </ThemeProvider>
       </Stack>  
+      <Stack className="setPrice" sx={{ 
+        mt: 2, 
+        width:"390px", 
+        display:"flex",
+        flexDirection:"row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContext:"space-between",
+        backgroundColor: "#f7f7f7",
+        boxSizing:"border-box",
+        borderRadius: "10px",
+        p:1,
+        filter:"drop-shadow(0 1px 0px rgba(1, 81, 161, 0.5))"
+      }}>
+        <ThemeProvider theme={theme}>
+          <Accordion 
+            disableGutters={true}
+            elevation={0}
+            sx={{
+              // mt:1,
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMore sx={{ml: "auto"}}/>}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography 
+                variant="subtitle2"
+                sx={{ mr:"auto", mt:0, mb:0, boxSizing:"border-box"}}
+              >
+                {"Max price:"}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <DiscreteSliderLabel setPrice={setPrice} price={price}/>
+            </AccordionDetails>
+          </Accordion>
+        </ThemeProvider>
+      </Stack>
     </>
   )
 }

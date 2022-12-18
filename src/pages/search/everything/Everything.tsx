@@ -16,15 +16,16 @@ const Everything = () => {
     const [exploreProds, setExploreProds ] = useState<typing.prodInterface['prod'][]>(exploreProducts)
 
 
-    const filterProds = (genderParameter: string[], categoryParameter: string[]) => {
-        if(genderParameter.length === 0 && categoryParameter.length === 0){
+    const filterProds = (genderParameter: string[], categoryParameter: string[], priceParameter: number) => {
+        if(genderParameter.length === 0 && categoryParameter.length === 0 && priceParameter === 0){
             return setExploreProds(exploreProducts)
         }
         const products = exploreProducts
         const filteredProducts = products.filter((prod: typing.prodInterface["prod"]) => {
             let catBool = categoryParameter.length> 0 ? categoryParameter.indexOf(prod?.categoryId.name) !== -1 : true
             let genBool = genderParameter.length> 0 ? genderParameter.indexOf(prod?.genderId.name) !== -1 : true
-            return genBool && catBool
+            let priceBool = priceParameter > 0 ? prod.price <= priceParameter : true
+            return genBool && catBool && priceBool
         })
         setExploreProds([...filteredProducts])
     }
@@ -36,10 +37,10 @@ const Everything = () => {
                 await logout()
                 navigate('/login')
             }else if(willNavigate){
-                filterProds(filterExploreProducts.gender, filterExploreProducts.category)   
+                filterProds(filterExploreProducts.gender, filterExploreProducts.category, filterExploreProducts.price)   
             }
         }else{
-            filterProds(filterExploreProducts.gender, filterExploreProducts.category)
+            filterProds(filterExploreProducts.gender, filterExploreProducts.category, filterExploreProducts.price)
         }
     }
     

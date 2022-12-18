@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom"
 import { ArrowBackIos, ArrowForwardIos, Favorite, FavoriteBorder } from '@mui/icons-material'
 import { IconButton, Stack, Typography } from "@mui/material"
 import Carousel from 'react-material-ui-carousel'
@@ -9,9 +10,9 @@ import "./prodCard.css"
 
 
 const ProdCard: React.FC<typing.prodInterface> = ({prod}) => {
-    const { toggleLike, token, exploreProducts, openModal, currentUser, filterExploreProducts } = useAppContext()
+    const navigate = useNavigate()
+    const { toggleLike, token, openModal, currentUser, getTheView } = useAppContext()
 
-    // const [ prod, setProd ] = useState<typing.prodInterface["prod"]>(theProd)
 
 
     //function to like item
@@ -21,16 +22,12 @@ const ProdCard: React.FC<typing.prodInterface> = ({prod}) => {
 
     const handleOpen = (displayProd: typing.prodInterface['prod']) => openModal('prodModal', displayProd);    
 
-
-
-
-
-    // useEffect(()=>{
-    //     const thisOneProd = exploreProducts?.find((daProd: typing.prodInterface["prod"])=>{
-    //         return daProd._id === theProd?._id
-    //     })
-    //     setProd(thisOneProd)
-    // },[exploreProducts, filterExploreProducts])
+    const handleViewUser = async(userId: string)=>{
+        const canNavigate = await getTheView(userId, token, "users")
+        if(typeof canNavigate === "boolean" && canNavigate){
+            navigate(`/u/${userId}`)
+        }
+    }
 
 
   return (
@@ -46,6 +43,7 @@ const ProdCard: React.FC<typing.prodInterface> = ({prod}) => {
         }}
     >   
         <Stack
+            onClick={()=>handleViewUser(prod?.sellerId?._id)}
             sx={{
                 width: "100%",
                 height: "30px",
@@ -61,7 +59,14 @@ const ProdCard: React.FC<typing.prodInterface> = ({prod}) => {
             <div className={"exploreUserAvatar"}>
                 <img className={"exploreUserAvatarPic"} src={prod?.sellerId?.picture!} alt={prod?.sellerId?.username} />
             </div>
-            <Typography sx={{ml: 1, color: "#048"}} className="exploreUserAvatarUsername" variant="caption">{prod?.sellerId?.username!}</Typography>
+            <Typography 
+                sx={{ml: 1, color: "#048"}} 
+                className="exploreUserAvatarUsername" 
+                variant="caption"
+                
+            >
+                {prod?.sellerId?.username!}
+            </Typography>
 
         </Stack>
         <Carousel

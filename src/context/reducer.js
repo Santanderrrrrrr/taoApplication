@@ -154,8 +154,10 @@ const reducer = (state, action) => {
                 return{
                     ...state,
                     isLoading: false,
-                    currentUser: action.payload.newUser
+                    currentUser: action.payload.newUser,
+                    userToView: action.payload.followedUser
                 }
+            
             //FOR GETTING_USER_PRODUCT_BEGIN
             case Actiones.GETTING_USER_PRODUCT_BEGIN:
                 return{

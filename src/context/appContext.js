@@ -5,7 +5,8 @@ import * as Actiones from './actions'
 
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
-const userToView = localStorage.getItem("userToView");
+let userToView = localStorage.getItem("userToView");
+userToView = userToView === "undefined"? "" : JSON.parse(userToView)
 
 export const initialState ={
     isLoggedIn: false,
@@ -21,11 +22,11 @@ export const initialState ={
     searchType: "",
     searchUsersResults: {},
     searchProductsResults: {},
-    userToView: userToView? JSON.parse(userToView) : "",
+    userToView: userToView? userToView : "",
     userToViewProducts: [],
     initialExploreProducts: [],
     exploreProducts: [],
-    filterExploreProducts: { gender: [], category: []},
+    filterExploreProducts: { gender: [], category: [], price: 0},
     //for modals and drawers
     isOpenModal: false,
     prodModalOpen: false,
@@ -356,7 +357,7 @@ export const AppProvider = ({ children }) =>{
             response = await response.json()
             if(response){
                 if(funcSearchType==="users") {
-                    dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_USERS, payload: {newUser: response?.follower}})  
+                    dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_USERS, payload: {newUser: response?.follower, followedUser: response?.followed}})  
                 }
                 // if(funcSearchType==="products") dispatch({ type: Actiones.FOLLOW_ACTION_SUCCESS_PRODUCTS, payload: {response}})  
             }else{
@@ -475,34 +476,34 @@ export const AppProvider = ({ children }) =>{
         }
     }
 
-    const filterProds = (genderParameter, categoryParameter) => {
-        if(!genderParameter && !categoryParameter){
-            return
-        }
-        dispatch({ type: Actiones.FILTER_EXPLORE_PRODS_BEGIN})
-        const products = state.initialExploreProducts
-        const filteredProducts = products.filter(prod => {
-            let catBool = categoryParameter.length> 0 ? categoryParameter.indexOf(prod?.categoryId.name) !== -1 : true
-            let genBool = genderParameter.length> 0 ? genderParameter.indexOf(prod?.genderId.name) !== -1 : true
-            return genBool && catBool
-        })
+    // const filterProds = (genderParameter, categoryParameter) => {
+    //     if(!genderParameter && !categoryParameter){
+    //         return
+    //     }
+    //     dispatch({ type: Actiones.FILTER_EXPLORE_PRODS_BEGIN})
+    //     const products = state.initialExploreProducts
+    //     const filteredProducts = products.filter(prod => {
+    //         let catBool = categoryParameter.length> 0 ? categoryParameter.indexOf(prod?.categoryId.name) !== -1 : true
+    //         let genBool = genderParameter.length> 0 ? genderParameter.indexOf(prod?.genderId.name) !== -1 : true
+    //         return genBool && catBool
+    //     })
 
-        dispatch({
-            type: Actiones.FILTER_EXPLORE_PRODS_SUCCESS,
-            payload: {
-                products: filteredProducts,
-            }
-        })
-    }
+    //     dispatch({
+    //         type: Actiones.FILTER_EXPLORE_PRODS_SUCCESS,
+    //         payload: {
+    //             products: filteredProducts,
+    //         }
+    //     })
+    // }
 
-    const filterProdsB =(genderParameter, categoryParameter)=>{
-        if(!genderParameter && !categoryParameter){
+    const filterProdsB =(genderParameter, categoryParameter, priceParameter)=>{
+        if(!genderParameter && !categoryParameter && !priceParameter){
             return dispatch({
                 type: Actiones.SET_EXPLORE_PARAMS_INITIAL
             })
         }
         dispatch({ type: Actiones.FILTER_EXPLORE_PRODS_BEGIN})
-        const settings = { gender: genderParameter, category: categoryParameter }
+        const settings = { gender: genderParameter, category: categoryParameter, price: priceParameter }
         dispatch({ 
             type: Actiones.SET_PARAMS_EXPLORE_FILTER,
             payload: {

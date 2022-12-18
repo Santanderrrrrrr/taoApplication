@@ -87,7 +87,7 @@ const SelectTextFields = () => {
                         <OutlinedInput
                             id="outlined-adornment-search"
                             type={'text'}
-                            placeholder={searchType === ""? "pick a search category first!": searchType === "products" ? "search products" : "search people"}
+                            placeholder={searchType === ""? "people or products?": searchType === "products" ? "search products" : "search people"}
                             disabled = {searchType === ""? true : false}
                             onChange={optimizedDebounce}
                             startAdornment={

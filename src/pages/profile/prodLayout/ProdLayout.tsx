@@ -111,7 +111,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                         <Stack sx={{width: '177px', display: 'flex', justifyContent: 'flex-start', mt:1, mr: 'auto', ml: 1, mb: 1, color: '#048'}}>
                             <Typography variant='body2' sx={{ maxWidth: '170px'}}>{product.name}</Typography>
                             <Typography variant='caption' sx={{mb: 1, fontSize: 10}}>{prodDate}</Typography>    
-                            <Stack sx={{padding: 0.5, borderRadius: '5px', backgroundColor: "#fff"}}>
+                            <Stack sx={{pr: 0, p: 0.5, borderRadius: '5px', backgroundColor: "#fff" }}>
                                 <Typography variant='subtitle2' sx={{}}><b>kes</b> {product.price}</Typography>    
                             </Stack>
                             <Stack 

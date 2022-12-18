@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAppContext } from '../../../context/appContext'
 import ProdLayout from '../prodLayout/ProdLayout'
 import AboutAccordion from './accordion/AboutAccordion'
-import { Stack, Typography, Divider, Box } from '@mui/material';
+import { Stack, Typography, Divider, Box, Button } from '@mui/material';
 import '../../profile/css/profile.css'
 import logo from '../../../assets/logo.png'
 import * as typing from '../../../types/appTypes'
@@ -13,23 +13,23 @@ import * as typing from '../../../types/appTypes'
 const UserProf: React.FC = () => {
     const { userId} = useParams()
 
-    const { userToView, getTheView, token } = useAppContext()
+    const { userToView, getTheView, token, currentUser, doFollow } = useAppContext()
     
 
-    const [ theUser, setTheUser ] = useState <typing.theUser["user"]>(userToView)
 
     useEffect(()=>{
-        // console.log("useEffect hit")
-        const canRefresh = getTheView(userId, token, "users")
-        if(typeof canRefresh === "boolean" && canRefresh){
-            setTheUser(userToView)
-        }
-    }, [])
+        
+        
+    }, [currentUser])
+
+    const  handleFollow = async(userId: string)=>{
+        await doFollow(userId, token, "users")
+    }
 
     
   return (
     <>
-        {theUser && <div className="backdrop">
+        {userToView && <div className="backdrop">
             <div className='content'>
                 <div className='profileHeading'>
                     <div className='profByjLogo'>
@@ -40,7 +40,19 @@ const UserProf: React.FC = () => {
                     sx={{ position: 'sticky', top: 65, display: 'flex', flexDirection: 'row', p:2, boxSizing: 'border-box', borderRadius:'10px'}}
                     >
                     <Stack className="profilePicture__container">
-                        <img src={theUser!.picture} alt="avatar placeholder" className="profilePicture" /> 
+                        <img src={userToView!.picture} alt="avatar placeholder" className="profilePicture" /> 
+                        <Stack 
+                            sx={{
+                                // mt: 1
+                            }}
+                        >
+                            <Button
+                                onClick={()=>handleFollow(userId as string)}
+                            >
+                                {currentUser?.following?.indexOf(userId) !== -1? "Follow" : "UNFOLLOW"}
+                            </Button>
+                        </Stack>
+
                     </Stack>
                     <Stack className="userDeets" sx={{display: "flex", flexDirection: "column", alignItems: 'center', width:'70%', ml: 2}}>
                         <Stack className="nameNFolls" sx={{display: "flex", flexDirection: "row", justifyContent: 'space-evenly'}}>
@@ -48,12 +60,12 @@ const UserProf: React.FC = () => {
                                 <Typography 
                                     variant="subtitle2"
                                     sx={{mt:1, color: 'rgba(26,117,255,1)'}}
-                                    >{ theUser!.username?.substring(0, 12)}
+                                    >{ userToView!.username?.substring(0, 12)}
                                 </Typography>
                                 <Typography 
                                     variant="caption"
                                     // sx={{mt:1}}
-                                    >{ theUser!?.firstname } { theUser!?.lastname}
+                                    >{ userToView!?.firstname } { userToView!?.lastname}
                                 </Typography>
                             </Stack>
                             <Stack className="followers" sx={{ml: 2}}>
@@ -65,12 +77,12 @@ const UserProf: React.FC = () => {
                                 <Typography 
                                     variant="subtitle2"
                                     sx={{ color: "rgba(26,117,255,1)"}}
-                                    >{ theUser!.followers?.length}
+                                    >{ userToView!.followers?.length}
                                 </Typography>
                             </Stack>
                         </Stack>
                         <Stack className="bio" sx={{display: "flex", flexDirection: "column", alignItems: 'center'}}>
-                            <AboutAccordion user={theUser}/>
+                            <AboutAccordion user={userToView}/>
                         </Stack>
                         <Stack className="contacts">
 
@@ -78,7 +90,7 @@ const UserProf: React.FC = () => {
                     </Stack>
                 </Box>
                 <Divider variant="middle" sx={{mt: 2, mb:1}} />
-                {theUser && <ProdLayout/>}
+                {userToView && <ProdLayout/>}
             </div>
         </div>}
     </>

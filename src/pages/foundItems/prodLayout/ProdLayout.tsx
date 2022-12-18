@@ -128,7 +128,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
                             }}>
                                 <IconButton 
                                     disableRipple={true} 
-                                    onClick={()=>handleLike(product._id)}
+                                    onClick={()=>handleLike(product?._id)}
                                     sx={{
                                         width: '50%', 
                                         display: 'flex', 

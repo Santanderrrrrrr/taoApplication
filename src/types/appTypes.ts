@@ -81,3 +81,8 @@ export type changesKeys = {
     price: number | undefined;
     brand: string | undefined;
 }
+
+export interface ForExploreSlider{
+    setPrice: React.Dispatch<React.SetStateAction<number | undefined>>
+    price: number | undefined
+}
