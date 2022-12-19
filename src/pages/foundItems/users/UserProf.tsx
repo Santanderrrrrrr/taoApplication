@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from "react-router-dom";
 import { useAppContext } from '../../../context/appContext'
-import ProdLayout from '../prodLayout/ProdLayout'
+import ProdLayout from './prodLayout/ProdLayout'
 import AboutAccordion from './accordion/AboutAccordion'
 import { Stack, Typography, Divider, Box, Button } from '@mui/material';
 import '../../profile/css/profile.css'
 import logo from '../../../assets/logo.png'
-import * as typing from '../../../types/appTypes'
 
 
 
 const UserProf: React.FC = () => {
     const { userId} = useParams()
 
-    const { userToView, getTheView, token, currentUser, doFollow } = useAppContext()
+    const { userToView, token, currentUser, doFollow } = useAppContext()
     
 
 
@@ -23,9 +22,11 @@ const UserProf: React.FC = () => {
     }, [currentUser])
 
     const  handleFollow = async(userId: string)=>{
+        console.log(userId, currentUser._id, userToView.followers)
         await doFollow(userId, token, "users")
     }
 
+    const dontLetMeFollowMe = userId !== currentUser._id
     
   return (
     <>
@@ -41,7 +42,7 @@ const UserProf: React.FC = () => {
                     >
                     <Stack className="profilePicture__container">
                         <img src={userToView!.picture} alt="avatar placeholder" className="profilePicture" /> 
-                        <Stack 
+                        {dontLetMeFollowMe && <Stack 
                             sx={{
                                 // mt: 1
                             }}
@@ -49,9 +50,9 @@ const UserProf: React.FC = () => {
                             <Button
                                 onClick={()=>handleFollow(userId as string)}
                             >
-                                {currentUser?.following?.indexOf(userId) !== -1? "Follow" : "UNFOLLOW"}
+                                {currentUser?.following?.indexOf(userId) === -1? "Follow" : "UNFOLLOW"}
                             </Button>
-                        </Stack>
+                        </Stack>}
 
                     </Stack>
                     <Stack className="userDeets" sx={{display: "flex", flexDirection: "column", alignItems: 'center', width:'70%', ml: 2}}>

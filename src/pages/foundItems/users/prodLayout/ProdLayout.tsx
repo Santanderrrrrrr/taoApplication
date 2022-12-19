@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { FavoriteBorder, Favorite } from '@mui/icons-material' // MoreVert,
 // import PositionedMenu from './positionedMenu/PositionedMenu'
 import ProdModal from './prodModal/ProdModal'
-import { useAppContext } from '../../../context/appContext'
-import * as typing from '../../../types/appTypes'
+import { useAppContext } from '../../../../context/appContext'
+import * as typing from '../../../../types/appTypes'
 import './CSS/prodlayoutB.css'
 
 

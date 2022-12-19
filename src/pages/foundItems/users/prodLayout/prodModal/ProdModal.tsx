@@ -1,19 +1,17 @@
 import * as React from 'react';
 // import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { useAppContext } from '../../../../context/appContext'
+import { useAppContext } from '../../../../../context/appContext'
 import { 
     Box, 
     Chip, 
-    createTheme, 
     IconButton, 
     Stack, 
     Typography, 
-    ThemeProvider
 } from '@mui/material'
 import { ArrowBackIos, ArrowForwardIos, Favorite, FavoriteBorder } from '@mui/icons-material'
 import Carousel from 'react-material-ui-carousel'
-import * as typing from '../../../../types/appTypes'
+import * as typing from '../../../../../types/appTypes'
 
 
 const style = {
