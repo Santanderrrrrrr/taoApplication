@@ -124,23 +124,23 @@ const reducer = (state, action) => {
             case Actiones.SEARCH_BEGIN:
                 return{
                     ...state,
-                isLoading: true
+                    isLoading: true,
+                    searchType: action.payload.searchType
                 }
             //FOR Search SUCCESS
             case Actiones.SEARCH_SUCCESS_USERS:
                 return{
                     ...state,
-                isLoading: false,
-                searchUsersResults: action.payload.response,
-                searchType: "users"
+                    isLoading: false,
+                    searchUsersResults: action.payload.response,
+                    searchType: "users"
                 }
             case Actiones.SEARCH_SUCCESS_PRODUCTS:
                 return{
                     ...state,
-                isLoading: false,
-                searchProductsResults: action.payload.response,
-                searchType: "products"
-
+                    isLoading: false,
+                    searchProductsResults: action.payload.response,
+                    searchType: "products"
                 }
             //FOR FOLLOW ACTION BEGIN
             case Actiones.FOLLOW_ACTION_BEGIN:
@@ -176,7 +176,8 @@ const reducer = (state, action) => {
                 return{
                     ...state,
                     isLoading: false,
-                    userToView: action.payload.user
+                    userToView: action.payload.user ? action.payload.user : {},
+                    productToView: action.payload.product ? action.payload.product : {}
                 }
             //FOR WARN MODAL
             case Actiones.OPEN_WARN_MODAL:

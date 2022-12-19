@@ -7,6 +7,8 @@ const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 let userToView = localStorage.getItem("userToView");
 userToView = userToView === "undefined"? "" : JSON.parse(userToView)
+let productToView = localStorage.getItem("productToView");
+productToView = productToView === "undefined"? "" : JSON.parse(productToView)
 
 export const initialState ={
     isLoggedIn: false,
@@ -20,9 +22,10 @@ export const initialState ={
     currentUser: JSON.parse(user),
     products: [],
     searchType: "",
-    searchUsersResults: {},
-    searchProductsResults: {},
+    searchUsersResults: [],
+    searchProductsResults: [],
     userToView: userToView? userToView : "",
+    productToView: productToView? productToView : "",
     userToViewProducts: [],
     initialExploreProducts: [],
     exploreProducts: [],
@@ -47,6 +50,9 @@ export const AppProvider = ({ children }) =>{
 
     const storeUserToView = async(userToView)=>{
         await localStorage.setItem("userToView", userToView)
+    }
+    const storeProductToView = async(userToView)=>{
+        await localStorage.setItem("productToView", userToView)
     }
 
     const logout = async ()=>{
@@ -315,7 +321,10 @@ export const AppProvider = ({ children }) =>{
     }
 
     const doTheSearch = async (database, value, token)=>{
-        dispatch({type: Actiones.SEARCH_BEGIN})
+        if(!value){
+            return
+        }
+        dispatch({type: Actiones.SEARCH_BEGIN, payload: {searchType: database}})
         try{
             let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${database}/find/${value}`,{
                 method: 'GET',
@@ -427,6 +436,11 @@ export const AppProvider = ({ children }) =>{
                     await dispatch({ type: Actiones.GETTING_USER_PRODUCT_SUCCESS, payload: {user: response?.user}})  
                     const productsAttained = getUserToViewProds(token, theId)
                     return productsAttained
+                }else if(funcSearchType==="products"){
+                    const ptv = JSON.stringify(response)
+                    await storeUserToView(ptv)
+                    await dispatch({ type: Actiones.GETTING_USER_PRODUCT_SUCCESS, payload: {product: response}})  
+                    return true
                 }
             }else{
                 throw new Error("search failed", response)

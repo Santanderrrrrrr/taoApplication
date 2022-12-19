@@ -18,6 +18,7 @@ const UploadProd: React.FC = () => {
   const [name, setName] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [category, setCategory] = useState<string>('')
+  const [condition, setCondition] = useState<string>('')
   const [size, setSize] = useState<string>('')
   const [gender, setGender] = useState<string>('')
   const [price, setPrice] = useState<number | undefined>(undefined)
@@ -33,13 +34,18 @@ const UploadProd: React.FC = () => {
 
   //this fills in the menu items for the selects
   const gimmeItems = (parameter: string) => {
-    let categories = ['outerwear', 'suits and blazers', 'tousers', 'leggings', 'socks', 'underwear','activewear', 'jeans', 'tops and tshirts', 'jumpers and sweatshirts', 'shorts', 'cropped pants','swimwear', 'costumes and special outfits', 'dresses', 'jumpsuits and rompers', 'lingerie', 'nightwear', 'skirts', 'pajamas', 'maternity clothes', 'baby clothes'];
+    let categories = ['outerwear', 'suits and blazers', 'trousers', 'leggings', 'socks', 'underwear','activewear', 'jeans', 'tops and tshirts', 'jumpers and sweatshirts', 'shorts', 'cropped pants','swimwear', 'costumes and special outfits', 'dresses', 'jumpsuits and rompers', 'lingerie', 'nightwear', 'skirts', 'pajamas', 'maternity clothes', 'baby clothes'];
+    let conditions = ["new", "used", "slightly damaged", "damaged", "very old"]
     let sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL' ]
     let gender =['Male', 'Female', 'Unisex']
     switch (parameter) {
       case 'category':
         return categories.map((cat, index)=>{
           return <MenuItem key={index} value={cat}>{cat}</MenuItem>
+        })
+      case 'condition':
+        return conditions.map((con, index)=>{
+          return <MenuItem key={index} value={con}>{con}</MenuItem>
         })
       case 'size':
         return sizes.map((size, index)=>{
@@ -109,6 +115,7 @@ const UploadProd: React.FC = () => {
         !size ||
         !gender ||
         !price ||
+        !condition ||
         !brand) return alert(' All fields of the form need to be filled! ')
         if(!theImages) return alert(' You must provide product images! ')
         let urls: string[] | undefined = await uploadImgs()
@@ -121,6 +128,7 @@ const UploadProd: React.FC = () => {
               name: name,
               description: description,
               category: category,
+              condition: condition,
               size: size,
               gender: gender,
               price: price,
@@ -328,7 +336,7 @@ const UploadProd: React.FC = () => {
                       </Select>
                     </FormControl>
 
-                    <FormControl sx={{ml: 2, width: '152px', mt: 2}}>
+                    <FormControl sx={{ width: '152px', mt: 2}}>
                       <InputLabel id="demo-controlled-open-select-label">Sex</InputLabel>
                       <Select
                         required
@@ -342,6 +350,19 @@ const UploadProd: React.FC = () => {
 
                       >
                         {gimmeItems('gender')}
+                      </Select>
+                    </FormControl>
+                    <FormControl sx={{ml: 2, width: '152px', mt: 2}}>
+                      <InputLabel id="demo-controlled-open-select-label">Condition</InputLabel>
+                      <Select
+                        required
+                        labelId="demo-controlled-open-select-label"
+                        id="demo-controlled-open-select"
+                        label="Condition"
+                        sx={{ width:'152px', backgroundColor: 'white'}}
+                        onChange={(e)=> setCondition(e.target.value as string)}
+                      >
+                        {gimmeItems('condition')}
                       </Select>
                     </FormControl>
                 </Grid>

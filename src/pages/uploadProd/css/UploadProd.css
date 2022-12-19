@@ -28,7 +28,7 @@
 }
 
 .logoNewProduct{
-    margin-top: -90px;
+    margin-top: -20px;
     margin-right: 200px;
 }
 
@@ -36,9 +36,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
+    position: relative;
     width: 100%;
     font-size: 12px;
+    margin-top: 20px;
 }
 
 .logoDiv{

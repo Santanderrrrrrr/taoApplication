@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react'
 import { Stack } from '@mui/material'
 import { useAppContext } from '../../../context/appContext'
-import ResultChip from './ResultChip'
+import UserResultChip from './UserResultChip'
+import ProductResultChip from './ProductResultChip'
 import * as typing from '../../../types/appTypes'
 
 const Results = () => {
 
-    const { searchUsersResults } = useAppContext()
+    const { searchUsersResults, searchProductsResults, searchType } = useAppContext()
 
     useEffect(() =>{
 
-    },[searchUsersResults])
+    },[searchUsersResults, searchProductsResults])
 
   return (
     <>
@@ -32,8 +33,11 @@ const Results = () => {
                     backgroundColor: 'white',
                     // filter:"drop-shadow(0 1px 0px rgba(1, 81, 161, 0.5))"
                 }}>
-                    {searchUsersResults.length>0 && searchUsersResults.map(( result: typing.theUser['user'], index: number)=>{
-                        return <ResultChip key={index} result={result}/>
+                    {searchType === "users" && searchUsersResults.map(( result: typing.theUser['user'], index: number)=>{
+                        return <UserResultChip key={index} result={result}/>
+                    })}
+                    {searchType === "products" && searchProductsResults.map(( result: typing.prodInterface['prod'], index: number)=>{
+                        return <ProductResultChip key={index} prod={result}/>
                     })}
             </Stack>
 

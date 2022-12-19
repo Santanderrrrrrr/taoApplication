@@ -12,6 +12,7 @@ import PlaygroundSpeedDial from './pages/navTool/PlaygroundSpeedDial'
 import SettingsDrawer from './pages/settingDrawer/SettingsDrawer'
 import Search from './pages/search/Search'
 import UserProf from './pages/foundItems/users/UserProf'
+import Product from "./pages/foundItems/products/Product"
 
 
 function App() {  
@@ -28,6 +29,7 @@ function App() {
         <Route path='/profile' element={<PersProfilePage/>} />
         <Route path='/search' element={<Search/>} />
         <Route path='/u/:userId' element={<UserProf/>} />
+        <Route path='/p/:productId' element={<Product/>} />
       </Routes>
       {currentUser && <PlaygroundSpeedDial />}
       {currentUser && <SettingsDrawer />}

@@ -1,6 +1,7 @@
 import React from 'react'
-import { Box, Divider, Stack, 
-    
+import { 
+    Box, 
+    Stack, 
 } from '@mui/material'
 import SelectTextFields from './searchComponent/SelectTextFields'
 import Filters from './filterComponent/Filters'
