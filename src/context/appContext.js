@@ -51,8 +51,8 @@ export const AppProvider = ({ children }) =>{
     const storeUserToView = async(userToView)=>{
         await localStorage.setItem("userToView", userToView)
     }
-    const storeProductToView = async(userToView)=>{
-        await localStorage.setItem("productToView", userToView)
+    const storeProductToView = async(productToView)=>{
+        await localStorage.setItem("productToView", productToView)
     }
 
     const logout = async ()=>{
@@ -226,7 +226,7 @@ export const AppProvider = ({ children }) =>{
             response = await response.json()
 
             if(response.message === `${lOrU}`){
-                const likedProd = response.product
+                const likedProd = response?.product
                 if(theContext){
                     dispatch({ 
                         type: Actiones.TOGGLE_LIKE_PROD_VIEW,
@@ -235,6 +235,7 @@ export const AppProvider = ({ children }) =>{
                             context: theContext
                         }
                     })
+                    getMyProducts(token, response.product?.sellerId._id)
                 }else{
                     dispatch({ 
                         type: Actiones.TOGGLE_LIKE_PROD,
@@ -242,18 +243,22 @@ export const AppProvider = ({ children }) =>{
                             product: likedProd
                         }
                     })
+                    getMyProducts(token, response.product?.sellerId._id)
                 }
             }
-            getMyProducts(token, response.product?.sellerId._id)
-
         }catch(err){
             console.log(err)
         }
     }
     
     const toggleLike = async (prodId, token, theContext)=>{
-        
-        let thisProd = theContext ? state[`${theContext}`].find(prod => prod._id === prodId): state.products.find(prod => prod._id === prodId)
+        let thisProd  = {}
+        if(theContext !== "productToView"){
+            thisProd = theContext ? state[`${theContext}`].find(prod => prod._id === prodId): state.products.find(prod => prod._id === prodId)
+        }else{
+            thisProd = state[`${theContext}`]
+        }
+        // console.log(thisProd)
         
         
         const bewl = thisProd?.likes?.includes(state.currentUser._id)
@@ -438,7 +443,8 @@ export const AppProvider = ({ children }) =>{
                     return productsAttained
                 }else if(funcSearchType==="products"){
                     const ptv = JSON.stringify(response)
-                    await storeUserToView(ptv)
+                    await storeUserToView(ptv.sellerId)
+                    await storeProductToView(ptv)
                     await dispatch({ type: Actiones.GETTING_USER_PRODUCT_SUCCESS, payload: {product: response}})  
                     return true
                 }

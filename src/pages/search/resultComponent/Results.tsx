@@ -33,10 +33,10 @@ const Results = () => {
                     backgroundColor: 'white',
                     // filter:"drop-shadow(0 1px 0px rgba(1, 81, 161, 0.5))"
                 }}>
-                    {searchType === "users" && searchUsersResults.map(( result: typing.theUser['user'], index: number)=>{
+                    {searchType === "users" && searchUsersResults?.map(( result: typing.theUser['user'], index: number)=>{
                         return <UserResultChip key={index} result={result}/>
                     })}
-                    {searchType === "products" && searchProductsResults.map(( result: typing.prodInterface['prod'], index: number)=>{
+                    {searchType === "products" && searchProductsResults?.map(( result: typing.prodInterface['prod'], index: number)=>{
                         return <ProductResultChip key={index} prod={result}/>
                     })}
             </Stack>

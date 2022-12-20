@@ -228,12 +228,17 @@ const reducer = (state, action) => {
                     displayProd: action.payload.product
                 }
             case Actiones.TOGGLE_LIKE_PROD_VIEW:
-                // console.log(`app context, context: ${action.payload.context}`)
-                const foundProdV = state[`${action.payload.context}`].find(product => product._id === action.payload.product._id)
-                const indexOfProdV = state[`${action.payload.context}`].indexOf(foundProdV)
-                let cloneProductsV = [...state[`${action.payload.context}`]]
-                cloneProductsV[indexOfProdV] = action.payload.product
-                // console.log(cloneProductsV)
+                let foundProdV = []
+                let indexOfProdV = 0
+                let cloneProductsV = []
+                if(action.payload.context !== "productToView"){
+                    foundProdV = state[`${action.payload.context}`].find(product => product._id === action.payload.product._id)
+                    indexOfProdV = state[`${action.payload.context}`].indexOf(foundProdV)
+                    cloneProductsV = [...state[`${action.payload.context}`]]
+                    cloneProductsV[indexOfProdV] = action.payload.product
+                }else{
+                    cloneProductsV = action.payload.product
+                }
                 return{
                     ...state,
                     [`${action.payload.context}`]: cloneProductsV,
