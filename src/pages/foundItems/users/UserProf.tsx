@@ -12,12 +12,14 @@ import logo from '../../../assets/logo.png'
 const UserProf: React.FC = () => {
     const { userId} = useParams()
 
-    const { userToView, token, currentUser, doFollow } = useAppContext()
+    const { userToView, token, currentUser, doFollow, getTheView } = useAppContext()
     
 
 
     useEffect(()=>{
-        
+        if(Object.keys(userToView).length === 0){
+            getTheView(userId, token, "users")
+        }
         
     }, [currentUser])
 

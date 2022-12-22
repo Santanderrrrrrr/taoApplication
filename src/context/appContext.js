@@ -280,6 +280,7 @@ export const AppProvider = ({ children }) =>{
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
+                    prodId,
                     updates:{
                         prodID: prodId
                     }

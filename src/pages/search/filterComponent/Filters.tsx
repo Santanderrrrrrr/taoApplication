@@ -31,7 +31,7 @@ const theme = createTheme({
           // Some CSS
           maxHeight: '30px',
           minHeight: "30px",
-          backgroundColor: "#f7f7f7",
+          backgroundColor: "#fff",
           width: "375px",
         },
       },
@@ -41,7 +41,7 @@ const theme = createTheme({
           root: {
             paddingTop: 0, 
             paddingBottom:8,
-            backgroundColor: "#f7f7f7"
+            backgroundColor: "#fff"
           },
         },
     }
@@ -108,7 +108,7 @@ const Filters = () => {
         flexWrap: "wrap",
         alignItems: "center",
         justifyContext:"space-between",
-        backgroundColor: "#f7f7f7",
+        backgroundColor: "#fff",
         boxSizing:"border-box",
         borderRadius: "10px",
         p:1,
@@ -146,7 +146,7 @@ const Filters = () => {
           display:"flex",
           flexDirection:"row",
           flexWrap: "wrap",
-          backgroundColor: "#f7f7f7",
+          backgroundColor: "#fff",
           boxSizing:"border-box",
           borderRadius: "10px",
           p:1,
@@ -204,7 +204,7 @@ const Filters = () => {
         flexWrap: "wrap",
         alignItems: "center",
         justifyContext:"space-between",
-        backgroundColor: "#f7f7f7",
+        backgroundColor: "#fff",
         boxSizing:"border-box",
         borderRadius: "10px",
         p:1,

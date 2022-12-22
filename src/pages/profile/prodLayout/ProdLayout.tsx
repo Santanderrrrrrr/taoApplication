@@ -30,7 +30,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     useEffect(()=>{
         const firstTake = async()=>{
         //fetching the user products
-            if(currentUser){
+            if(Object.keys(currentUser).length > 0){
                 const willNavigate = await getMyProducts( token, currentUser._id )
                 // console.log(willNavigate)
                 if(typeof willNavigate === 'string' && willNavigate.includes("error")){ 
@@ -179,7 +179,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
 
   return (
     <>
-        {products.length > 0 && 
+        {products?.length > 0 && 
         <>
             <Typography variant="subtitle2" sx={{color: '#048', m: 1}}>Products</Typography>
             <div className="prodContainer">

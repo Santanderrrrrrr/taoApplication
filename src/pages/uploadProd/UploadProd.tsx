@@ -3,9 +3,12 @@ import { PhotoCamera } from '@mui/icons-material'
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import logo from '../../assets/logo.png'
 import './css/UploadProd.css'
+import { useNavigate } from 'react-router-dom'
 
 
 const UploadProd: React.FC = () => {
+
+  const navigate =  useNavigate()
 
   //delete these>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   let token= localStorage.getItem('token')
@@ -119,6 +122,7 @@ const UploadProd: React.FC = () => {
         !brand) return alert(' All fields of the form need to be filled! ')
         if(!theImages) return alert(' You must provide product images! ')
         let urls: string[] | undefined = await uploadImgs()
+        if(urls?.length === 0) return alert(' You must provide product images! ')
         
         if (uploadingImg=== false) {
           try{
@@ -136,7 +140,7 @@ const UploadProd: React.FC = () => {
               images: urls
               })
                   
-            fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/products`,{
               headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
@@ -146,6 +150,17 @@ const UploadProd: React.FC = () => {
               body: requestData,
               credentials: 'include'
             })
+            if(response?.status === 201){
+              setName("")
+              setDescription("")
+              setCategory("")
+              setCondition("")
+              setSize("")
+              setGender("")
+              setPrice(0)
+              setBrand("")
+              return navigate('/profile')
+            }
             
           }catch(error){
             console.log(error)

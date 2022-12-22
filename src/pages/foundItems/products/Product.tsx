@@ -17,7 +17,7 @@ const Product = () => {
 
   const { productToView, token, currentUser, doFollow, toggleLike, getTheView } = useAppContext()
 
-  
+
   
   const handleFollow = (userId: string )=>{
     doFollow(userId, token, "users")
@@ -35,7 +35,9 @@ const Product = () => {
 }
   
   useEffect(()=>{
-
+    if(Object.keys(productToView)?.length === 0){
+      getTheView(productId, token, "products" )
+    }
   }, [])
 
   return (

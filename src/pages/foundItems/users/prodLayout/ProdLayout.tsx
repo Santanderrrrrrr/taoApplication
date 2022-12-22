@@ -32,7 +32,7 @@ const ProdLayout: React.FC<typing.ForProdLayout> = () => {
     useEffect(()=>{
         const firstTake = async()=>{
         //fetching the user products
-            if(userToView){
+            if( Object.keys(userToView).length !== 0 ){
                 const utv = typeof userToView === "object" ? userToView._id : userToView
                 const willNavigate = await getUserToViewProds( token, utv)
                 if(typeof willNavigate === 'string' && willNavigate.includes("error")){ 
