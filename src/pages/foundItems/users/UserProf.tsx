@@ -24,7 +24,6 @@ const UserProf: React.FC = () => {
     }, [currentUser])
 
     const  handleFollow = async(userId: string)=>{
-        console.log(userId, currentUser._id, userToView.followers)
         await doFollow(userId, token, "users")
     }
 

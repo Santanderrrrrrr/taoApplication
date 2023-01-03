@@ -48,8 +48,8 @@ const ProductResultChip: React.FC<typing.prodInterface> = ({prod: result}) => {
                 flexItem
             />
             <Stack sx={{ maxHeight: "100%", width: "180px", display: "flex", flexDirection: "column", alignItems: "flex-start", mr: 1, ml: 1}}>
-                <Typography variant="button">{result?.name}</Typography>
-                <Typography variant="body2">{`${result?.description.substring(0, 50)}...`}</Typography>
+                <Typography variant="button">{`${result?.name?.substring(0, 15)}...`}</Typography>
+                <Typography variant="body2">{`${result?.description?.substring(0, 50)}...`}</Typography>
                 <Stack 
                     sx={{ 
                         width: "80%", 

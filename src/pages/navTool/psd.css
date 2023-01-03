@@ -7,5 +7,6 @@
 .sdProfilePicImg{
     object-fit: cover;
     max-width: 100%;
+    max-height: 100%;
     border-radius: 50%;
 }

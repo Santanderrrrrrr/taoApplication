@@ -98,7 +98,7 @@ const Product = () => {
                   color: "#048",
                 }}
               >
-                {productToView?.sellerId?.username}
+                {productToView?.sellerId?.username?.substring(0, 12)}
               </Typography>
               {currentUser?._id !== productToView?.sellerId?._id && <Typography 
                 variant="body2"

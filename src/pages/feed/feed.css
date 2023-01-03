@@ -1,0 +1,43 @@
+.feedHeader{
+    position: sticky;
+    /* height: 100%; */
+    top: 0;
+    background: rgb(9,29,150);
+    background: linear-gradient(187deg, rgba(9,29,150,1) 0%, rgba(26,117,255,1) 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* height: 75px; */
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    z-index: 14;
+    margin-bottom: 0;
+}
+.feedByjLogo{
+    margin-left: -70%;
+    width: 20%;
+}
+
+.logoItselfSix{
+    object-fit: cover;
+    max-width: 100%;
+}
+
+.prodCards{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feedNothingDiv{
+    margin-top: 8px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #048;
+}

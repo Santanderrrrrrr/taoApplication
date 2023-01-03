@@ -65,7 +65,7 @@ const ProdCard: React.FC<typing.prodInterface> = ({prod}) => {
                 variant="caption"
                 
             >
-                {prod?.sellerId?.username!}
+                {prod?.sellerId?.username?.substring(0, 12)}
             </Typography>
 
         </Stack>
@@ -126,7 +126,7 @@ const ProdCard: React.FC<typing.prodInterface> = ({prod}) => {
             }}
         >
             <Stack className="exploreProdDesc" sx={{ml: 1, mt: 1}}>
-                <Typography variant={"subtitle2"} sx={{m: 0, p: 0, color: "#048"}}>{prod?.categoryId?.name.substring(0, 10)}{prod?.categoryId.name.length> 10? "..." : ""}</Typography>
+                <Typography variant={"subtitle2"} sx={{m: 0, p: 0, color: "#048"}}>{prod?.categoryId?.name?.substring(0, 10)}{prod?.categoryId?.name?.length> 10? "..." : ""}</Typography>
                 <Typography variant={"caption"} sx={{m: 0, p: 0, color: "#048"}}>{prod?.brand ? prod.brand : "tbd"}</Typography>
                 <Typography variant={"caption"} sx={{m: 0, p: 0, color: "#048"}}>{prod?.sizeId?.name}</Typography>
             </Stack>

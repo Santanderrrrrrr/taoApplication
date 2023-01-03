@@ -9,6 +9,8 @@ let userToView = localStorage.getItem("userToView");
 userToView = userToView === "undefined"? "" : JSON.parse(userToView)
 let productToView = localStorage.getItem("productToView");
 productToView = productToView === "undefined"? "" : JSON.parse(productToView)
+let pageNumber = localStorage.getItem("pageNumber");
+pageNumber = pageNumber === "undefined"? 1 : pageNumber
 
 export const initialState ={
     isLoggedIn: false,
@@ -21,6 +23,7 @@ export const initialState ={
     token: token,
     currentUser: JSON.parse(user),
     products: [],
+    //state for search page
     searchType: "",
     searchUsersResults: [],
     searchProductsResults: [],
@@ -30,6 +33,9 @@ export const initialState ={
     initialExploreProducts: [],
     exploreProducts: [],
     filterExploreProducts: { gender: [], category: [], price: 0},
+    //state for feed page
+    feedProducts: [],
+    pageNumber: pageNumber? pageNumber : 1,
     //for modals and drawers
     isOpenModal: false,
     prodModalOpen: false,
@@ -53,6 +59,9 @@ export const AppProvider = ({ children }) =>{
     }
     const storeProductToView = async(productToView)=>{
         await localStorage.setItem("productToView", productToView)
+    }
+    const storePageNumber = async(pageNumber)=>{
+        await localStorage.setItem("pageNumber", pageNumber)
     }
 
     const logout = async ()=>{
@@ -534,6 +543,45 @@ export const AppProvider = ({ children }) =>{
         dispatch({type: Actiones.SET_PARAMS_EXPLORE_FILTER_SUCCESS})
     }
 
+    const getFeed = async(token, funcSearchType, page)=>{
+        dispatch({type: Actiones.GET_FEED_BEGIN})
+        const searchParams = new URLSearchParams({ page: page })
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BYJ_API_URL}/${funcSearchType}/feed?` + searchParams,{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include',
+            })
+            response = await response.json()
+            let logoutCondition = response.message && response.message?.toLowerCase().indexOf('expired') !== -1 || response === "Unauthorized"
+            if(logoutCondition || response.message === "jwt malformed"){
+                dispatch({ 
+                    type: Actiones.GET_PRODUCTS_ERROR,
+                    payload: {
+                        products: ''
+                    }
+                })
+                return "there was an error. Please try again in a few seconds"
+            }else{
+                dispatch({ 
+                    type: Actiones.GET_FEED_SUCCESS,
+                    payload: {
+                        products: response.products,
+                    }
+                })
+                return true
+            }
+              
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
 
     
 
@@ -559,6 +607,7 @@ export const AppProvider = ({ children }) =>{
                 getExploreProducts,
                 // filterProds,
                 filterProdsB,
+                getFeed
             }}
         >
          {children}

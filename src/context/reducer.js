@@ -82,6 +82,15 @@ const reducer = (state, action) => {
                     alertText: "The products are here!",
                     alertType: "success",
                 }
+            case Actiones.GET_FEED_SUCCESS:
+                return{
+                    ...state,
+                    feedProducts: action.payload.products,
+                    isLoading: false,
+                    showAlert: true,
+                    alertText: "The products are here!",
+                    alertType: "success",
+                }
             case Actiones.GET_PRODUCTS_ERROR:
                 return{
                     ...state,
@@ -162,13 +171,19 @@ const reducer = (state, action) => {
             case Actiones.GETTING_USER_PRODUCT_BEGIN:
                 return{
                     ...state,
-                isLoading: true
+                    isLoading: true
                 }
             //FOR GETTING_EXPLORE_PRODUCT_BEGIN
             case Actiones.GETTING_EXPLORE_PRODUCT_BEGIN:
                 return{
                     ...state,
-                isLoading: true
+                    isLoading: true
+                }
+            //FOR GET_FEED_BEGIN
+            case Actiones.GET_FEED_BEGIN:
+                return{
+                    ...state,
+                    isLoading: true
                 }
 
             //FOR FOLLOW ACTION SUCCESS

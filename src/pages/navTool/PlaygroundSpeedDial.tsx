@@ -20,7 +20,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 }));
 
 const links = [
-  '/profile', '/new', '/search', '/profile'
+  '/profile', '/new', '/search', '/feed' 
 ]
 
 
@@ -38,7 +38,7 @@ export default function PlaygroundSpeedDial() {
         </Link>, name: 'Profile' },
         { icon: <Link to={`${links[1]}`}><AddAPhoto sx={{color:'#048'}}/></Link>, name: 'New' },
         { icon: <Link to={`${links[2]}`}><Search sx={{color:'#048'}}/></Link>, name: 'Search' },
-        { icon: <Storefront sx={{color:'#048'}}/>, name: 'Home' },
+        { icon: <Link to={`${links[3]}`}><Storefront sx={{color:'#048'}}/></Link>, name: 'Home' },
     ];
     
     const handleClick = ()=>{

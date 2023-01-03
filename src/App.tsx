@@ -13,6 +13,7 @@ import SettingsDrawer from './pages/settingDrawer/SettingsDrawer'
 import Search from './pages/search/Search'
 import UserProf from './pages/foundItems/users/UserProf'
 import Product from "./pages/foundItems/products/Product"
+import Feed from "./pages/feed/Feed"
 
 
 function App() {  
@@ -30,6 +31,7 @@ function App() {
         <Route path='/search' element={<Search/>} />
         <Route path='/u/:userId' element={<UserProf/>} />
         <Route path='/p/:productId' element={<Product/>} />
+        <Route path='/feed' element={<Feed/>} />
       </Routes>
       {currentUser && <PlaygroundSpeedDial />}
       {currentUser && <SettingsDrawer />}
