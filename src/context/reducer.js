@@ -235,12 +235,16 @@ const reducer = (state, action) => {
             case Actiones.TOGGLE_LIKE_PROD:
                 const foundProd = state.products.find(product => product._id === action.payload.product._id)
                 const indexOfProd = state.products.indexOf(foundProd)
+                const indexOfProdInFeed = state.feedProducts.indexOf(foundProd)
                 let cloneProducts = [...state.products]
+                let cloneFeedProducts = [...state.products]
                 cloneProducts[indexOfProd] = action.payload.product
+                cloneFeedProducts[indexOfProdInFeed] = action.payload.product
                 return{
                     ...state,
                     products: cloneProducts,
-                    displayProd: action.payload.product
+                    displayProd: action.payload.product,
+                    feedProducts: cloneFeedProducts
                 }
             case Actiones.TOGGLE_LIKE_PROD_VIEW:
                 let foundProdV = []
