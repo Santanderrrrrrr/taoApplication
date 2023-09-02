@@ -16,7 +16,7 @@ import SelectMenu from './SelectMenu'
 import Results from '../resultComponent/Results'
 import { useAppContext } from '../../../context/appContext'
 
-const SelectTextFields = () => {
+const SelectTextFields: React.FC = () => {
 
     const { token, doTheSearch, searchType } = useAppContext()
     
@@ -74,7 +74,7 @@ const SelectTextFields = () => {
                 >
                 <Stack 
                     component="form"
-                    onSubmit={(e)=>handleSearch(e, searchType, searchValue)}
+                    onSubmit={(e: { preventDefault: ()=> void})=>handleSearch(e, searchType, searchValue)}
                     sx={{
                         // zIndex: 15,
                         backgroundColor: "white",

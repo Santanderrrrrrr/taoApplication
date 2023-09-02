@@ -3,8 +3,7 @@ import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material'
 import Carousel from 'react-material-ui-carousel'
 import { useNavigate } from "react-router-dom";
-import { FavoriteBorder, Favorite } from '@mui/icons-material' // MoreVert,
-// import PositionedMenu from './positionedMenu/PositionedMenu'
+import { FavoriteBorder, Favorite } from '@mui/icons-material'
 import ProdModal from './prodModal/ProdModal'
 import { useAppContext } from '../../../../context/appContext'
 import * as typing from '../../../../types/appTypes'

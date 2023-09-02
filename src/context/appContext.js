@@ -267,7 +267,7 @@ export const AppProvider = ({ children }) =>{
         }else{
             thisProd = state[`${theContext}`]
         }
-        // console.log(thisProd)
+        console.log(thisProd)
         
         
         const bewl = thisProd?.likes?.includes(state.currentUser._id)

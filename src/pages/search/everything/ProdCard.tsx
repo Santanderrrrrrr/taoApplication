@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { ArrowBackIos, ArrowForwardIos, Favorite, FavoriteBorder } from '@mui/icons-material'
 import { IconButton, Stack, Typography } from "@mui/material"
 import Carousel from 'react-material-ui-carousel'
-import ProdModal from "../../foundItems/users/prodLayout/prodModal/ProdModal"
+import ProdModal from "./prodModal/ProdModal"
 import { useAppContext } from '../../../context/appContext'
 import * as typing from "../../../types/appTypes"
 import "./prodCard.css"

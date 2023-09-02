@@ -1,3 +1,10 @@
+.feedScaffolding{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .feedHeader{
     position: sticky;
     /* height: 100%; */

@@ -53,7 +53,7 @@ export default function BasicModal() {
 
   //function to like item
   const handleLike = (prodId: string): void=>{
-    toggleLike(prodId, token)
+    toggleLike(prodId, token, "userToViewProducts")
   }
 
   return (
